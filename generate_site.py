@@ -37,6 +37,16 @@ PLACEHOLDER_RATING = "Rated 4.9 stars from 273+ Facebook Marketplace ratings"
 FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
+WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
+                 "warranty, but a warranty is not guaranteed.")
+
+# Listing photos that are generic stock shots, not the actual unit for sale
+STOCK_PHOTOS = {"washer-dryer-set.jpg", "french-door-fridge.jpg",
+                "side-by-side-fridge.jpg", "wall-oven.jpg", "dishwasher.jpg"}
+
+DAMAGE_RE = re.compile(r"\b(ding|dings|dent|dents|dented|scratch|scratches|scratched)\b",
+                       re.IGNORECASE)
+
 
 def filter_keys(category):
     c = category.strip().lower()
@@ -91,6 +101,10 @@ def resolve_photos(item):
     return photos
 
 
+# Extra images used by the homepage (category tiles) that aren't tied to a listing
+EXTRA_IMAGES = ["front-load-washer.jpg", "dryer.jpg", "gas-range.jpg", "chest-freezer.jpg"]
+
+
 def copy_photos(items):
     os.makedirs(IMG_DIR, exist_ok=True)
     used = set()
@@ -104,6 +118,11 @@ def copy_photos(items):
             name = os.path.basename(src_rel)
             used.add(name)
             shutil.copy2(src, os.path.join(IMG_DIR, name))
+    for name in EXTRA_IMAGES:
+        src = os.path.join(SRC_DIR, "stock", name)
+        if os.path.exists(src):
+            shutil.copy2(src, os.path.join(IMG_DIR, name))
+            used.add(name)
     # remove stale images no longer referenced
     for f in os.listdir(IMG_DIR):
         if f not in used:
@@ -166,9 +185,15 @@ def page_shell(title, meta_desc, body, active, prefix=""):
 
 def card_html(item, photo_file):
     cats = " ".join(filter_keys(item["category"]))
+    stock = photo_file in STOCK_PHOTOS
+    img_html = (f'<div class="card-img{" stock-photo" if stock else ""}">'
+                f'<img src="images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
+                + ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
+                   if stock else "")
+                + "</div>")
     return f"""<article class="card" data-cats="{cats}">
   <a href="listings/{item['listing_id']}.html" class="card-link">
-    <div class="card-img"><img src="images/{esc(photo_file)}" alt="{esc(item['title'])}" loading="lazy"></div>
+    {img_html}
     <div class="card-body">
       <span class="badge">{esc(item['category'])}</span>
       <h3>{esc(item['title'])}</h3>
@@ -231,6 +256,7 @@ def build_index(items, photo_of):
     <div class="trust"><strong>Inspected</strong><span>every item checked</span></div>
   </div>
 </section>
+<p class="wrap warranty-strip">{esc(WARRANTY_NOTE)}</p>
 <section class="wrap">
   <h2 class="section-title">Shop by category</h2>
   <div class="cat-tiles">{tiles}</div>
@@ -261,6 +287,8 @@ def build_detail(item, descriptions, photo_files):
     if not desc_html:
         desc_html = ("<p>Contact us for full details, dimensions, and current "
                      "availability on this item.</p>")
+    stock_badge = ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
+                   if photo_files[0] in STOCK_PHOTOS else "")
     if len(photo_files) > 1:
         main = photo_files[0]
         thumbs = "\n".join(
@@ -268,16 +296,17 @@ def build_detail(item, descriptions, photo_files):
             f'<img src="../images/{esc(pf)}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
             for i, pf in enumerate(photo_files)
         )
-        gallery = f"""<div class="gallery">
+        gallery = f"""<div class="gallery">{stock_badge}
       <img id="gallery-main" src="../images/{esc(main)}" alt="{esc(item['title'])}">
       <div class="thumbs">{thumbs}</div>
     </div>"""
     else:
-        gallery = (f'<div class="gallery"><img src="../images/{esc(photo_files[0])}" '
+        gallery = (f'<div class="gallery">{stock_badge}<img src="../images/{esc(photo_files[0])}" '
                    f'alt="{esc(item["title"])}"></div>')
     mp_url = item.get("url", "")
     mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
                  if mp_url else "")
+    cond = "Scratch & Dent" if DAMAGE_RE.search(desc) else item.get("condition", "New")
     body = f"""<div class="wrap detail">
   <p class="breadcrumb"><a href="../index.html">&larr; Back to catalog</a></p>
   {gallery}
@@ -287,16 +316,15 @@ def build_detail(item, descriptions, photo_files):
     <p class="price price-lg">{esc(item['price'])}</p>
     <div class="description">{desc_html}</div>
     <dl class="facts">
-      <div><dt>Condition</dt><dd>{esc(item.get('condition', 'New'))}</dd></div>
+      <div><dt>Condition</dt><dd>{esc(cond)}</dd></div>
       <div><dt>Category</dt><dd>{esc(item['category'])}</dd></div>
       <div><dt>Price</dt><dd>{esc(item['price'])}</dd></div>
     </dl>
     <div class="detail-cta">
       <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
-      <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Ask about this item in our Facebook group</a>
       {mp_button}
     </div>
-    <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies</p>
+    <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies<br><span class="warranty-note">{esc(WARRANTY_NOTE)}</span></p>
   </div>
 </div>"""
     return page_shell(
@@ -352,6 +380,9 @@ def build_faq():
          "These are brand-new appliances with minor cosmetic imperfections — "
          "usually small dings or dents on the sides. They work like new and are "
          "priced well below retail because of the cosmetic flaws."),
+        ("Is there a warranty?",
+         WARRANTY_NOTE + " Some listings include a manufacturer warranty — check "
+         "the item description for details."),
         ("What condition are the appliances in?",
          "Most of our inventory is new (including scratch-and-dent). We also carry "
          "select gently used items, always clearly marked with their condition."),

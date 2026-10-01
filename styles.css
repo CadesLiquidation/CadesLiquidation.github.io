@@ -225,3 +225,52 @@ details p { margin: 10px 0 4px; color: var(--muted); }
   .hero-collage { height: 260px; }
   .trustbar-inner { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ===== Stock photo disclaimer ===== */
+.card-img.stock-photo, .gallery { position: relative; }
+.stock-badge {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  background: rgba(10, 20, 35, 0.82); color: #fff;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.02em;
+  padding: 5px 10px; border-radius: 6px; max-width: calc(100% - 20px);
+}
+
+/* ===== Warranty note ===== */
+.warranty-strip {
+  text-align: center; color: var(--muted); font-size: 0.9rem;
+  margin: 14px auto 0; padding: 10px 20px; max-width: 760px;
+}
+.warranty-note { color: var(--muted); }
+
+/* ===== Mobile optimizations ===== */
+@media (max-width: 860px) {
+  .hero { padding: 44px 0 36px; }
+  .hero h1 { font-size: 1.9rem; }
+  .hero .tagline { font-size: 1.05rem; }
+  .hero-cta .btn-lg { width: 100%; text-align: center; }
+  .hero-collage { height: 240px; }
+  .brand { font-size: 1.1rem; }
+  .detail { padding-top: 20px; }
+  .detail-info h1 { font-size: 1.35rem; }
+  .detail-cta .btn-lg { width: 100%; text-align: center; }
+  .facts dt { min-width: 76px; }
+  .footer-inner { flex-direction: column; }
+  .footer-contact .btn { width: 100%; text-align: center; }
+}
+@media (max-width: 560px) {
+  .wrap { padding-left: 14px; padding-right: 14px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding-bottom: 36px; }
+  .card-body { padding: 10px 12px 14px; }
+  .card-body h3 { font-size: 0.85rem; }
+  .price { font-size: 1.05rem; }
+  .badge { font-size: 0.62rem; }
+  .cat-tiles { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .cat-tile span { font-size: 0.75rem; padding-top: 18px; }
+  .section-title { font-size: 1.25rem; margin: 26px 0 12px; }
+  .filter-btn { padding: 7px 13px; font-size: 0.82rem; }
+  .trust strong { font-size: 1rem; }
+  .trust span { font-size: 0.75rem; }
+  .stock-badge { font-size: 0.62rem; top: 8px; left: 8px; }
+  .thumbs { gap: 8px; }
+  .thumb { width: 72px; height: 54px; }
+}
