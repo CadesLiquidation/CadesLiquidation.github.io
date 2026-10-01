@@ -68,8 +68,21 @@
     });
   }
 
+  function initCatTiles() {
+    document.querySelectorAll("[data-goto-filter]").forEach(function (tile) {
+      tile.addEventListener("click", function () {
+        var key = tile.getAttribute("data-goto-filter");
+        var btn = document.querySelector('.filter-btn[data-filter="' + key + '"]');
+        if (btn) btn.click();
+        var target = document.getElementById("catalog");
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initFilters();
+    initCatTiles();
     initGallery();
     fetch(configPath())
       .then(function (r) { return r.ok ? r.json() : null; })

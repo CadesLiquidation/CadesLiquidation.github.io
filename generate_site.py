@@ -184,19 +184,63 @@ def build_index(items, photo_of):
         for f in FILTERS
     )
     cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0]) for it in items)
+
+    categories = [
+        ("Washers", "front-load-washer.jpg", "washers"),
+        ("Dryers", "dryer.jpg", "dryers"),
+        ("Refrigerators", "french-door-fridge.jpg", "refrigerators"),
+        ("Ranges", "gas-range.jpg", "ranges"),
+        ("Freezers", "chest-freezer.jpg", "freezers"),
+        ("Dishwashers", "dishwasher.jpg", "dishwashers"),
+        ("Ovens", "wall-oven.jpg", "ovens"),
+    ]
+    tiles = "\n".join(
+        f'<button class="cat-tile" data-goto-filter="{key}">'
+        f'<img src="images/{img}" alt="{label}" loading="lazy">'
+        f"<span>{label}</span></button>"
+        for label, img, key in categories
+    )
+
+    featured_items = sorted(items, key=lambda it: it.get("price_num", 0), reverse=True)[:3]
+    featured = "\n".join(card_html(it, photo_of[it["listing_id"]][0]) for it in featured_items)
+
     body = f"""<section class="hero">
-  <div class="wrap">
-    <h1 data-config="businessName">{esc(PLACEHOLDER_NAME)}</h1>
-    <p class="tagline" data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</p>
-    <p class="rating" data-config="ratingText">{esc(PLACEHOLDER_RATING)}</p>
-    <p class="service-area">Serving <span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> and surrounding areas</p>
-    <div class="hero-cta">
-      <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
-      <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow"><span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot; Scratch-and-dent deals</p>
+      <h1 data-config="businessName">{esc(PLACEHOLDER_NAME)}</h1>
+      <p class="tagline" data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</p>
+      <p class="rating"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span></p>
+      <div class="hero-cta">
+        <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
+        <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
+      </div>
+    </div>
+    <div class="hero-collage">
+      <img class="collage-main" src="images/photo-17-lg-frenchdoor.jpg" alt="French door refrigerator">
+      <img class="collage-a" src="images/photo-12-lg-set-black.jpg" alt="Washer and dryer set">
+      <img class="collage-b" src="images/photo-18-frigidaire-gallery.jpg" alt="Refrigerator">
     </div>
   </div>
 </section>
+<section class="trustbar">
+  <div class="wrap trustbar-inner">
+    <div class="trust"><strong>4.9\u2605</strong><span>273+ Marketplace ratings</span></div>
+    <div class="trust"><strong>14-day</strong><span>money-back guarantee</span></div>
+    <div class="trust"><strong>Delivery</strong><span>available for a charge</span></div>
+    <div class="trust"><strong>Inspected</strong><span>every item checked</span></div>
+  </div>
+</section>
 <section class="wrap">
+  <h2 class="section-title">Shop by category</h2>
+  <div class="cat-tiles">{tiles}</div>
+</section>
+<section class="wrap">
+  <h2 class="section-title">Featured deals</h2>
+  <div class="grid featured-grid">{featured}</div>
+</section>
+<section class="wrap" id="catalog">
+  <h2 class="section-title">Full catalog</h2>
   <div class="filters">{filters}</div>
   <div class="grid" id="catalog-grid">
 {cards}
