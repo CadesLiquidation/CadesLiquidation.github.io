@@ -38,10 +38,13 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "5"
+ASSET_VER = "6"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
+
+APPT_NOTE = ("By appointment only \u2014 call or message to schedule a time "
+             "to come see anything.")
 
 # Listing photos that are generic stock shots, not the actual unit for sale
 STOCK_PHOTOS = {"washer-dryer-set.jpg", "french-door-fridge.jpg",
@@ -243,6 +246,7 @@ def build_index(items, photo_of):
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
         <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
       </div>
+      <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
     </div>
     <div class="hero-collage">
       <img class="collage-main" src="images/photo-17-lg-frenchdoor.jpg" alt="French door refrigerator">
@@ -326,6 +330,7 @@ def build_detail(item, descriptions, photo_files):
       <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
       {mp_button}
     </div>
+    <p class="appt-note">{esc(APPT_NOTE)}</p>
     <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies<br><span class="warranty-note">{esc(WARRANTY_NOTE)}</span></p>
   </div>
 </div>"""
@@ -352,8 +357,8 @@ def build_about():
     <li>Wall ovens and double ovens</li>
   </ul>
   <h2>How buying works</h2>
-  <p>Browse the catalog, find something you like, and get in touch. Every sale includes
-  our 14-day money-back guarantee. Delivery is available for a charge, and sales tax
+  <p>Browse the catalog, find something you like, and get in touch. <strong>{esc(APPT_NOTE)}</strong>
+  Every sale includes our 14-day money-back guarantee. Delivery is available for a charge, and sales tax
   applies. Serving <span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> and
   surrounding areas.</p>
   <div class="hero-cta">
@@ -385,6 +390,8 @@ def build_faq():
         ("Is there a warranty?",
          WARRANTY_NOTE + " Some listings include a manufacturer warranty — check "
          "the item description for details."),
+        ("Do I need an appointment to come see something?",
+         APPT_NOTE),
         ("What condition are the appliances in?",
          "Most of our inventory is new (including scratch-and-dent). We also carry "
          "select gently used items, always clearly marked with their condition."),

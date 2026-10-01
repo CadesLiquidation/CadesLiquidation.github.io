@@ -298,3 +298,7 @@ body {
 @media (max-width: 560px) {
   .site-header .btn-call { display: none; }
 }
+
+/* ===== Appointment note ===== */
+.appt-note { margin: 12px 0 0; font-size: 0.92rem; font-weight: 600; color: var(--muted); }
+.appt-note-hero { color: rgba(255, 255, 255, 0.92); }
