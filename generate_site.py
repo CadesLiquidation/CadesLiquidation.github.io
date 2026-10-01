@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "4"
+ASSET_VER = "5"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -259,7 +259,6 @@ def build_index(items, photo_of):
     <div class="trust"><strong>Inspected</strong><span>every item checked</span></div>
   </div>
 </section>
-<p class="wrap warranty-strip">{esc(WARRANTY_NOTE)}</p>
 <section class="wrap">
   <h2 class="section-title">Shop by category</h2>
   <div class="cat-tiles">{tiles}</div>
