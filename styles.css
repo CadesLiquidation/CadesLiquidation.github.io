@@ -1,0 +1,163 @@
+/* Bloomington Appliance Liquidation - clean modern storefront, no dependencies */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #1d2430;
+  --muted: #5b6472;
+  --brand: #0f5cab;
+  --brand-dark: #0a427d;
+  --accent: #e07b1a;
+  --accent-dark: #b85f0d;
+  --line: #e3e7ed;
+  --radius: 10px;
+  --shadow: 0 2px 10px rgba(15, 30, 50, 0.08);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.55;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--brand); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+}
+.header-inner {
+  display: flex; align-items: center; gap: 18px;
+  padding-top: 12px; padding-bottom: 12px;
+}
+.brand { font-weight: 800; font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+.main-nav { display: flex; gap: 4px; margin-left: auto; }
+.main-nav a {
+  color: var(--muted); text-decoration: none; font-weight: 600;
+  padding: 8px 12px; border-radius: 8px;
+}
+.main-nav a:hover { background: var(--bg); color: var(--ink); }
+.main-nav a.active { color: var(--brand); }
+
+/* Buttons */
+.btn {
+  display: inline-block; border: 0; cursor: pointer; text-decoration: none;
+  font-weight: 700; border-radius: 8px; padding: 10px 18px; font-size: 0.95rem;
+  transition: background 0.15s ease;
+}
+.btn-call { background: var(--accent); color: #fff; }
+.btn-call:hover { background: var(--accent-dark); }
+.btn-fb { background: var(--brand); color: #fff; }
+.btn-fb:hover { background: var(--brand-dark); }
+.btn-lg { padding: 14px 26px; font-size: 1.05rem; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%);
+  color: #fff; padding: 56px 0 48px; margin-bottom: 28px;
+}
+.hero h1 { margin: 0 0 8px; font-size: 2.2rem; letter-spacing: -0.01em; }
+.hero .tagline { font-size: 1.15rem; margin: 0 0 6px; opacity: 0.95; }
+.hero .service-area { margin: 0 0 20px; opacity: 0.85; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Filters */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 22px; }
+.filter-btn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  border-radius: 999px; padding: 8px 16px; font-weight: 600; cursor: pointer; font-size: 0.9rem;
+}
+.filter-btn:hover { border-color: var(--brand); color: var(--brand); }
+.filter-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+/* Card grid */
+.grid {
+  display: grid; gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  padding-bottom: 48px;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(15, 30, 50, 0.12); }
+.card-link { text-decoration: none; color: inherit; display: block; }
+.card-img { aspect-ratio: 4 / 3; overflow: hidden; background: #eef1f5; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 14px 16px 18px; }
+.card-body h3 { margin: 8px 0 6px; font-size: 1.02rem; line-height: 1.35; }
+.price { font-weight: 800; font-size: 1.25rem; color: var(--brand-dark); margin: 0; }
+.price-lg { font-size: 1.8rem; }
+.badge {
+  display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--brand-dark);
+  background: #e3eefb; border-radius: 999px; padding: 3px 10px;
+}
+.grid-empty { text-align: center; color: var(--muted); padding: 30px 0 60px; }
+
+/* Detail page */
+.detail { display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; padding: 28px 20px 60px; }
+.breadcrumb { grid-column: 1 / -1; margin: 0; }
+.breadcrumb a { text-decoration: none; font-weight: 600; }
+.gallery img#gallery-main, .gallery > img {
+  width: 100%; border-radius: var(--radius); border: 1px solid var(--line);
+  box-shadow: var(--shadow); aspect-ratio: 4 / 3; object-fit: cover; background: #eef1f5;
+}
+.thumbs { display: flex; gap: 10px; margin-top: 10px; }
+.thumb {
+  border: 2px solid var(--line); border-radius: 8px; padding: 0; cursor: pointer;
+  background: none; width: 96px; height: 72px; overflow: hidden;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb.current { border-color: var(--brand); }
+.detail-info h1 { margin: 10px 0 8px; font-size: 1.7rem; line-height: 1.25; }
+.description p { margin: 0 0 12px; }
+.facts { display: grid; gap: 8px; margin: 20px 0; padding: 0; }
+.facts > div {
+  display: flex; gap: 12px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px;
+}
+.facts dt { font-weight: 700; min-width: 90px; color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; }
+.detail-cta { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0 10px; }
+.guarantee-note { color: var(--muted); font-size: 0.9rem; }
+
+/* Prose pages */
+.prose { padding: 32px 20px 60px; max-width: 760px; }
+.prose h1 { margin-top: 0; }
+.prose h2 { margin-top: 32px; }
+.prose ul { padding-left: 22px; }
+details {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom: 12px;
+}
+summary { font-weight: 700; cursor: pointer; }
+details p { margin: 10px 0 4px; color: var(--muted); }
+
+/* Footer */
+.site-footer { background: #14202f; color: #c7d0dc; margin-top: 20px; }
+.footer-inner {
+  display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  padding-top: 30px; padding-bottom: 20px;
+}
+.footer-inner strong { color: #fff; }
+.footer-contact { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
+.footer-small {
+  border-top: 1px solid rgba(255,255,255,0.12);
+  padding-top: 14px; padding-bottom: 22px; font-size: 0.85rem; opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .detail { grid-template-columns: 1fr; gap: 22px; }
+  .hero h1 { font-size: 1.7rem; }
+  .header-inner { flex-wrap: wrap; }
+  .main-nav { margin-left: 0; order: 3; width: 100%; }
+}
