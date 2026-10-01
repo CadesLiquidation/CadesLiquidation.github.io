@@ -167,7 +167,6 @@ def footer(prefix=""):
       <span data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</span>
     </div>
     <div class="footer-contact">
-      <a class="btn btn-call" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
       <a class="btn btn-fb" data-config-href="facebookGroupUrl" hidden>Visit our Facebook group: <span data-config="facebookGroupName"></span></a>
     </div>
   </div>
