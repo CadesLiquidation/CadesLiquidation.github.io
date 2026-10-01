@@ -38,13 +38,50 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "7"
+ASSET_VER = "8"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
 
 APPT_NOTE = ("By appointment only \u2014 call or message to schedule a time "
              "to come see anything.")
+
+# Retail (MSRP) values from the load manifest, keyed by listing_id.
+# Shown crossed-out above the sale price. Only filled where the
+# model/price match is certain.
+RETAIL_PRICES = {
+    "1384781360536995": 3099,  # LG 28cu French Door (LHFS28XBS)
+    "1126693043068885": 2599,  # GE 27cu French Door (GNE27JYMFS)
+    "1498229855523007": 1999,  # GE Side by Side (GSS28NYYFS)
+    "1108880614997392": 1199,  # LG Top Freezer (LHTNS2403S)
+    "1011048761394885": 1149,  # LG Gas Dryer (DLG3421W)
+    "2267447970675821": 999,   # GE White Top Freezer (GTS18HGNRWW)
+    "2024831725140515": 929,   # GE Electric Glass Top Range (GRF40HSVSS)
+    "1868075531223938": 699,   # Whirlpool Electric Dryer (WED4107SW)
+    "1810826210014141": 699,   # Whirlpool Top Load Washer (WTW4107SW)
+    "949330901055818": 629,    # Hotpoint Agitator Washer (HTW265ASWWB)
+    "2699586173790624": 399,   # Frigidaire Chest Freezer
+    "1449538590452959": 1099,  # LG Gas Range w/ Air Fry (LRGN6321Y)
+    "1744440383278549": 2598,  # LG Washer+Dryer Set (WM4000HBA + DLEX4000B)
+}
+
+
+def retail_html(listing_id, price_num, size=""):
+    retail = RETAIL_PRICES.get(listing_id)
+    if not retail or retail <= price_num:
+        return ""
+    if size == "lg":
+        return f'<p class="retail-lg">Retail <s>${retail:,}</s></p>'
+    return f'<p class="retail"><s>${retail:,}</s></p>'
+
+
+def savings_html(listing_id, price_num):
+    retail = RETAIL_PRICES.get(listing_id)
+    if not retail or retail <= price_num:
+        return ""
+    save = retail - price_num
+    pct = round(save / retail * 100)
+    return f'<p class="savings">You save ${save:,.0f} ({pct}%)</p>'
 
 # Listing photos that are generic stock shots, not the actual unit for sale
 STOCK_PHOTOS = {"washer-dryer-set.jpg", "french-door-fridge.jpg",
@@ -210,6 +247,7 @@ def card_html(item, photo_file):
     <div class="card-body">
       <span class="badge">{esc(item['category'])}</span>
       <h3>{esc(item['title'])}</h3>
+      {retail_html(item['listing_id'], item.get('price_num', 0))}
       <p class="price">{esc(item['price'])}</p>
     </div>
   </a>
@@ -340,7 +378,9 @@ def build_detail(item, descriptions, photo_files):
   <div class="detail-info">
     <span class="badge">{esc(item['category'])}</span>
     <h1>{esc(item['title'])}</h1>
+    {retail_html(item['listing_id'], item.get('price_num', 0), size="lg")}
     <p class="price price-lg">{esc(item['price'])}</p>
+    {savings_html(item['listing_id'], item.get('price_num', 0))}
     <div class="description">{desc_html}</div>
     <dl class="facts">
       <div><dt>Condition</dt><dd>{esc(cond)}</dd></div>

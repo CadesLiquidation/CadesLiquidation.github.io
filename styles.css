@@ -336,3 +336,15 @@ body {
   .visit-inner { grid-template-columns: 1fr; gap: 20px; padding-top: 28px; padding-bottom: 28px; }
   .visit-copy h2 { font-size: 1.35rem; }
 }
+
+/* ===== Retail / savings ===== */
+.retail { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.retail s { text-decoration-thickness: 1px; }
+.price { margin-top: 2px; }
+.retail-lg { margin: 0; font-size: 1rem; color: var(--muted); }
+.retail-lg s { text-decoration-thickness: 1.5px; }
+.savings {
+  display: inline-block; margin: 6px 0 0; padding: 6px 12px;
+  background: #e8f7ee; color: #157347; border: 1px solid #bfe6cd;
+  border-radius: 999px; font-weight: 700; font-size: 0.92rem;
+}
