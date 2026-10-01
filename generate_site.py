@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "8"
+ASSET_VER = "9"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -65,6 +65,40 @@ RETAIL_PRICES = {
     "1744440383278549": 2598,  # LG Washer+Dryer Set (WM4000HBA + DLEX4000B)
     "1643544697442082": 1850,  # Frigidaire Gallery Fridge (GRMS2773AF)
 }
+
+
+def load_reviews():
+    p = os.path.join(SRC_DIR, "reviews.json")
+    if os.path.exists(p):
+        return json.load(open(p))
+    return []
+
+
+def review_card(r):
+    return (f'<div class="review"><div class="stars" aria-label="5 out of 5 stars">'
+            f'\u2605\u2605\u2605\u2605\u2605</div>'
+            f'<p>{esc(r["text"])}</p>'
+            f'<p class="review-meta">{esc(r["date"])} &middot; Facebook Marketplace review</p></div>')
+
+
+def reviews_modal(reviews):
+    cards = "\n".join(review_card(r) for r in reviews)
+    return f"""<div class="modal-backdrop" id="reviews-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Customer reviews">
+    <div class="modal-head">
+      <div>
+        <p class="modal-kicker">Customer reviews</p>
+        <p class="modal-rating"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span>
+        <strong>4.9</strong> &middot; 273 Marketplace ratings</p>
+      </div>
+      <button class="modal-close" data-close-modal aria-label="Close reviews">&times;</button>
+    </div>
+    <div class="modal-list">
+{cards}
+    </div>
+    <p class="modal-foot">From Cade&rsquo;s public Facebook Marketplace profile.</p>
+  </div>
+</div>"""
 
 
 def retail_html(listing_id, price_num, size=""):
@@ -287,7 +321,7 @@ def build_index(items, photo_of):
       <p class="eyebrow"><span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot; Scratch-and-dent deals</p>
       <h1 data-config="businessName">{esc(PLACEHOLDER_NAME)}</h1>
       <p class="tagline" data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</p>
-      <p class="rating"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span></p>
+      <button class="rating rating-btn" id="reviews-open" type="button"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span> <span class="rating-link">Read reviews</span></button>
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
         <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
@@ -338,7 +372,8 @@ def build_index(items, photo_of):
       </div>
     </div>
   </div>
-</section>"""
+</section>
+{reviews_modal(load_reviews())}"""
     return page_shell(
         f"{PLACEHOLDER_NAME} | New & Scratch-and-Dent Appliances in {PLACEHOLDER_AREA}",
         f"Shop new and scratch-and-dent washers, dryers, refrigerators, ranges, "

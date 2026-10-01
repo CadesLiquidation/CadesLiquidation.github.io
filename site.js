@@ -80,10 +80,35 @@
     });
   }
 
+  function initReviewsModal() {
+    var openBtn = document.getElementById("reviews-open");
+    var modal = document.getElementById("reviews-modal");
+    if (!openBtn || !modal) return;
+    function open() {
+      modal.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+      var close = modal.querySelector(".modal-close");
+      if (close) close.focus();
+    }
+    function close() {
+      modal.setAttribute("hidden", "");
+      document.body.style.overflow = "";
+      openBtn.focus();
+    }
+    openBtn.addEventListener("click", open);
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal || e.target.hasAttribute("data-close-modal")) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !modal.hasAttribute("hidden")) close();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initFilters();
     initCatTiles();
     initGallery();
+    initReviewsModal();
     fetch(configPath())
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(applyConfig)
