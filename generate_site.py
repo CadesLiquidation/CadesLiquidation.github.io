@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "6"
+ASSET_VER = "7"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -107,8 +107,15 @@ def resolve_photos(item):
     return photos
 
 
-# Extra images used by the homepage (category tiles) that aren't tied to a listing
-EXTRA_IMAGES = ["front-load-washer.jpg", "dryer.jpg", "gas-range.jpg", "chest-freezer.jpg"]
+# Extra images used by the site that aren't tied to a listing (relative to SRC_DIR)
+EXTRA_IMAGES = [
+    "stock/front-load-washer.jpg",
+    "stock/dryer.jpg",
+    "stock/gas-range.jpg",
+    "stock/chest-freezer.jpg",
+    "photos/warehouse-1.jpg",
+    "photos/warehouse-2.jpg",
+]
 
 
 def copy_photos(items):
@@ -124,9 +131,10 @@ def copy_photos(items):
             name = os.path.basename(src_rel)
             used.add(name)
             shutil.copy2(src, os.path.join(IMG_DIR, name))
-    for name in EXTRA_IMAGES:
-        src = os.path.join(SRC_DIR, "stock", name)
+    for rel in EXTRA_IMAGES:
+        src = os.path.join(SRC_DIR, rel)
         if os.path.exists(src):
+            name = os.path.basename(rel)
             shutil.copy2(src, os.path.join(IMG_DIR, name))
             used.add(name)
     # remove stale images no longer referenced
@@ -278,6 +286,20 @@ def build_index(items, photo_of):
 {cards}
   </div>
   <p class="grid-empty" id="grid-empty" hidden>No items in this category right now.</p>
+</section>
+<section class="visit-band">
+  <div class="wrap visit-inner">
+    <img src="images/warehouse-2.jpg" alt="Our warehouse stocked with appliances" loading="lazy">
+    <div class="visit-copy">
+      <h2>Come see it in person</h2>
+      <p>Our warehouse is stocked with washers, dryers, refrigerators, ranges and more
+      &mdash; all inspected and priced to move.</p>
+      <p class="appt-note">{esc(APPT_NOTE)}</p>
+      <div class="hero-cta" style="margin-top:16px">
+        <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
+      </div>
+    </div>
+  </div>
 </section>"""
     return page_shell(
         f"{PLACEHOLDER_NAME} | New & Scratch-and-Dent Appliances in {PLACEHOLDER_AREA}",
@@ -344,6 +366,10 @@ def build_about():
     body = f"""<div class="wrap prose">
   <h1>About us</h1>
   <p data-config="aboutText">{esc(PLACEHOLDER_ABOUT)}</p>
+  <figure class="about-photo">
+    <img src="images/warehouse-1.jpg" alt="Inside our appliance warehouse" loading="lazy">
+    <figcaption>Inside the warehouse &mdash; new inventory arrives regularly.</figcaption>
+  </figure>
   <p>We specialize in <strong>scratch-and-dent</strong> appliances: brand-new units with
   small cosmetic dings or dents (usually on the sides, where you'll never see them)
   sold at a fraction of retail. We also carry new in-box and gently used appliances.</p>

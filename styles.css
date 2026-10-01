@@ -302,3 +302,37 @@ body {
 /* ===== Appointment note ===== */
 .appt-note { margin: 12px 0 0; font-size: 0.92rem; font-weight: 600; color: var(--muted); }
 .appt-note-hero { color: rgba(255, 255, 255, 0.92); }
+
+/* ===== Visit band (warehouse) ===== */
+.visit-band {
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-top: 10px;
+}
+.visit-inner {
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 36px; align-items: center;
+  padding-top: 40px; padding-bottom: 40px;
+}
+.visit-inner > img {
+  width: 100%; border-radius: var(--radius); border: 1px solid var(--line);
+  box-shadow: var(--shadow); aspect-ratio: 4/3; object-fit: cover;
+}
+.visit-copy h2 { margin: 0 0 10px; font-size: 1.6rem; letter-spacing: -0.01em; }
+.visit-copy p { color: var(--muted); margin: 0 0 10px; }
+.visit-copy .appt-note { color: var(--ink); }
+
+/* ===== About page photo ===== */
+.about-photo { margin: 22px 0; }
+.about-photo img {
+  width: 100%; border-radius: var(--radius); border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.about-photo figcaption {
+  text-align: center; color: var(--muted); font-size: 0.88rem; margin-top: 8px;
+}
+
+@media (max-width: 860px) {
+  .visit-inner { grid-template-columns: 1fr; gap: 20px; padding-top: 28px; padding-bottom: 28px; }
+  .visit-copy h2 { font-size: 1.35rem; }
+}
