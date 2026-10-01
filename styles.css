@@ -274,3 +274,31 @@ details p { margin: 10px 0 4px; color: var(--muted); }
   .thumbs { gap: 8px; }
   .thumb { width: 72px; height: 54px; }
 }
+
+/* ===== Professional header ===== */
+.site-header {
+  border-top: 3px solid var(--accent);
+  box-shadow: 0 2px 12px rgba(15, 30, 50, 0.08);
+}
+
+/* ===== Subtle background pattern ===== */
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(rgba(15, 30, 50, 0.055) 1px, transparent 1.4px);
+  background-size: 24px 24px;
+}
+
+/* ===== Slim sticky header on mobile ===== */
+@media (max-width: 860px) {
+  .header-inner { flex-wrap: nowrap; gap: 10px; }
+  .brand { font-size: 1.05rem; white-space: nowrap; flex-shrink: 0; }
+  .main-nav {
+    margin-left: auto; order: 0; width: auto; flex-shrink: 1;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .main-nav a { padding: 6px 10px; font-size: 0.85rem; white-space: nowrap; }
+  .site-header .btn-call { flex-shrink: 0; padding: 8px 14px; font-size: 0.85rem; }
+}
+@media (max-width: 560px) {
+  .site-header .btn-call { display: none; }
+}

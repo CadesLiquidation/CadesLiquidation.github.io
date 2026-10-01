@@ -37,6 +37,9 @@ PLACEHOLDER_RATING = "Rated 4.9 stars from 273+ Facebook Marketplace ratings"
 FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
+# Bump when styles.css / site.js change so browsers fetch the fresh files
+ASSET_VER = "4"
+
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
 
@@ -159,7 +162,7 @@ def footer(prefix=""):
   </div>
   <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies</div>
 </footer>
-<script src="{prefix}site.js"></script>"""
+<script src="{prefix}site.js?v={ASSET_VER}"></script>"""
 
 
 def page_shell(title, meta_desc, body, active, prefix=""):
@@ -170,7 +173,7 @@ def page_shell(title, meta_desc, body, active, prefix=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(meta_desc)}">
-<link rel="stylesheet" href="{prefix}styles.css">
+<link rel="stylesheet" href="{prefix}styles.css?v={ASSET_VER}">
 </head>
 <body>
 {header(active, prefix)}
