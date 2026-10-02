@@ -39,7 +39,7 @@
   "priceRange": "$"
 }
 </script>
-<link rel="stylesheet" href="styles.css?v=24">
+<link rel="stylesheet" href="styles.css?v=25">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 </head>
@@ -87,17 +87,17 @@
 </section>
 <section class="wrap">
   <h2 class="section-title">Shop by category</h2>
-  <div class="cat-tiles"><button class="cat-tile" data-goto-filter="washers"><img src="images/front-load-washer.jpg?v=24" alt="Washers" loading="lazy"><span>Washers</span></button>
-<button class="cat-tile" data-goto-filter="dryers"><img src="images/dryer.jpg?v=24" alt="Dryers" loading="lazy"><span>Dryers</span></button>
-<button class="cat-tile" data-goto-filter="refrigerators"><img src="images/french-door-fridge.jpg?v=24" alt="Refrigerators" loading="lazy"><span>Refrigerators</span></button>
-<button class="cat-tile" data-goto-filter="ranges"><img src="images/gas-range.jpg?v=24" alt="Ranges" loading="lazy"><span>Ranges</span></button>
-<button class="cat-tile" data-goto-filter="freezers"><img src="images/chest-freezer.jpg?v=24" alt="Freezers" loading="lazy"><span>Freezers</span></button>
-<button class="cat-tile" data-goto-filter="dishwashers"><img src="images/dishwasher.jpg?v=24" alt="Dishwashers" loading="lazy"><span>Dishwashers</span></button>
-<button class="cat-tile" data-goto-filter="ovens"><img src="images/wall-oven.jpg?v=24" alt="Ovens" loading="lazy"><span>Ovens</span></button></div>
+  <div class="cat-tiles"><button class="cat-tile" data-goto-filter="washers"><img src="images/front-load-washer.jpg?v=25" alt="Washers" loading="lazy"><span>Washers</span></button>
+<button class="cat-tile" data-goto-filter="dryers"><img src="images/dryer.jpg?v=25" alt="Dryers" loading="lazy"><span>Dryers</span></button>
+<button class="cat-tile" data-goto-filter="refrigerators"><img src="images/french-door-fridge.jpg?v=25" alt="Refrigerators" loading="lazy"><span>Refrigerators</span></button>
+<button class="cat-tile" data-goto-filter="ranges"><img src="images/gas-range.jpg?v=25" alt="Ranges" loading="lazy"><span>Ranges</span></button>
+<button class="cat-tile" data-goto-filter="freezers"><img src="images/chest-freezer.jpg?v=25" alt="Freezers" loading="lazy"><span>Freezers</span></button>
+<button class="cat-tile" data-goto-filter="dishwashers"><img src="images/dishwasher.jpg?v=25" alt="Dishwashers" loading="lazy"><span>Dishwashers</span></button>
+<button class="cat-tile" data-goto-filter="ovens"><img src="images/wall-oven.jpg?v=25" alt="Ovens" loading="lazy"><span>Ovens</span></button></div>
 </section>
 <section class="wrap">
   <h2 class="section-title">Featured deals</h2>
-  <div class="grid featured-grid"><article class="card" data-cats="refrigerators">
+  <div class="grid featured-grid"><article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1643544697442082.html" class="card-link">
     <div class="card-img"><img src="images/photo-18-frigidaire-gallery.jpg" alt="NEW Frigidaire Gallery Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -108,7 +108,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="">
   <a href="listings/1795785794917959.html" class="card-link">
     <div class="card-img"><img src="images/photo-28-lg-instaview.jpg" alt="NEW 29 Smart LG InstaView Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -119,7 +119,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1384781360536995.html" class="card-link">
     <div class="card-img"><img src="images/photo-17-lg-frenchdoor.jpg" alt="NEW LG 28 cu ft French Door Refrigerator with Ice and Water Dispenser - Stainless" loading="lazy"></div>
     <div class="card-body">
@@ -141,8 +141,21 @@
 <button class="filter-btn" data-filter="freezers">Freezers</button>
 <button class="filter-btn" data-filter="dishwashers">Dishwashers</button>
 <button class="filter-btn" data-filter="ovens">Ovens</button></div>
+  <div class="subfilters">
+    <label>Color <select id="color-filter" aria-label="Filter by color">
+      <option value="all">All</option>
+<option value="ivory">Ivory</option>
+<option value="stainless">Stainless</option>
+<option value="white">White</option>
+    </select></label>
+    <label>Fuel <select id="fuel-filter" aria-label="Filter by fuel type">
+      <option value="all">All</option>
+      <option value="gas">Gas</option>
+      <option value="electric">Electric</option>
+    </select></label>
+  </div>
   <div class="grid" id="catalog-grid">
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1384781360536995.html" class="card-link">
     <div class="card-img"><img src="images/photo-17-lg-frenchdoor.jpg" alt="NEW LG 28 cu ft French Door Refrigerator with Ice and Water Dispenser - Stainless" loading="lazy"></div>
     <div class="card-body">
@@ -153,7 +166,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="ranges">
+<article class="card" data-cats="ranges" data-fuel="gas" data-color="stainless">
   <a href="listings/1585063482717437.html" class="card-link">
     <div class="card-img"><img src="images/photo-01-gas-range.jpg" alt="NEW Whirlpool Stainless Gas Range" loading="lazy"></div>
     <div class="card-body">
@@ -164,7 +177,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="freezers">
+<article class="card" data-cats="freezers" data-fuel="" data-color="">
   <a href="listings/2699586173790624.html" class="card-link">
     <div class="card-img"><img src="images/photo-02-chest-freezer.jpg" alt="NEW Frigidaire Chest Freezer/Fridge" loading="lazy"></div>
     <div class="card-body">
@@ -175,7 +188,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="ranges">
+<article class="card" data-cats="ranges" data-fuel="electric" data-color="stainless">
   <a href="listings/2024831725140515.html" class="card-link">
     <div class="card-img"><img src="images/photo-03-electric-range.jpg" alt="New GE Electric Glass Top Range" loading="lazy"></div>
     <div class="card-body">
@@ -186,7 +199,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="ranges">
+<article class="card" data-cats="ranges" data-fuel="gas" data-color="">
   <a href="listings/1449538590452959.html" class="card-link">
     <div class="card-img"><img src="images/photo-04-lg-gas-range.jpg" alt="NEW LG Gas Range w AirFry" loading="lazy"></div>
     <div class="card-body">
@@ -197,7 +210,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="washers">
+<article class="card" data-cats="washers" data-fuel="electric" data-color="white">
   <a href="listings/1810826210014141.html" class="card-link">
     <div class="card-img"><img src="images/photo-05-whirlpool-washer.jpg" alt="New Whirlpool Top Load Washer" loading="lazy"></div>
     <div class="card-body">
@@ -208,7 +221,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dryers">
+<article class="card" data-cats="dryers" data-fuel="electric" data-color="">
   <a href="listings/1868075531223938.html" class="card-link">
     <div class="card-img"><img src="images/photo-06-whirlpool-dryer-a.jpg" alt="New Whirlpool Electric Dryer" loading="lazy"></div>
     <div class="card-body">
@@ -219,7 +232,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dryers">
+<article class="card" data-cats="dryers" data-fuel="gas" data-color="white">
   <a href="listings/1011048761394885.html" class="card-link">
     <div class="card-img"><img src="images/photo-08-lg-dryer-a.jpg" alt="NEW LG Gas Dryer" loading="lazy"></div>
     <div class="card-body">
@@ -230,7 +243,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="washers">
+<article class="card" data-cats="washers" data-fuel="" data-color="white">
   <a href="listings/949330901055818.html" class="card-link">
     <div class="card-img"><img src="images/photo-10-hotpoint-washer.jpg" alt="New Hotpoint Agitator Washer" loading="lazy"></div>
     <div class="card-body">
@@ -241,7 +254,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="washers dryers">
+<article class="card" data-cats="washers dryers" data-fuel="electric" data-color="">
   <a href="listings/1834838857870754.html" class="card-link">
     <div class="card-img"><img src="images/photo-27-hotpoint-800-set.jpg" alt="NEW Washer and Dryer Set" loading="lazy"></div>
     <div class="card-body">
@@ -252,7 +265,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="washers dryers">
+<article class="card" data-cats="washers dryers" data-fuel="" data-color="">
   <a href="listings/1744440383278549.html" class="card-link">
     <div class="card-img"><img src="images/photo-12-lg-set-black.jpg" alt="NEW LG Front Load Washer and Dryer Set" loading="lazy"></div>
     <div class="card-body">
@@ -263,7 +276,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="white">
   <a href="listings/2267447970675821.html" class="card-link">
     <div class="card-img"><img src="images/photo-13-topfreezer-white.jpg" alt="New GE White Top Freezer Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -274,7 +287,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1108880614997392.html" class="card-link">
     <div class="card-img"><img src="images/photo-14-lg-topfreezer.jpg" alt="NEW LG Top Freezer Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -285,7 +298,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1126693043068885.html" class="card-link">
     <div class="card-img"><img src="images/photo-15-ge-frenchdoor.jpg" alt="New GE 27cu Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -296,7 +309,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1498229855523007.html" class="card-link">
     <div class="card-img"><img src="images/photo-16-sidebyside.jpg" alt="NEW GE Side by Side Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -307,7 +320,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="stainless">
   <a href="listings/1643544697442082.html" class="card-link">
     <div class="card-img"><img src="images/photo-18-frigidaire-gallery.jpg" alt="NEW Frigidaire Gallery Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -318,7 +331,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dryers">
+<article class="card" data-cats="dryers" data-fuel="gas" data-color="white">
   <a href="listings/2158066711761746.html" class="card-link">
     <div class="card-img"><img src="images/photo-19-samsung-dryer.jpg" alt="7.5 Samsung Dryer" loading="lazy"></div>
     <div class="card-body">
@@ -329,7 +342,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dishwashers">
+<article class="card" data-cats="dishwashers" data-fuel="" data-color="white">
   <a href="listings/1730395268258466.html" class="card-link">
     <div class="card-img"><img src="images/photo-20-amana-dishwasher.jpg" alt="Amana 24” White Dishwasher" loading="lazy"></div>
     <div class="card-body">
@@ -340,7 +353,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dryers">
+<article class="card" data-cats="dryers" data-fuel="electric" data-color="">
   <a href="listings/1548130887049151.html" class="card-link">
     <div class="card-img"><img src="images/photo-21-electrolux-dryer.jpg" alt="NEW Electrolux 8.0 Electric Dryer" loading="lazy"></div>
     <div class="card-body">
@@ -351,7 +364,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dryers">
+<article class="card" data-cats="dryers" data-fuel="electric" data-color="ivory">
   <a href="listings/1897886827849609.html" class="card-link">
     <div class="card-img"><img src="images/photo-22-samsung-dryer-ivory.jpg" alt="New Samsung 7.2 Electric Dryer, Ivory" loading="lazy"></div>
     <div class="card-body">
@@ -362,7 +375,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="ovens">
+<article class="card" data-cats="ovens" data-fuel="" data-color="">
   <a href="listings/1709678626982774.html" class="card-link">
     <div class="card-img"><img src="images/photo-26-lg-smart-combo-walloven.jpg" alt="NEW LG Smart Combo Wall Oven" loading="lazy"></div>
     <div class="card-body">
@@ -373,7 +386,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="">
   <a href="listings/1795785794917959.html" class="card-link">
     <div class="card-img"><img src="images/photo-28-lg-instaview.jpg" alt="NEW 29 Smart LG InstaView Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -384,7 +397,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="refrigerators">
+<article class="card" data-cats="refrigerators" data-fuel="" data-color="white">
   <a href="listings/4438828363096197.html" class="card-link">
     <div class="card-img"><img src="images/photo-29-frigidaire-white-sxs.jpg" alt="NEW Frigidaire 26 White Side by Side Refrigerator" loading="lazy"></div>
     <div class="card-body">
@@ -395,7 +408,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="ovens">
+<article class="card" data-cats="ovens" data-fuel="" data-color="">
   <a href="listings/2583527855430725.html" class="card-link">
     <div class="card-img"><img src="images/photo-25-ge-profile-doubleoven.jpg" alt="NEW GE Built in Double Oven" loading="lazy"></div>
     <div class="card-body">
@@ -406,7 +419,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="ovens">
+<article class="card" data-cats="ovens" data-fuel="" data-color="">
   <a href="listings/1041786172053534.html" class="card-link">
     <div class="card-img"><img src="images/photo-24-ge-smart-builtin-oven.jpg" alt="NEW GE Smart Built In Oven with Air Fry" loading="lazy"></div>
     <div class="card-body">
@@ -417,7 +430,7 @@
     </div>
   </a>
 </article>
-<article class="card" data-cats="dishwashers">
+<article class="card" data-cats="dishwashers" data-fuel="" data-color="stainless">
   <a href="listings/1026592053773314.html" class="card-link">
     <div class="card-img"><img src="images/photo-30-ge-profile-dishwasher.jpg" alt="NEW GE Profile Dishwasher Black Stainless" loading="lazy"></div>
     <div class="card-body">
@@ -551,6 +564,6 @@ I highly recommend reaching out. He treated me great!</p><p class="review-meta">
   </div>
   <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; 1206 S Adelaide St Suite 7, Normal, IL</div>
 </footer>
-<script src="site.js?v=24"></script>
+<script src="site.js?v=25"></script>
 </body>
 </html>

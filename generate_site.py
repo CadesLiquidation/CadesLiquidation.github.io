@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "24"
+ASSET_VER = "25"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -171,7 +171,24 @@ def load_data():
             for r in json.load(f):
                 if r.get("description"):
                     descriptions[r["listing_id"]] = r["description"]
+    for it in inventory["items"]:
+        fuel, color = detect_attrs(it, descriptions.get(it["listing_id"], ""))
+        it["fuel"] = fuel
+        it["color"] = color
     return inventory["items"], descriptions
+
+
+FUEL_WORDS = ("gas", "electric")
+COLOR_WORDS = ["stainless", "black", "white", "ivory", "slate", "bisque"]
+
+
+def detect_attrs(item, description):
+    """Detect fuel type and color from title+description keywords.
+    Returns (fuel, color) with None where nothing is stated — never guessed."""
+    text = f"{item.get('title', '')} {description or ''}".lower()
+    fuel = next((f for f in FUEL_WORDS if f in text), None)
+    color = next((c for c in COLOR_WORDS if c in text), None)
+    return fuel, color
 
 
 def resolve_photos(item):
@@ -316,7 +333,7 @@ def card_html(item, photo_file, prefix=""):
                 + ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
                    if stock else "")
                 + "</div>")
-    return f"""<article class="card" data-cats="{cats}">
+    return f"""<article class="card" data-cats="{cats}" data-fuel="{item.get('fuel') or ''}" data-color="{item.get('color') or ''}">
   <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
     {img_html}
     <div class="card-body">
@@ -334,6 +351,20 @@ def build_index(items, photo_of):
         f'<button class="filter-btn{" active" if f == "All" else ""}" data-filter="{f.lower()}">{f}</button>'
         for f in FILTERS
     )
+    colors = sorted({it["color"] for it in items if it.get("color")})
+    color_opts = "\n".join(
+        f'<option value="{c}">{c.capitalize()}</option>' for c in colors)
+    subfilters = f"""<div class="subfilters">
+    <label>Color <select id="color-filter" aria-label="Filter by color">
+      <option value="all">All</option>
+{color_opts}
+    </select></label>
+    <label>Fuel <select id="fuel-filter" aria-label="Filter by fuel type">
+      <option value="all">All</option>
+      <option value="gas">Gas</option>
+      <option value="electric">Electric</option>
+    </select></label>
+  </div>"""
     cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0]) for it in items)
 
     categories = [
@@ -394,6 +425,7 @@ def build_index(items, photo_of):
 <section class="wrap" id="catalog">
   <h2 class="section-title">Full catalog</h2>
   <div class="filters">{filters}</div>
+  {subfilters}
   <div class="grid" id="catalog-grid">
 {cards}
   </div>
@@ -684,6 +716,8 @@ def build_bundle(items, photo_of):
         "category": it["category"],
         "photo": photo_of[it["listing_id"]][0],
         "retail": RETAIL_PRICES.get(it["listing_id"]),
+        "fuel": it.get("fuel"),
+        "color": it.get("color"),
     } for it in items]
     cats = sorted({it["category"] for it in items})
     chips = "\n".join(
@@ -698,6 +732,16 @@ def build_bundle(items, photo_of):
       <div class="bundle-toolbar">
         <input type="search" id="bundle-search" placeholder="Search appliances..." aria-label="Search appliances">
         <div class="bundle-filters">{chips}</div>
+        <div class="subfilters">
+          <label>Color <select id="bundle-color" aria-label="Filter by color">
+            <option value="all">All</option>
+          </select></label>
+          <label>Fuel <select id="bundle-fuel" aria-label="Filter by fuel type">
+            <option value="all">All</option>
+            <option value="gas">Gas</option>
+            <option value="electric">Electric</option>
+          </select></label>
+        </div>
       </div>
       <div class="grid bundle-grid" id="bundle-grid"></div>
       <p class="grid-empty" id="bundle-empty" hidden>No items match your search.</p>

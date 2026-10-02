@@ -16,6 +16,8 @@
   var selected = {};
   var tiers = DEFAULT_TIERS.slice();
   var activeFilter = "all";
+  var activeColor = "all";
+  var activeFuel = "all";
   var query = "";
 
   function $(id) { return document.getElementById(id); }
@@ -51,7 +53,9 @@
     return items.filter(function (it) {
       var okCat = activeFilter === "all" || it.category.toLowerCase() === activeFilter;
       var okQ = !query || it.title.toLowerCase().indexOf(query) !== -1;
-      return okCat && okQ;
+      var okColor = activeColor === "all" || it.color === activeColor;
+      var okFuel = activeFuel === "all" || it.fuel === activeFuel;
+      return okCat && okQ && okColor && okFuel;
     });
   }
 
@@ -161,6 +165,19 @@
 
   function init() {
     if (!$("bundle-grid")) return;
+    // color options from what's actually in stock
+    var colors = [];
+    items.forEach(function (it) {
+      if (it.color && colors.indexOf(it.color) === -1) colors.push(it.color);
+    });
+    colors.sort();
+    var colorSel = $("bundle-color");
+    colors.forEach(function (c) {
+      var opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c.charAt(0).toUpperCase() + c.slice(1);
+      colorSel.appendChild(opt);
+    });
     renderGrid();
     renderTiers();
     renderSummary();
@@ -176,6 +193,16 @@
 
     $("bundle-search").addEventListener("input", function (e) {
       query = e.target.value.trim().toLowerCase();
+      renderGrid();
+    });
+
+    $("bundle-color").addEventListener("change", function (e) {
+      activeColor = e.target.value;
+      renderGrid();
+    });
+
+    $("bundle-fuel").addEventListener("change", function (e) {
+      activeFuel = e.target.value;
       renderGrid();
     });
 

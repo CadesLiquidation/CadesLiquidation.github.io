@@ -37,21 +37,33 @@
     if (!grid) return;
     var buttons = document.querySelectorAll(".filter-btn");
     var emptyMsg = document.getElementById("grid-empty");
+    var colorSel = document.getElementById("color-filter");
+    var fuelSel = document.getElementById("fuel-filter");
+    var activeCat = "all";
+    function apply() {
+      var color = colorSel ? colorSel.value : "all";
+      var fuel = fuelSel ? fuelSel.value : "all";
+      var visible = 0;
+      grid.querySelectorAll(".card").forEach(function (card) {
+        var cats = (card.getAttribute("data-cats") || "").split(" ");
+        var show = (activeCat === "all" || cats.indexOf(activeCat) !== -1) &&
+          (color === "all" || card.getAttribute("data-color") === color) &&
+          (fuel === "all" || card.getAttribute("data-fuel") === fuel);
+        card.style.display = show ? "" : "none";
+        if (show) visible++;
+      });
+      if (emptyMsg) emptyMsg.hidden = visible !== 0;
+    }
     buttons.forEach(function (btn) {
       btn.addEventListener("click", function () {
         buttons.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
-        var f = btn.getAttribute("data-filter");
-        var visible = 0;
-        grid.querySelectorAll(".card").forEach(function (card) {
-          var cats = (card.getAttribute("data-cats") || "").split(" ");
-          var show = f === "all" || cats.indexOf(f) !== -1;
-          card.style.display = show ? "" : "none";
-          if (show) visible++;
-        });
-        if (emptyMsg) emptyMsg.hidden = visible !== 0;
+        activeCat = btn.getAttribute("data-filter");
+        apply();
       });
     });
+    if (colorSel) colorSel.addEventListener("change", apply);
+    if (fuelSel) fuelSel.addEventListener("change", apply);
   }
 
   function initGallery() {
