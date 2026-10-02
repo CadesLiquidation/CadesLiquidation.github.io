@@ -66,6 +66,23 @@
     });
   }
 
+  function initDescToggle() {
+    var desc = document.getElementById("listing-desc");
+    var btn = document.getElementById("desc-toggle");
+    if (!desc || !btn) return;
+    desc.classList.add("collapsed");
+    // only offer the toggle when the text actually overflows
+    if (desc.scrollHeight <= desc.clientHeight + 4) {
+      desc.classList.remove("collapsed");
+      return;
+    }
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      var collapsed = desc.classList.toggle("collapsed");
+      btn.textContent = collapsed ? "View more" : "Show less";
+    });
+  }
+
   function initShare() {
     var btn = document.getElementById("share-listing");
     if (!btn) return;
@@ -229,6 +246,7 @@
     initLightbox();
     initReviewsModal();
     initShare();
+    initDescToggle();
     fetch(configPath())
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(applyConfig)

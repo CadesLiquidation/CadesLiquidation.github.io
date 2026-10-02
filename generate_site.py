@@ -39,7 +39,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "34"
+ASSET_VER = "35"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -595,7 +595,8 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     {drop_line}
     {savings_html(item['listing_id'], item.get('price_num', 0))}
     {one_only}
-    <div class="description">{desc_html}</div>
+    <div class="description" id="listing-desc">{desc_html}</div>
+    <button type="button" class="desc-toggle" id="desc-toggle" hidden>View more</button>
     <dl class="facts">
       <div><dt>Condition</dt><dd>{esc(cond)}</dd></div>
       <div><dt>Category</dt><dd>{esc(item['category'])}</dd></div>

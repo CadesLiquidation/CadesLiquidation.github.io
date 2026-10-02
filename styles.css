@@ -565,3 +565,8 @@ body {
 .bmodal-meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
 .bmodal-desc { color: #333; font-size: 0.95rem; line-height: 1.55; margin: 0 0 18px; }
 .bmodal-toggle { width: 100%; }
+
+/* ===== Collapsible listing description ===== */
+.description.collapsed { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.desc-toggle { background: none; border: none; color: var(--brand); font-weight: 700; cursor: pointer; padding: 6px 0 0; font-size: 0.95rem; font-family: inherit; }
+.desc-toggle:hover { text-decoration: underline; }
