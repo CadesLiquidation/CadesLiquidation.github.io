@@ -197,6 +197,7 @@ EXTRA_IMAGES = [
     "photos/warehouse-1.jpg",
     "photos/warehouse-2.jpg",
     "photos/photo-31-ge-frenchdoor-hero.jpg",
+    "photos/cade.jpg",
 ]
 
 
@@ -461,6 +462,22 @@ def build_about():
     body = f"""<div class="wrap prose">
   <h1>About us</h1>
   <p data-config="aboutText">{esc(PLACEHOLDER_ABOUT)}</p>
+  <h2>Meet Cade</h2>
+  <div class="owner">
+    <img src="images/cade.jpg" alt="Cade McClellan, owner of Cade's Liquidation" loading="lazy">
+    <div>
+      <p>I&rsquo;m <strong>Cade McClellan</strong> &mdash; I&rsquo;ve lived in Bloomington, Illinois
+      practically my whole life, and I&rsquo;m currently at ISU working toward my Bachelor of Science
+      degree. I&rsquo;ve always had an entrepreneur mindset and a real fascination with businesses
+      and having my own.</p>
+      <p>Growing up I did every side hustle I could get my hands on &mdash; mowing grass, working on
+      cars, computer programming. When I graduated high school in 2023, I went out on a limb and bought
+      my first pallets of liquidation, had them shipped to my parents&rsquo; house, and set up shop
+      under a carport in the backyard.</p>
+      <p>Over the past three years I&rsquo;ve kept building the business while going to college full
+      time. The plan is to turn it into a full-time store after graduation.</p>
+    </div>
+  </div>
   <figure class="about-photo">
     <img src="images/warehouse-1.jpg" alt="Inside our appliance warehouse" loading="lazy">
     <figcaption>Inside the warehouse &mdash; new inventory arrives regularly.</figcaption>

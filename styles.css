@@ -343,6 +343,18 @@ body {
   text-align: center; color: var(--muted); font-size: 0.88rem; margin-top: 8px;
 }
 
+/* ===== About page owner section ===== */
+.owner { display: grid; grid-template-columns: 240px 1fr; gap: 26px; align-items: start; margin: 18px 0 6px; }
+.owner img {
+  width: 100%; border-radius: var(--radius); border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.owner p:first-child { margin-top: 0; }
+@media (max-width: 860px) {
+  .owner { grid-template-columns: 1fr; gap: 14px; }
+  .owner img { max-width: 240px; }
+}
+
 @media (max-width: 860px) {
   .visit-inner { grid-template-columns: 1fr; gap: 20px; padding-top: 28px; padding-bottom: 28px; }
   .visit-copy h2 { font-size: 1.35rem; }
