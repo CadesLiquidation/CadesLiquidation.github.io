@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "22"
+ASSET_VER = "23"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -241,6 +241,7 @@ def header(active, prefix=""):
     <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
       <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
+      <a href="{prefix}bundle.html" class="{'active' if active == 'bundles' else ''}">Bundles</a>
       <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
       <a href="{prefix}faq.html" class="{'active' if active == 'faq' else ''}">FAQ</a>
     </nav>
@@ -364,6 +365,7 @@ def build_index(items, photo_of):
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
         <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
+        <a class="btn btn-bundle btn-lg" href="bundle.html">Build a bundle &amp; save</a>
       </div>
       <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
     </div>
@@ -665,6 +667,51 @@ def build_faq():
         og_image="og-share.png", page_url="faq.html")
 
 
+def build_bundle(items, photo_of):
+    data = [{
+        "id": it["listing_id"],
+        "title": it["title"],
+        "price": it["price"],
+        "price_num": it.get("price_num", 0),
+        "category": it["category"],
+        "photo": photo_of[it["listing_id"]][0],
+        "retail": RETAIL_PRICES.get(it["listing_id"]),
+    } for it in items]
+    cats = sorted({it["category"] for it in items})
+    chips = "\n".join(
+        f'<button class="bfilter{" active" if c == "All" else ""}" data-filter="{c.lower()}">{c}</button>'
+        for c in ["All"] + cats)
+    body = f"""<div class="wrap">
+  <h1>Bundle Builder</h1>
+  <p class="bundle-intro">Tap the appliances you want and bundle them for an automatic discount. Popular combos: a kitchen set (fridge + range + dishwasher) or a laundry pair (washer + dryer).</p>
+  <div class="bundle-tiers" id="bundle-tiers"></div>
+  <div class="bundle-layout">
+    <div class="bundle-main">
+      <div class="bundle-toolbar">
+        <input type="search" id="bundle-search" placeholder="Search appliances..." aria-label="Search appliances">
+        <div class="bundle-filters">{chips}</div>
+      </div>
+      <div class="grid bundle-grid" id="bundle-grid"></div>
+      <p class="grid-empty" id="bundle-empty" hidden>No items match your search.</p>
+    </div>
+    <aside class="bundle-aside" id="bundle-summary" aria-live="polite"></aside>
+  </div>
+</div>
+<div class="bundle-bar" id="bundle-bar" hidden>
+  <span id="bundle-bar-text"></span>
+  <a href="#bundle-summary" class="btn btn-call">Review bundle</a>
+</div>
+<script>var BUNDLE_ITEMS = {json.dumps(data)};</script>
+<script src="bundle.js?v={ASSET_VER}"></script>"""
+    return page_shell(
+        f"Bundle Builder | {PLACEHOLDER_NAME}",
+        f"Build your own appliance bundle at {PLACEHOLDER_NAME} and save: "
+        f"bundle discounts on washers, dryers, refrigerators, ranges and more "
+        f"in {PLACEHOLDER_AREA}.",
+        body, "bundles",
+        og_image="og-share.png", page_url="bundle.html")
+
+
 def write(path, content):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -689,9 +736,10 @@ def main():
                            active, photo_of))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
+    write(os.path.join(OUT_DIR, "bundle.html"), build_bundle(active, photo_of))
 
     # sitemap.xml (active listings only) + robots.txt
-    urls = ["", "about.html", "faq.html"] + [
+    urls = ["", "about.html", "faq.html", "bundle.html"] + [
         f"listings/{it['listing_id']}.html" for it in active]
     sitemap = ('<?xml version="1.0" encoding="utf-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

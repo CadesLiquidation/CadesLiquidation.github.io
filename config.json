@@ -1,1 +1,25 @@
-{"aboutText": "Cade's Liquidation is run by Cade McClellan. We sell new, scratch-and-dent, and gently used appliances at liquidation prices: washers, dryers, refrigerators, ranges, freezers, dishwashers, and ovens. Every item is inspected and priced to move.", "businessName": "Cade's Liquidation", "facebookGroupName": "Cade's Home and Furniture", "facebookGroupUrl": "https://www.facebook.com/share/g/1EEq2pc5tg/", "phone": "(309) 434-4800", "phoneHref": "tel:+13094344800", "ratingText": "4.9 \u00b7 273+ Facebook Marketplace ratings", "serviceArea": "Bloomington-Normal, IL", "tagline": "New & scratch-and-dent appliances at liquidation prices"}
+{
+ "aboutText": "Cade's Liquidation is run by Cade McClellan. We sell new, scratch-and-dent, and gently used appliances at liquidation prices: washers, dryers, refrigerators, ranges, freezers, dishwashers, and ovens. Every item is inspected and priced to move.",
+ "businessName": "Cade's Liquidation",
+ "facebookGroupName": "Cade's Home and Furniture",
+ "facebookGroupUrl": "https://www.facebook.com/share/g/1EEq2pc5tg/",
+ "phone": "(309) 434-4800",
+ "phoneHref": "tel:+13094344800",
+ "ratingText": "4.9 \u00b7 273+ Facebook Marketplace ratings",
+ "serviceArea": "Bloomington-Normal, IL",
+ "tagline": "New & scratch-and-dent appliances at liquidation prices",
+ "bundleTiers": [
+  {
+   "minItems": 2,
+   "discountPct": 3
+  },
+  {
+   "minItems": 3,
+   "discountPct": 5
+  },
+  {
+   "minItems": 4,
+   "discountPct": 7
+  }
+ ]
+}

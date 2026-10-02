@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bundle Builder | Cade&#x27;s Liquidation</title>
+<meta name="description" content="Build your own appliance bundle at Cade&#x27;s Liquidation and save: bundle discounts on washers, dryers, refrigerators, ranges and more in Bloomington-Normal, IL.">
+<meta property="og:title" content="Bundle Builder | Cade&#x27;s Liquidation">
+<meta property="og:description" content="Build your own appliance bundle at Cade&#x27;s Liquidation and save: bundle discounts on washers, dryers, refrigerators, ranges and more in Bloomington-Normal, IL.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cadesliquidation.github.io/bundle.html">
+<meta property="og:image" content="https://cadesliquidation.github.io/images/og-share.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bundle Builder | Cade&#x27;s Liquidation">
+<meta name="twitter:description" content="Build your own appliance bundle at Cade&#x27;s Liquidation and save: bundle discounts on washers, dryers, refrigerators, ranges and more in Bloomington-Normal, IL.">
+<meta name="twitter:image" content="https://cadesliquidation.github.io/images/og-share.png">
+<link rel="stylesheet" href="styles.css?v=23">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html"><img src="images/logo-header-lockup.png" alt="Cade's Liquidation"></a>
+    <nav class="main-nav">
+      <a href="index.html" class="">Catalog</a>
+      <a href="bundle.html" class="active">Bundles</a>
+      <a href="about.html" class="">About</a>
+      <a href="faq.html" class="">FAQ</a>
+    </nav>
+    <a class="btn btn-call" data-config-href="phoneHref" hidden><span data-config="phone">Call us</span></a>
+  </div>
+</header>
+<main>
+<div class="wrap">
+  <h1>Bundle Builder</h1>
+  <p class="bundle-intro">Tap the appliances you want and bundle them for an automatic discount. Popular combos: a kitchen set (fridge + range + dishwasher) or a laundry pair (washer + dryer).</p>
+  <div class="bundle-tiers" id="bundle-tiers"></div>
+  <div class="bundle-layout">
+    <div class="bundle-main">
+      <div class="bundle-toolbar">
+        <input type="search" id="bundle-search" placeholder="Search appliances..." aria-label="Search appliances">
+        <div class="bundle-filters"><button class="bfilter active" data-filter="all">All</button>
+<button class="bfilter" data-filter="dishwashers">Dishwashers</button>
+<button class="bfilter" data-filter="dryers">Dryers</button>
+<button class="bfilter" data-filter="freezers">Freezers</button>
+<button class="bfilter" data-filter="ovens">Ovens</button>
+<button class="bfilter" data-filter="ranges">Ranges</button>
+<button class="bfilter" data-filter="refrigerators">Refrigerators</button>
+<button class="bfilter" data-filter="washers">Washers</button>
+<button class="bfilter" data-filter="washers & dryers">Washers & Dryers</button></div>
+      </div>
+      <div class="grid bundle-grid" id="bundle-grid"></div>
+      <p class="grid-empty" id="bundle-empty" hidden>No items match your search.</p>
+    </div>
+    <aside class="bundle-aside" id="bundle-summary" aria-live="polite"></aside>
+  </div>
+</div>
+<div class="bundle-bar" id="bundle-bar" hidden>
+  <span id="bundle-bar-text"></span>
+  <a href="#bundle-summary" class="btn btn-call">Review bundle</a>
+</div>
+<script>var BUNDLE_ITEMS = [{"id": "1384781360536995", "title": "NEW LG 28 cu ft French Door Refrigerator with Ice and Water Dispenser - Stainless", "price": "$1,200", "price_num": 1200.0, "category": "Refrigerators", "photo": "photo-17-lg-frenchdoor.jpg", "retail": 3099}, {"id": "1585063482717437", "title": "NEW Whirlpool Stainless Gas Range", "price": "$500", "price_num": 500.0, "category": "Ranges", "photo": "photo-01-gas-range.jpg", "retail": 649}, {"id": "2699586173790624", "title": "NEW Frigidaire Chest Freezer/Fridge", "price": "$260", "price_num": 260.0, "category": "Freezers", "photo": "photo-02-chest-freezer.jpg", "retail": 399}, {"id": "2024831725140515", "title": "New GE Electric Glass Top Range", "price": "$500", "price_num": 500.0, "category": "Ranges", "photo": "photo-03-electric-range.jpg", "retail": 929}, {"id": "1449538590452959", "title": "NEW LG Gas Range w AirFry", "price": "$600", "price_num": 600.0, "category": "Ranges", "photo": "photo-04-lg-gas-range.jpg", "retail": 1099}, {"id": "1810826210014141", "title": "New Whirlpool Top Load Washer", "price": "$420", "price_num": 420.0, "category": "Washers", "photo": "photo-05-whirlpool-washer.jpg", "retail": 699}, {"id": "1868075531223938", "title": "New Whirlpool Electric Dryer", "price": "$420", "price_num": 420.0, "category": "Dryers", "photo": "photo-06-whirlpool-dryer-a.jpg", "retail": 699}, {"id": "1011048761394885", "title": "NEW LG Gas Dryer", "price": "$480", "price_num": 480.0, "category": "Dryers", "photo": "photo-08-lg-dryer-a.jpg", "retail": 1149}, {"id": "949330901055818", "title": "New Hotpoint Agitator Washer", "price": "$380", "price_num": 380.0, "category": "Washers", "photo": "photo-10-hotpoint-washer.jpg", "retail": 629}, {"id": "1834838857870754", "title": "NEW Washer and Dryer Set", "price": "$700", "price_num": 700.0, "category": "Washers & Dryers", "photo": "photo-27-hotpoint-800-set.jpg", "retail": null}, {"id": "1744440383278549", "title": "NEW LG Front Load Washer and Dryer Set", "price": "$1,200", "price_num": 1200.0, "category": "Washers & Dryers", "photo": "photo-12-lg-set-black.jpg", "retail": 2598}, {"id": "2267447970675821", "title": "New GE White Top Freezer Refrigerator", "price": "$450", "price_num": 450.0, "category": "Refrigerators", "photo": "photo-13-topfreezer-white.jpg", "retail": 999}, {"id": "1108880614997392", "title": "NEW LG Top Freezer Refrigerator", "price": "$750", "price_num": 750.0, "category": "Refrigerators", "photo": "photo-14-lg-topfreezer.jpg", "retail": 1199}, {"id": "1126693043068885", "title": "New GE 27cu Refrigerator", "price": "$1,000", "price_num": 1000.0, "category": "Refrigerators", "photo": "photo-15-ge-frenchdoor.jpg", "retail": 2599}, {"id": "1498229855523007", "title": "NEW GE Side by Side Refrigerator", "price": "$900", "price_num": 900.0, "category": "Refrigerators", "photo": "photo-16-sidebyside.jpg", "retail": 1999}, {"id": "1643544697442082", "title": "NEW Frigidaire Gallery Refrigerator", "price": "$1,300", "price_num": 1300.0, "category": "Refrigerators", "photo": "photo-18-frigidaire-gallery.jpg", "retail": 3000}, {"id": "2158066711761746", "title": "7.5 Samsung Dryer", "price": "$260", "price_num": 260.0, "category": "Dryers", "photo": "photo-19-samsung-dryer.jpg", "retail": null}, {"id": "1730395268258466", "title": "Amana 24\u201d White Dishwasher", "price": "$150", "price_num": 150.0, "category": "Dishwashers", "photo": "photo-20-amana-dishwasher.jpg", "retail": null}, {"id": "1548130887049151", "title": "NEW Electrolux 8.0 Electric Dryer", "price": "$560", "price_num": 560.0, "category": "Dryers", "photo": "photo-21-electrolux-dryer.jpg", "retail": null}, {"id": "1897886827849609", "title": "New Samsung 7.2 Electric Dryer, Ivory", "price": "$460", "price_num": 460.0, "category": "Dryers", "photo": "photo-22-samsung-dryer-ivory.jpg", "retail": null}, {"id": "1709678626982774", "title": "NEW LG Smart Combo Wall Oven", "price": "$1,200", "price_num": 1200.0, "category": "Ovens", "photo": "photo-26-lg-smart-combo-walloven.jpg", "retail": null}, {"id": "1795785794917959", "title": "NEW 29 Smart LG InstaView Refrigerator", "price": "$1,300", "price_num": 1300.0, "category": "Refrigerators", "photo": "photo-28-lg-instaview.jpg", "retail": null}, {"id": "4438828363096197", "title": "NEW Frigidaire 26 White Side by Side Refrigerator", "price": "$750", "price_num": 750.0, "category": "Refrigerators", "photo": "photo-29-frigidaire-white-sxs.jpg", "retail": null}, {"id": "2583527855430725", "title": "NEW GE Built in Double Oven", "price": "$1,000", "price_num": 1000.0, "category": "Ovens", "photo": "photo-25-ge-profile-doubleoven.jpg", "retail": null}, {"id": "1041786172053534", "title": "NEW GE Smart Built In Oven with Air Fry", "price": "$500", "price_num": 500.0, "category": "Ovens", "photo": "photo-24-ge-smart-builtin-oven.jpg", "retail": null}, {"id": "1026592053773314", "title": "NEW GE Profile Dishwasher Black Stainless", "price": "$350", "price_num": 350.0, "category": "Dishwashers", "photo": "photo-30-ge-profile-dishwasher.jpg", "retail": null}];</script>
+<script src="bundle.js?v=23"></script>
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <strong data-config="businessName">Cade&#x27;s Liquidation</strong><br>
+      <span data-config="serviceArea">Bloomington-Normal, IL</span> &middot;
+      <span data-config="tagline">New &amp; scratch-and-dent appliances at liquidation prices</span>
+    </div>
+    <div class="footer-contact">
+      <a class="btn btn-fb" data-config-href="facebookGroupUrl" hidden>Visit our Facebook group: <span data-config="facebookGroupName"></span></a>
+    </div>
+  </div>
+  <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; 1206 S Adelaide St Suite 7, Normal, IL</div>
+</footer>
+<script src="site.js?v=23"></script>
+</body>
+</html>
