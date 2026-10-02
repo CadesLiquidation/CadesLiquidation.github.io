@@ -32,13 +32,13 @@ PLACEHOLDER_ABOUT = (
     "inspected and priced to move."
 )
 PLACEHOLDER_AREA = "Bloomington, IL"
-PLACEHOLDER_RATING = "Rated 4.9 stars from 273+ Facebook Marketplace ratings"
+PLACEHOLDER_RATING = "4.9 \u00b7 273+ Facebook Marketplace ratings"
 
 FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "9"
+ASSET_VER = "10"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -321,7 +321,7 @@ def build_index(items, photo_of):
       <p class="eyebrow"><span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot; Scratch-and-dent deals</p>
       <h1 data-config="businessName">{esc(PLACEHOLDER_NAME)}</h1>
       <p class="tagline" data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</p>
-      <button class="rating rating-btn" id="reviews-open" type="button"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span> <span class="rating-link">Read reviews</span></button>
+      <button class="rating rating-btn" id="reviews-open" type="button" title="Read customer reviews"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span class="rating-text" data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span></button>
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
         <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>

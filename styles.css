@@ -60,7 +60,7 @@ a { color: var(--brand); }
 /* Hero */
 .hero {
   background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%);
-  color: #fff; padding: 56px 0 48px; margin-bottom: 28px;
+  color: #fff; padding: 46px 0 40px; margin-bottom: 28px;
 }
 .hero h1 { margin: 0 0 8px; font-size: 2.2rem; letter-spacing: -0.01em; }
 .hero .tagline { font-size: 1.15rem; margin: 0 0 6px; opacity: 0.95; }
@@ -351,15 +351,15 @@ body {
 
 /* ===== Reviews modal ===== */
 .rating-btn {
-  background: none; border: 0; padding: 0; cursor: pointer;
+  background: none; border: 0; padding: 0; margin: 0 0 14px; cursor: pointer;
   font: inherit; color: inherit; text-align: left;
   display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  border-radius: 6px;
 }
-.rating-btn:hover .rating-link, .rating-btn:focus-visible .rating-link { text-decoration: underline; }
-.rating-link {
-  font-size: 0.85rem; font-weight: 600; color: var(--accent);
+.rating-btn:hover .rating-text, .rating-btn:focus-visible .rating-text {
   text-decoration: underline; text-underline-offset: 3px;
 }
+.rating-btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(15, 23, 42, 0.6);
