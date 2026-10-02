@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "25"
+ASSET_VER = "26"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -352,18 +352,29 @@ def build_index(items, photo_of):
         for f in FILTERS
     )
     colors = sorted({it["color"] for it in items if it.get("color")})
-    color_opts = "\n".join(
-        f'<option value="{c}">{c.capitalize()}</option>' for c in colors)
-    subfilters = f"""<div class="subfilters">
-    <label>Color <select id="color-filter" aria-label="Filter by color">
-      <option value="all">All</option>
-{color_opts}
-    </select></label>
-    <label>Fuel <select id="fuel-filter" aria-label="Filter by fuel type">
-      <option value="all">All</option>
-      <option value="gas">Gas</option>
-      <option value="electric">Electric</option>
-    </select></label>
+    color_pills = "\n".join(
+        f'          <button type="button" class="fpill" data-val="{c}">{c.capitalize()}</button>'
+        for c in colors)
+    filter_pop = f"""<div class="filter-wrap">
+    <button type="button" id="filter-toggle" class="filter-toggle" aria-expanded="false" aria-controls="filter-pop">Filter <span class="filter-count" id="filter-count" hidden></span></button>
+    <div class="filter-pop" id="filter-pop" hidden>
+      <div class="filter-group">
+        <p>Color</p>
+        <div class="fpills" id="filter-colors">
+          <button type="button" class="fpill active" data-val="all">All</button>
+{color_pills}
+        </div>
+      </div>
+      <div class="filter-group">
+        <p>Fuel</p>
+        <div class="fpills" id="filter-fuels">
+          <button type="button" class="fpill active" data-val="all">All</button>
+          <button type="button" class="fpill" data-val="gas">Gas</button>
+          <button type="button" class="fpill" data-val="electric">Electric</button>
+        </div>
+      </div>
+      <button type="button" class="filter-clear" id="filter-clear">Clear all</button>
+    </div>
   </div>"""
     cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0]) for it in items)
 
@@ -425,7 +436,7 @@ def build_index(items, photo_of):
 <section class="wrap" id="catalog">
   <h2 class="section-title">Full catalog</h2>
   <div class="filters">{filters}</div>
-  {subfilters}
+  {filter_pop}
   <div class="grid" id="catalog-grid">
 {cards}
   </div>
@@ -732,15 +743,25 @@ def build_bundle(items, photo_of):
       <div class="bundle-toolbar">
         <input type="search" id="bundle-search" placeholder="Search appliances..." aria-label="Search appliances">
         <div class="bundle-filters">{chips}</div>
-        <div class="subfilters">
-          <label>Color <select id="bundle-color" aria-label="Filter by color">
-            <option value="all">All</option>
-          </select></label>
-          <label>Fuel <select id="bundle-fuel" aria-label="Filter by fuel type">
-            <option value="all">All</option>
-            <option value="gas">Gas</option>
-            <option value="electric">Electric</option>
-          </select></label>
+        <div class="filter-wrap">
+          <button type="button" id="filter-toggle" class="filter-toggle" aria-expanded="false" aria-controls="filter-pop">Filter <span class="filter-count" id="filter-count" hidden></span></button>
+          <div class="filter-pop" id="filter-pop" hidden>
+            <div class="filter-group">
+              <p>Color</p>
+              <div class="fpills" id="filter-colors">
+                <button type="button" class="fpill active" data-val="all">All</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <p>Fuel</p>
+              <div class="fpills" id="filter-fuels">
+                <button type="button" class="fpill active" data-val="all">All</button>
+                <button type="button" class="fpill" data-val="gas">Gas</button>
+                <button type="button" class="fpill" data-val="electric">Electric</button>
+              </div>
+            </div>
+            <button type="button" class="filter-clear" id="filter-clear">Clear all</button>
+          </div>
         </div>
       </div>
       <div class="grid bundle-grid" id="bundle-grid"></div>
