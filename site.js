@@ -56,15 +56,34 @@
 
   function initGallery() {
     var main = document.getElementById("gallery-main");
-    if (!main) return;
-    document.querySelectorAll(".thumb").forEach(function (thumb) {
-      thumb.addEventListener("click", function () {
-        main.src = thumb.getAttribute("data-full");
-        document.querySelectorAll(".thumb").forEach(function (t) {
-          t.classList.remove("current");
-        });
-        thumb.classList.add("current");
+    var gallery = document.querySelector(".gallery");
+    if (!main || !gallery) return;
+    var photos = [main.getAttribute("src")];
+    var thumbs = Array.prototype.slice.call(document.querySelectorAll(".thumb"));
+    thumbs.forEach(function (t) { photos.push(t.getAttribute("data-full")); });
+    var idx = 0;
+    function show(i) {
+      idx = (i + photos.length) % photos.length;
+      main.src = photos[idx];
+      thumbs.forEach(function (t, ti) {
+        t.classList.toggle("current", ti + 1 === idx);
       });
+    }
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener("click", function () {
+        show(photos.indexOf(thumb.getAttribute("data-full")));
+      });
+    });
+    // Swipe left/right on the gallery to move between photos.
+    var startX = null;
+    gallery.addEventListener("touchstart", function (e) {
+      if (e.touches.length === 1) startX = e.touches[0].clientX;
+    }, { passive: true });
+    gallery.addEventListener("touchend", function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
     });
   }
 
