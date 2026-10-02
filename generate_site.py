@@ -31,7 +31,7 @@ PLACEHOLDER_ABOUT = (
     "refrigerators, ranges, freezers, dishwashers, and ovens. Every item is "
     "inspected and priced to move."
 )
-PLACEHOLDER_AREA = "Bloomington, IL"
+PLACEHOLDER_AREA = "Bloomington-Normal, IL"
 PLACEHOLDER_RATING = "4.9 \u00b7 273+ Facebook Marketplace ratings"
 
 FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
@@ -466,7 +466,7 @@ def build_about():
   <div class="owner">
     <img src="images/cade.jpg" alt="Cade McClellan, owner of Cade's Liquidation" loading="lazy">
     <div>
-      <p>I&rsquo;m <strong>Cade McClellan</strong> &mdash; I&rsquo;ve lived in Bloomington, Illinois
+      <p>I&rsquo;m <strong>Cade McClellan</strong> &mdash; I&rsquo;ve lived in Bloomington-Normal, Illinois
       practically my whole life, and I&rsquo;m currently at ISU working toward my Bachelor of Science
       degree. I&rsquo;ve always had an entrepreneur mindset and a real fascination with businesses
       and having my own.</p>

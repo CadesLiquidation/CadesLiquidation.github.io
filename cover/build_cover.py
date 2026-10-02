@@ -89,7 +89,7 @@ def centered_text(y, text, fnt, fill):
 
 
 # --- eyebrow (mirrors site hero eyebrow) ---
-spaced_center(436, "BLOOMINGTON, IL  \u00b7  SCRATCH-AND-DENT DEALS",
+spaced_center(436, "BLOOMINGTON-NORMAL, IL  \u00b7  SCRATCH-AND-DENT DEALS",
               font("LiberationSans-Bold.ttf", 34), (255, 255, 255), 5)
 
 # --- title (mirrors site hero h1) ---
