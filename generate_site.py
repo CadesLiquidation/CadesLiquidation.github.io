@@ -16,6 +16,7 @@ import os
 import re
 import shutil
 import sys
+import urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(os.path.dirname(HERE), "cades-liquidation")
@@ -38,10 +39,12 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "30"
+ASSET_VER = "31"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
+# SMS number for prefilled text links (matches bundle.js PHONE).
+SMS_PHONE = "+13094344800"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -329,11 +332,16 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 def card_html(item, photo_file, prefix="", sold_badge=False):
     cats = " ".join(filter_keys(item["category"]))
     stock = photo_file in STOCK_PHOTOS
+    dropped = (item.get("prev_price_num") or 0) > (item.get("price_num") or 0)
+    drop_badge = ('<span class="drop-badge">Price drop</span>' if dropped and not sold_badge else "")
+    drop_line = (f'<p class="price-drop">was {esc(item["prev_price"])}</p>'
+                 if dropped and not sold_badge else "")
     img_html = (f'<div class="card-img{" stock-photo" if stock else ""}">'
                 f'<img src="{prefix}images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
                 + (f'<span class="stock-badge{" stock-badge-low" if sold_badge else ""}">Stock photo &mdash; not the actual unit</span>'
                    if stock else "")
                 + ('<span class="sold-badge">SOLD</span>' if sold_badge else "")
+                + drop_badge
                 + "</div>")
     return f"""<article class="card" data-cats="{cats}" data-fuel="{item.get('fuel') or ''}" data-color="{item.get('color') or ''}">
   <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
@@ -343,6 +351,7 @@ def card_html(item, photo_file, prefix="", sold_badge=False):
       <h3>{esc(item['title'])}</h3>
       {retail_html(item['listing_id'], item.get('price_num', 0))}
       <p class="price">{esc(item['price'])}</p>
+      {drop_line}
     </div>
   </a>
 </article>"""
@@ -354,6 +363,8 @@ def build_index(items, photo_of, sold):
         for f in FILTERS
     )
     cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0]) for it in items)
+    delivery_href = (f"sms:{SMS_PHONE}?&body=" +
+                     urllib.parse.quote("Hi Cade, can I get a delivery quote?"))
 
     categories = [
         ("Washers", "front-load-washer.jpg", "washers"),
@@ -456,6 +467,16 @@ def build_index(items, photo_of, sold):
     </div>
   </div>
 </section>
+<section class="wrap">
+  <div class="delivery-band">
+    <div>
+      <strong>Need it delivered?</strong>
+      <p><strong>$50 flat</strong> &mdash; delivered to your door anywhere in Bloomington-Normal, IL.</p>
+      <p class="delivery-fine">Outside the area or need installation? Text for a quote &mdash; installation services available for an additional charge.</p>
+    </div>
+    <a class="btn btn-call" href="{delivery_href}">Text Cade for a quote</a>
+  </div>
+</section>
 {reviews_modal(load_reviews())}"""
     local_ld = json.dumps({
         "@context": "https://schema.org",
@@ -530,11 +551,12 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
         thumbs = "\n".join(thumb_btns)
         gallery = f"""<div class="gallery">{stock_badge}
       <img id="gallery-main" src="../images/{esc(main)}" alt="{esc(item['title'])}">
+      <span class="zoom-hint">Tap to zoom</span>
       <div class="thumbs{" collapsed" if collapsed else ""}">{thumbs}</div>
     </div>"""
     else:
-        gallery = (f'<div class="gallery">{stock_badge}<img src="../images/{esc(photo_files[0])}" '
-                   f'alt="{esc(item["title"])}"></div>')
+        gallery = (f'<div class="gallery">{stock_badge}<img id="gallery-main" src="../images/{esc(photo_files[0])}" '
+                   f'alt="{esc(item["title"])}"><span class="zoom-hint">Tap to zoom</span></div>')
     mp_url = item.get("url", "")
     mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
                  if mp_url else "")
@@ -545,10 +567,19 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
                    if sold else "")
     one_only = ("" if sold else
                 '<p class="one-only">One only &mdash; when it&rsquo;s gone, it&rsquo;s gone.</p>')
+    ask_body = urllib.parse.quote(
+        f"Hi Cade, is this still available? {item['title']} ({item['price']})")
+    ask_href = f"sms:{SMS_PHONE}?&body={ask_body}"
+    dropped = (item.get("prev_price_num") or 0) > (item.get("price_num") or 0)
+    drop_line = (f'<p class="price-drop">Price dropped from {esc(item["prev_price"])}</p>'
+                 if dropped and not sold else "")
     cta = ("" if sold else f"""<div class="detail-cta">
       <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
-      {mp_button}
-      <button type="button" class="btn btn-ghost" id="share-listing">Share this listing</button>
+      <div class="detail-cta-sub">
+        {mp_button}
+        <a class="btn btn-ghost" href="{ask_href}">Is this still available?</a>
+        <button type="button" class="btn btn-ghost" id="share-listing">Share this listing</button>
+      </div>
     </div>""")
     body = f"""<div class="wrap detail">
   <p class="breadcrumb"><a href="../index.html">&larr; Back to catalog</a></p>
@@ -559,6 +590,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     <h1>{esc(item['title'])}</h1>
     {retail_html(item['listing_id'], item.get('price_num', 0), size="lg")}
     <p class="price price-lg">{esc(item['price'])}</p>
+    {drop_line}
     {savings_html(item['listing_id'], item.get('price_num', 0))}
     {one_only}
     <div class="description">{desc_html}</div>
@@ -678,8 +710,9 @@ def build_faq():
          "Every appliance comes with a 14-day money-back guarantee. If something "
          "isn't right, let us know within 14 days and we'll make it right."),
         ("Do you deliver?",
-         "Yes — delivery is available for a charge. The fee depends on distance; "
-         "contact us for a quote."),
+         "Yes — $50 flat delivery to your door anywhere in Bloomington-Normal, IL. "
+         "Outside the area, contact us for a quote. Installation services are also "
+         "available for an additional charge — ask for pricing."),
         ("Does sales tax apply?",
          "Yes, sales tax applies to all purchases."),
         ("What does \"scratch-and-dent\" mean?",

@@ -121,6 +121,71 @@
     });
   }
 
+  function initLightbox() {
+    var gallery = document.querySelector(".gallery");
+    var main = document.getElementById("gallery-main");
+    if (!gallery || !main) return;
+    var photos = [main.getAttribute("src")];
+    Array.prototype.forEach.call(document.querySelectorAll(".thumb"), function (t) {
+      var full = t.getAttribute("data-full");
+      if (full) photos.push(full);
+    });
+    var lb = document.createElement("div");
+    lb.className = "lightbox";
+    lb.setAttribute("hidden", "");
+    lb.innerHTML =
+      '<button type="button" class="lb-btn lb-close" aria-label="Close">\u00d7</button>' +
+      '<button type="button" class="lb-btn lb-prev" aria-label="Previous photo">\u2039</button>' +
+      '<img class="lb-img" alt="Enlarged listing photo">' +
+      '<button type="button" class="lb-btn lb-next" aria-label="Next photo">\u203a</button>';
+    document.body.appendChild(lb);
+    var img = lb.querySelector(".lb-img");
+    var idx = 0;
+    function show(i) {
+      idx = (i + photos.length) % photos.length;
+      img.src = photos[idx];
+    }
+    function open() {
+      var i = photos.indexOf(main.getAttribute("src"));
+      show(i === -1 ? 0 : i);
+      lb.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+    function close() {
+      lb.hidden = true;
+      document.body.style.overflow = "";
+      // leave the gallery on the photo the lightbox was viewing
+      if (idx > 0) {
+        var thumb = document.querySelector('.thumb[data-full="' + photos[idx] + '"]');
+        if (thumb) thumb.click(); else main.src = photos[idx];
+      } else {
+        main.src = photos[0];
+      }
+    }
+    lb.querySelector(".lb-close").addEventListener("click", close);
+    lb.querySelector(".lb-prev").addEventListener("click", function (e) { e.stopPropagation(); show(idx - 1); });
+    lb.querySelector(".lb-next").addEventListener("click", function (e) { e.stopPropagation(); show(idx + 1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    document.addEventListener("keydown", function (e) {
+      if (lb.hidden) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") show(idx - 1);
+      else if (e.key === "ArrowRight") show(idx + 1);
+    });
+    // Tap (not swipe) on the main photo opens the lightbox.
+    var tX = null, tY = null;
+    main.addEventListener("touchstart", function (e) {
+      if (e.touches.length === 1) { tX = e.touches[0].clientX; tY = e.touches[0].clientY; }
+    }, { passive: true });
+    main.addEventListener("touchend", function (e) {
+      if (tX === null) return;
+      var dx = e.changedTouches[0].clientX - tX, dy = e.changedTouches[0].clientY - tY;
+      tX = tY = null;
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) open();
+    });
+    main.addEventListener("click", open);
+  }
+
   function initCatTiles() {
     document.querySelectorAll("[data-goto-filter]").forEach(function (tile) {
       tile.addEventListener("click", function () {
@@ -161,6 +226,7 @@
     initFilters();
     initCatTiles();
     initGallery();
+    initLightbox();
     initReviewsModal();
     initShare();
     fetch(configPath())
