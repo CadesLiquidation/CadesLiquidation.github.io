@@ -407,3 +407,6 @@ body {
   .modal-list { padding: 4px 16px; }
   .modal-foot { padding: 10px 16px; }
 }
+
+/* ===== Visit address (quiet) ===== */
+.visit-address { font-size: 0.88rem; color: var(--muted); margin: 10px 0 0; }

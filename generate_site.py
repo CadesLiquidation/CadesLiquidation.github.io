@@ -38,13 +38,16 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "11"
+ASSET_VER = "12"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
 
 APPT_NOTE = ("By appointment only \u2014 call or message to schedule a time "
              "to come see anything.")
+
+ADDRESS_SHORT = "1206 S Adelaide St Suite 7, Normal, IL"
+ADDRESS_NOTE = "Back parking lot, Suite 7 \u2014 behind Popejoy"
 
 # Retail (MSRP) values from the load manifest, keyed by listing_id.
 # Shown crossed-out above the sale price. Only filled where the
@@ -242,7 +245,7 @@ def footer(prefix=""):
       <a class="btn btn-fb" data-config-href="facebookGroupUrl" hidden>Visit our Facebook group: <span data-config="facebookGroupName"></span></a>
     </div>
   </div>
-  <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies</div>
+  <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; {esc(ADDRESS_SHORT)}</div>
 </footer>
 <script src="{prefix}site.js?v={ASSET_VER}"></script>"""
 
@@ -367,6 +370,7 @@ def build_index(items, photo_of):
       <p>Our warehouse is stocked with washers, dryers, refrigerators, ranges and more
       &mdash; all inspected and priced to move.</p>
       <p class="appt-note">{esc(APPT_NOTE)}</p>
+      <p class="visit-address">{esc(ADDRESS_SHORT)}<br>{esc(ADDRESS_NOTE)}</p>
       <div class="hero-cta" style="margin-top:16px">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
       </div>
@@ -459,6 +463,7 @@ def build_about():
   </ul>
   <h2>How buying works</h2>
   <p>Browse the catalog, find something you like, and get in touch. <strong>{esc(APPT_NOTE)}</strong>
+  We&rsquo;re located at {esc(ADDRESS_SHORT)} (back parking lot, Suite 7, behind Popejoy).
   Every sale includes our 14-day money-back guarantee. Delivery is available for a charge, and sales tax
   applies. Serving <span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> and
   surrounding areas.</p>
