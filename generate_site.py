@@ -307,16 +307,16 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 """
 
 
-def card_html(item, photo_file):
+def card_html(item, photo_file, prefix=""):
     cats = " ".join(filter_keys(item["category"]))
     stock = photo_file in STOCK_PHOTOS
     img_html = (f'<div class="card-img{" stock-photo" if stock else ""}">'
-                f'<img src="images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
+                f'<img src="{prefix}images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
                 + ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
                    if stock else "")
                 + "</div>")
     return f"""<article class="card" data-cats="{cats}">
-  <a href="listings/{item['listing_id']}.html" class="card-link">
+  <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
     {img_html}
     <div class="card-body">
       <span class="badge">{esc(item['category'])}</span>
@@ -447,7 +447,21 @@ def build_index(items, photo_of):
         json_ld=local_ld)
 
 
-def build_detail(item, descriptions, photo_files):
+def related_items(item, items, n=4):
+    """Up to n active listings similar to `item`: same category first,
+    then everything else. Never the item itself."""
+    same = [it for it in items
+            if it["listing_id"] != item["listing_id"]
+            and it.get("status") != "sold"
+            and it["category"] == item["category"]]
+    rest = [it for it in items
+            if it["listing_id"] != item["listing_id"]
+            and it.get("status") != "sold"
+            and it["category"] != item["category"]]
+    return (same + rest)[:n]
+
+
+def build_detail(item, descriptions, photo_files, items, photo_of):
     desc = descriptions.get(item["listing_id"], "")
     desc_html = desc_to_html(desc)
     if not desc_html:
@@ -514,6 +528,18 @@ def build_detail(item, descriptions, photo_files):
     <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies<br><span class="warranty-note">{esc(WARRANTY_NOTE)}</span></p>
   </div>
 </div>"""
+    related = related_items(item, items)
+    related_html = ""
+    if related:
+        cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0], prefix="../")
+                          for it in related)
+        related_html = f"""<section class="wrap">
+  <h2 class="section-title">Similar listings</h2>
+  <div class="grid">
+{cards}
+  </div>
+</section>"""
+    body = body + related_html
     product_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Product",
@@ -659,7 +685,8 @@ def main():
     write(os.path.join(OUT_DIR, "index.html"), build_index(active, photo_of))
     for it in items:
         write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
-              build_detail(it, descriptions, photo_of[it["listing_id"]]))
+              build_detail(it, descriptions, photo_of[it["listing_id"]],
+                           active, photo_of))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
 
