@@ -519,7 +519,7 @@ body {
 
 /* ===== Listing photo lightbox ===== */
 #gallery-main { cursor: zoom-in; }
-.zoom-hint { position: absolute; right: 10px; bottom: 10px; background: rgba(10, 20, 35, 0.65); color: #fff; font-size: 0.72rem; padding: 4px 10px; border-radius: 999px; pointer-events: none; }
+.zoom-hint { position: absolute; right: 10px; top: 10px; background: rgba(10, 20, 35, 0.65); color: #fff; font-size: 0.72rem; padding: 4px 10px; border-radius: 999px; pointer-events: none; }
 .lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(8, 12, 20, 0.92); display: flex; align-items: center; justify-content: center; }
 .lightbox[hidden] { display: none; }
 .lb-img { max-width: 94vw; max-height: 90vh; object-fit: contain; border-radius: 8px; }
