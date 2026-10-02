@@ -39,7 +39,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "31"
+ASSET_VER = "32"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -574,9 +574,11 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     drop_line = (f'<p class="price-drop">Price dropped from {esc(item["prev_price"])}</p>'
                  if dropped and not sold else "")
     cta = ("" if sold else f"""<div class="detail-cta">
-      <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
-      <div class="detail-cta-sub">
+      <div class="detail-cta-main">
+        <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
         {mp_button}
+      </div>
+      <div class="detail-cta-sub">
         <a class="btn btn-ghost" href="{ask_href}">Is this still available?</a>
         <button type="button" class="btn btn-ghost" id="share-listing">Share this listing</button>
       </div>
