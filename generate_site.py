@@ -413,20 +413,20 @@ def build_index(items, photo_of, sold):
   </div>
 </section>
 <section class="wrap">
-  <h2 class="section-title">How buying works</h2>
-  <div class="steps">
-    <div class="step"><span class="step-n">1</span><div><strong>Browse the catalog</strong><p>Every listing has real photos, the price, and what it would cost new.</p></div></div>
-    <div class="step"><span class="step-n">2</span><div><strong>Call or text Cade</strong><p>Ask questions or claim it before someone else does &mdash; each piece is one of a kind.</p></div></div>
-    <div class="step"><span class="step-n">3</span><div><strong>Pick up or get delivery</strong><p>See it by appointment at the warehouse, or have it delivered for a charge.</p></div></div>
-  </div>
-</section>
-<section class="wrap">
   <h2 class="section-title">Shop by category</h2>
   <div class="cat-tiles">{tiles}</div>
 </section>
 <section class="wrap">
   <h2 class="section-title">Featured deals</h2>
   <div class="grid featured-grid">{featured}</div>
+</section>
+<section class="wrap">
+  <h2 class="section-title">How buying works</h2>
+  <div class="steps">
+    <div class="step"><span class="step-n">1</span><div><strong>Browse the catalog</strong><p>Every listing has real photos, the price, and what it would cost new.</p></div></div>
+    <div class="step"><span class="step-n">2</span><div><strong>Call or text Cade</strong><p>Ask questions or claim it before someone else does &mdash; each piece is one of a kind.</p></div></div>
+    <div class="step"><span class="step-n">3</span><div><strong>Pick up or get delivery</strong><p>See it by appointment at the warehouse, or have it delivered for a charge.</p></div></div>
+  </div>
 </section>
 <section class="wrap" id="catalog">
   <h2 class="section-title">Full catalog</h2>
