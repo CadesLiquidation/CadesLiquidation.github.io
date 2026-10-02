@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "12"
+ASSET_VER = "13"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -177,6 +177,8 @@ def resolve_photos(item):
         photos.append(item["user_photo"])
     if item.get("user_photo_2"):
         photos.append(item["user_photo_2"])
+    for extra in item.get("user_photos") or []:
+        photos.append(extra)
     if not photos:
         photos.append(item["photo"])  # stock fallback, e.g. stock/dryer.jpg
     return photos
@@ -190,6 +192,7 @@ EXTRA_IMAGES = [
     "stock/chest-freezer.jpg",
     "photos/warehouse-1.jpg",
     "photos/warehouse-2.jpg",
+    "photos/photo-31-ge-frenchdoor-hero.jpg",
 ]
 
 
@@ -332,7 +335,7 @@ def build_index(items, photo_of):
       <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
     </div>
     <div class="hero-collage">
-      <img class="collage-main" src="images/photo-17-lg-frenchdoor.jpg" alt="French door refrigerator">
+      <img class="collage-main" src="images/photo-31-ge-frenchdoor-hero.jpg" alt="GE French door refrigerator">
       <img class="collage-a" src="images/photo-12-lg-set-black.jpg" alt="Washer and dryer set">
       <img class="collage-b" src="images/photo-18-frigidaire-gallery.jpg" alt="Refrigerator">
     </div>
