@@ -37,20 +37,48 @@
     if (!grid) return;
     var buttons = document.querySelectorAll(".filter-btn");
     var emptyMsg = document.getElementById("grid-empty");
+    var search = document.getElementById("catalog-search");
+    var activeCat = "all";
+    var query = "";
+    function apply() {
+      var visible = 0;
+      grid.querySelectorAll(".card").forEach(function (card) {
+        var cats = (card.getAttribute("data-cats") || "").split(" ");
+        var title = (card.querySelector("h3") || { textContent: "" }).textContent.toLowerCase();
+        var show = (activeCat === "all" || cats.indexOf(activeCat) !== -1) &&
+          (!query || title.indexOf(query) !== -1);
+        card.style.display = show ? "" : "none";
+        if (show) visible++;
+      });
+      if (emptyMsg) emptyMsg.hidden = visible !== 0;
+    }
     buttons.forEach(function (btn) {
       btn.addEventListener("click", function () {
         buttons.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
-        var f = btn.getAttribute("data-filter");
-        var visible = 0;
-        grid.querySelectorAll(".card").forEach(function (card) {
-          var cats = (card.getAttribute("data-cats") || "").split(" ");
-          var show = f === "all" || cats.indexOf(f) !== -1;
-          card.style.display = show ? "" : "none";
-          if (show) visible++;
-        });
-        if (emptyMsg) emptyMsg.hidden = visible !== 0;
+        activeCat = btn.getAttribute("data-filter");
+        apply();
       });
+    });
+    if (search) search.addEventListener("input", function (e) {
+      query = e.target.value.trim().toLowerCase();
+      apply();
+    });
+  }
+
+  function initShare() {
+    var btn = document.getElementById("share-listing");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var url = window.location.href;
+      if (navigator.share) {
+        navigator.share({ title: document.title, url: url }).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          btn.textContent = "Link copied!";
+          setTimeout(function () { btn.textContent = "Share this listing"; }, 2000);
+        });
+      }
     });
   }
 
@@ -134,6 +162,7 @@
     initCatTiles();
     initGallery();
     initReviewsModal();
+    initShare();
     fetch(configPath())
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(applyConfig)

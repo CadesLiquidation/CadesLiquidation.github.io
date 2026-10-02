@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "27"
+ASSET_VER = "28"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -325,13 +325,14 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 """
 
 
-def card_html(item, photo_file, prefix=""):
+def card_html(item, photo_file, prefix="", sold_badge=False):
     cats = " ".join(filter_keys(item["category"]))
     stock = photo_file in STOCK_PHOTOS
     img_html = (f'<div class="card-img{" stock-photo" if stock else ""}">'
                 f'<img src="{prefix}images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
                 + ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
                    if stock else "")
+                + ('<span class="sold-badge">SOLD</span>' if sold_badge else "")
                 + "</div>")
     return f"""<article class="card" data-cats="{cats}" data-fuel="{item.get('fuel') or ''}" data-color="{item.get('color') or ''}">
   <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
@@ -346,7 +347,7 @@ def card_html(item, photo_file, prefix=""):
 </article>"""
 
 
-def build_index(items, photo_of):
+def build_index(items, photo_of, sold):
     filters = "\n".join(
         f'<button class="filter-btn{" active" if f == "All" else ""}" data-filter="{f.lower()}">{f}</button>'
         for f in FILTERS
@@ -371,6 +372,17 @@ def build_index(items, photo_of):
 
     featured_items = sorted(items, key=lambda it: it.get("price_num", 0), reverse=True)[:3]
     featured = "\n".join(card_html(it, photo_of[it["listing_id"]][0]) for it in featured_items)
+
+    sold_sorted = sorted(sold, key=lambda it: it.get("sold_date", ""), reverse=True)[:4]
+    sold_cards = "\n".join(
+        card_html(it, photo_of[it["listing_id"]][0], sold_badge=True) for it in sold_sorted)
+    sold_section = f"""<section class="wrap">
+  <h2 class="section-title">Recently sold</h2>
+  <p class="section-sub">These moved fast &mdash; new inventory lands every week.</p>
+  <div class="grid">
+{sold_cards}
+  </div>
+</section>""" if sold_sorted else ""
 
     body = f"""<section class="hero">
   <div class="wrap hero-inner">
@@ -401,6 +413,14 @@ def build_index(items, photo_of):
   </div>
 </section>
 <section class="wrap">
+  <h2 class="section-title">How buying works</h2>
+  <div class="steps">
+    <div class="step"><span class="step-n">1</span><div><strong>Browse the catalog</strong><p>Every listing has real photos, the price, and what it would cost new.</p></div></div>
+    <div class="step"><span class="step-n">2</span><div><strong>Call or text Cade</strong><p>Ask questions or claim it before someone else does &mdash; each piece is one of a kind.</p></div></div>
+    <div class="step"><span class="step-n">3</span><div><strong>Pick up or get delivery</strong><p>See it by appointment at the warehouse, or have it delivered for a charge.</p></div></div>
+  </div>
+</section>
+<section class="wrap">
   <h2 class="section-title">Shop by category</h2>
   <div class="cat-tiles">{tiles}</div>
 </section>
@@ -410,12 +430,16 @@ def build_index(items, photo_of):
 </section>
 <section class="wrap" id="catalog">
   <h2 class="section-title">Full catalog</h2>
+  <div class="catalog-toolbar">
+    <input type="search" id="catalog-search" placeholder="Search appliances..." aria-label="Search appliances">
+  </div>
   <div class="filters">{filters}</div>
   <div class="grid" id="catalog-grid">
 {cards}
   </div>
-  <p class="grid-empty" id="grid-empty" hidden>No items in this category right now.</p>
+  <p class="grid-empty" id="grid-empty" hidden>No items match right now.</p>
 </section>
+{sold_section}
 <section class="visit-band">
   <div class="wrap visit-inner">
     <img src="images/warehouse-2.jpg" alt="Our warehouse stocked with appliances" loading="lazy">
@@ -523,6 +547,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     cta = ("" if sold else f"""<div class="detail-cta">
       <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
       {mp_button}
+      <button type="button" class="btn btn-ghost" id="share-listing">Share this listing</button>
     </div>""")
     body = f"""<div class="wrap detail">
   <p class="breadcrumb"><a href="../index.html">&larr; Back to catalog</a></p>
@@ -748,15 +773,15 @@ def write(path, content):
 def main():
     items, descriptions = load_data()
     active = [it for it in items if it.get("status") != "sold"]
-    sold_n = len(items) - len(active)
-    print(f"Loaded {len(items)} listings ({len(active)} active, {sold_n} sold), "
+    sold = [it for it in items if it.get("status") == "sold"]
+    print(f"Loaded {len(items)} listings ({len(active)} active, {len(sold)} sold), "
           f"{len(descriptions)} descriptions.")
     copy_photos(items)
     photo_of = {it["listing_id"]: [os.path.basename(p) for p in resolve_photos(it)]
                 for it in items}
 
     os.makedirs(LISTINGS_DIR, exist_ok=True)
-    write(os.path.join(OUT_DIR, "index.html"), build_index(active, photo_of))
+    write(os.path.join(OUT_DIR, "index.html"), build_index(active, photo_of, sold))
     for it in items:
         write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
               build_detail(it, descriptions, photo_of[it["listing_id"]],
@@ -776,7 +801,7 @@ def main():
     write(os.path.join(OUT_DIR, "robots.txt"),
           f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
     print(f"Wrote index.html, about.html, faq.html, sitemap.xml, robots.txt, "
-          f"{len(items)} listing pages ({sold_n} sold).")
+          f"{len(items)} listing pages ({len(sold)} sold).")
 
 
 if __name__ == "__main__":
