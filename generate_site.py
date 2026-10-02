@@ -188,8 +188,11 @@ def resolve_photos(item):
 EXTRA_IMAGES = [
     "stock/front-load-washer.jpg",
     "stock/dryer.jpg",
+    "stock/french-door-fridge.jpg",
     "stock/gas-range.jpg",
     "stock/chest-freezer.jpg",
+    "stock/dishwasher.jpg",
+    "stock/wall-oven.jpg",
     "photos/warehouse-1.jpg",
     "photos/warehouse-2.jpg",
     "photos/photo-31-ge-frenchdoor-hero.jpg",
