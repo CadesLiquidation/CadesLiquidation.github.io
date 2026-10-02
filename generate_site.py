@@ -38,7 +38,10 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "21"
+ASSET_VER = "22"
+
+# Canonical public URL of the site (used for share tags, sitemap, schema)
+SITE_URL = "https://cadesliquidation.github.io"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -262,14 +265,32 @@ def footer(prefix=""):
 <script src="{prefix}site.js?v={ASSET_VER}"></script>"""
 
 
-def page_shell(title, meta_desc, body, active, prefix=""):
+def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
+               page_url="", json_ld=None, noindex=False):
+    og_tags = ""
+    if og_image:
+        abs_img = f"{SITE_URL}/images/{og_image}"
+        abs_url = f"{SITE_URL}/{page_url}"
+        og_tags = f"""
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(meta_desc)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{esc(abs_url)}">
+<meta property="og:image" content="{esc(abs_img)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(meta_desc)}">
+<meta name="twitter:image" content="{esc(abs_img)}">"""
+    ld_tag = (f'\n<script type="application/ld+json">\n{json_ld}\n</script>'
+              if json_ld else "")
+    robots = '\n<meta name="robots" content="noindex">' if noindex else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
-<meta name="description" content="{esc(meta_desc)}">
+<meta name="description" content="{esc(meta_desc)}">{robots}{og_tags}{ld_tag}
 <link rel="stylesheet" href="{prefix}styles.css?v={ASSET_VER}">
 <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
 <link rel="apple-touch-icon" href="{prefix}images/apple-touch-icon.png">
@@ -392,12 +413,37 @@ def build_index(items, photo_of):
   </div>
 </section>
 {reviews_modal(load_reviews())}"""
+    local_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "name": PLACEHOLDER_NAME,
+        "description": PLACEHOLDER_TAGLINE,
+        "telephone": "+13094344800",
+        "url": SITE_URL + "/",
+        "image": f"{SITE_URL}/images/photo-31-ge-frenchdoor-hero.jpg",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "1206 S Adelaide St Suite 7",
+            "addressLocality": "Normal",
+            "addressRegion": "IL",
+            "addressCountry": "US",
+        },
+        "areaServed": PLACEHOLDER_AREA,
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "273",
+        },
+        "priceRange": "$",
+    }, indent=2)
     return page_shell(
         f"{PLACEHOLDER_NAME} | New & Scratch-and-Dent Appliances in {PLACEHOLDER_AREA}",
         f"Shop new and scratch-and-dent washers, dryers, refrigerators, ranges, "
         f"freezers, dishwashers and ovens at liquidation prices in {PLACEHOLDER_AREA}. "
         f"14-day money-back guarantee.",
-        body, "catalog")
+        body, "catalog",
+        og_image="photo-31-ge-frenchdoor-hero.jpg", page_url="",
+        json_ld=local_ld)
 
 
 def build_detail(item, descriptions, photo_files):
@@ -435,8 +481,19 @@ def build_detail(item, descriptions, photo_files):
     mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
                  if mp_url else "")
     cond = "Scratch & Dent" if DAMAGE_RE.search(desc) else item.get("condition", "New")
+    sold = item.get("status") == "sold"
+    sold_banner = ('<div class="sold-banner">This item has sold &mdash; '
+                   '<a href="../index.html">browse the current catalog</a></div>'
+                   if sold else "")
+    one_only = ("" if sold else
+                '<p class="one-only">One only &mdash; when it&rsquo;s gone, it&rsquo;s gone.</p>')
+    cta = ("" if sold else f"""<div class="detail-cta">
+      <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
+      {mp_button}
+    </div>""")
     body = f"""<div class="wrap detail">
   <p class="breadcrumb"><a href="../index.html">&larr; Back to catalog</a></p>
+  {sold_banner}
   {gallery}
   <div class="detail-info">
     <span class="badge">{esc(item['category'])}</span>
@@ -444,24 +501,40 @@ def build_detail(item, descriptions, photo_files):
     {retail_html(item['listing_id'], item.get('price_num', 0), size="lg")}
     <p class="price price-lg">{esc(item['price'])}</p>
     {savings_html(item['listing_id'], item.get('price_num', 0))}
+    {one_only}
     <div class="description">{desc_html}</div>
     <dl class="facts">
       <div><dt>Condition</dt><dd>{esc(cond)}</dd></div>
       <div><dt>Category</dt><dd>{esc(item['category'])}</dd></div>
       <div><dt>Price</dt><dd>{esc(item['price'])}</dd></div>
     </dl>
-    <div class="detail-cta">
-      <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
-      {mp_button}
-    </div>
+    {cta}
     <p class="appt-note">{esc(APPT_NOTE)}</p>
     <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies<br><span class="warranty-note">{esc(WARRANTY_NOTE)}</span></p>
   </div>
 </div>"""
+    product_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": item["title"],
+        "image": f"{SITE_URL}/images/{photo_files[0]}",
+        "description": meta_description(item, desc),
+        "offers": {
+            "@type": "Offer",
+            "price": item.get("price_num", 0),
+            "priceCurrency": "USD",
+            "availability": ("https://schema.org/OutOfStock" if sold
+                             else "https://schema.org/InStock"),
+            "url": f"{SITE_URL}/listings/{item['listing_id']}.html",
+        },
+    }, indent=2)
     return page_shell(
         f"{item['title']} | {item['price']} | {PLACEHOLDER_NAME}",
         meta_description(item, desc),
-        body, "catalog", prefix="../")
+        body, "catalog", prefix="../",
+        og_image=photo_files[0],
+        page_url=f"listings/{item['listing_id']}.html",
+        json_ld=product_ld, noindex=sold)
 
 
 def build_about():
@@ -515,7 +588,8 @@ def build_about():
         f"About | {PLACEHOLDER_NAME}",
         f"About {PLACEHOLDER_NAME}: new, scratch-and-dent and used appliances "
         f"at liquidation prices in {PLACEHOLDER_AREA}.",
-        body, "about")
+        body, "about",
+        og_image="photo-31-ge-frenchdoor-hero.jpg", page_url="about.html")
 
 
 def build_faq():
@@ -560,7 +634,8 @@ def build_faq():
         f"FAQ & Policies | {PLACEHOLDER_NAME}",
         "Policies: 14-day money-back guarantee, delivery available for a charge, "
         "sales tax applies. Answers about scratch-and-dent appliances.",
-        body, "faq")
+        body, "faq",
+        og_image="photo-31-ge-frenchdoor-hero.jpg", page_url="faq.html")
 
 
 def write(path, content):
@@ -571,19 +646,34 @@ def write(path, content):
 
 def main():
     items, descriptions = load_data()
-    print(f"Loaded {len(items)} listings, {len(descriptions)} descriptions.")
+    active = [it for it in items if it.get("status") != "sold"]
+    sold_n = len(items) - len(active)
+    print(f"Loaded {len(items)} listings ({len(active)} active, {sold_n} sold), "
+          f"{len(descriptions)} descriptions.")
     copy_photos(items)
     photo_of = {it["listing_id"]: [os.path.basename(p) for p in resolve_photos(it)]
                 for it in items}
 
     os.makedirs(LISTINGS_DIR, exist_ok=True)
-    write(os.path.join(OUT_DIR, "index.html"), build_index(items, photo_of))
+    write(os.path.join(OUT_DIR, "index.html"), build_index(active, photo_of))
     for it in items:
         write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
               build_detail(it, descriptions, photo_of[it["listing_id"]]))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
-    print(f"Wrote index.html, about.html, faq.html, {len(items)} listing pages.")
+
+    # sitemap.xml (active listings only) + robots.txt
+    urls = ["", "about.html", "faq.html"] + [
+        f"listings/{it['listing_id']}.html" for it in active]
+    sitemap = ('<?xml version="1.0" encoding="utf-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+               + "\n".join(f"  <url><loc>{SITE_URL}/{u}</loc></url>" for u in urls)
+               + "\n</urlset>\n")
+    write(os.path.join(OUT_DIR, "sitemap.xml"), sitemap)
+    write(os.path.join(OUT_DIR, "robots.txt"),
+          f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
+    print(f"Wrote index.html, about.html, faq.html, sitemap.xml, robots.txt, "
+          f"{len(items)} listing pages ({sold_n} sold).")
 
 
 if __name__ == "__main__":
