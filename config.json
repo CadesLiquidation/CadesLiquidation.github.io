@@ -15,11 +15,11 @@
   },
   {
    "minItems": 3,
-   "discountPct": 5
+   "discountPct": 8
   },
   {
    "minItems": 4,
-   "discountPct": 7
+   "discountPct": 15
   }
  ]
 }
