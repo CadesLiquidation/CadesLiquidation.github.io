@@ -269,7 +269,17 @@ details p { margin: 10px 0 4px; color: var(--muted); }
   .trust span { font-size: 0.75rem; }
   .stock-badge { font-size: 0.62rem; top: 8px; left: 8px; }
   .thumbs { gap: 8px; }
-  .thumb { width: 66px; height: 66px; }
+  .thumbs.collapsed { flex-wrap: nowrap; }
+  .thumbs.collapsed .thumb:nth-child(n+6) { display: none; }
+  .thumb { width: 60px; height: 60px; }
+  .thumb-more { position: relative; }
+  .thumbs.collapsed .thumb-more::after {
+    content: "+" attr(data-remaining);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(10, 14, 20, 0.55); color: #fff;
+    font-weight: 700; font-size: 1.1rem; border-radius: 6px;
+  }
 }
 
 /* ===== Professional header ===== */

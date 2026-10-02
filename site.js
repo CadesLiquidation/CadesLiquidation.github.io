@@ -71,6 +71,12 @@
     }
     thumbs.forEach(function (thumb) {
       thumb.addEventListener("click", function () {
+        if (thumb.classList.contains("thumb-more")) {
+          var strip = thumb.closest(".thumbs");
+          if (strip) strip.classList.remove("collapsed");
+          thumb.classList.remove("thumb-more");
+          thumb.removeAttribute("data-remaining");
+        }
         show(photos.indexOf(thumb.getAttribute("data-full")));
       });
     });

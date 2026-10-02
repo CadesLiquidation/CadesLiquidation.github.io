@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "18"
+ASSET_VER = "19"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -402,14 +402,23 @@ def build_detail(item, descriptions, photo_files):
                    if photo_files[0] in STOCK_PHOTOS else "")
     if len(photo_files) > 1:
         main = photo_files[0]
-        thumbs = "\n".join(
-            f'<button class="thumb" data-full="../images/{esc(pf)}">'
-            f'<img src="../images/{esc(pf)}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
-            for i, pf in enumerate(photo_files[1:], start=1)
-        )
+        total = len(photo_files)
+        collapsed = total > 5
+        thumb_btns = []
+        for i, pf in enumerate(photo_files[1:], start=1):
+            cls = "thumb"
+            extra = ""
+            if collapsed and i == 5:
+                cls += " thumb-more"
+                extra = f' data-remaining="{total - 5}"'
+            thumb_btns.append(
+                f'<button class="{cls}"{extra} data-full="../images/{esc(pf)}">'
+                f'<img src="../images/{esc(pf)}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
+            )
+        thumbs = "\n".join(thumb_btns)
         gallery = f"""<div class="gallery">{stock_badge}
       <img id="gallery-main" src="../images/{esc(main)}" alt="{esc(item['title'])}">
-      <div class="thumbs">{thumbs}</div>
+      <div class="thumbs{" collapsed" if collapsed else ""}">{thumbs}</div>
     </div>"""
     else:
         gallery = (f'<div class="gallery">{stock_badge}<img src="../images/{esc(photo_files[0])}" '
