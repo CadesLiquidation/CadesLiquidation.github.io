@@ -364,7 +364,6 @@ def build_index(items, photo_of):
       <button class="rating rating-btn" id="reviews-open" type="button" title="Read customer reviews"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span class="rating-text" data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span></button>
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
-        <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
         <a class="btn btn-bundle btn-lg" href="bundle.html">Build a bundle &amp; save</a>
       </div>
       <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
