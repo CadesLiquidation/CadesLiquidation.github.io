@@ -67,6 +67,7 @@ RETAIL_PRICES = {
     "1449538590452959": 1099,  # LG Gas Range w/ Air Fry (LRGN6321Y)
     "1744440383278549": 2598,  # LG Washer+Dryer Set (WM4000HBA + DLEX4000B)
     "1643544697442082": 3000,  # Frigidaire Gallery Fridge (GRMS2773AF) — MSRP per Cade
+    "1585063482717437": 649,   # Whirlpool Stainless Gas Range (WFG320M0MS) — label confirmed 2026-10-01
 }
 
 
