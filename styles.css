@@ -309,6 +309,7 @@ body {
 }
 @media (max-width: 560px) {
   .site-header .btn-call { display: none; }
+  .brand img { height: 44px; }
 }
 
 /* ===== Appointment note ===== */

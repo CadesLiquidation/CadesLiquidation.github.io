@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "20"
+ASSET_VER = "21"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -199,6 +199,7 @@ EXTRA_IMAGES = [
     "photos/photo-31-ge-frenchdoor-hero.jpg",
     "photos/cade.jpg",
     "logo/logo-header.png",
+    "logo/logo-header-lockup.png",
     "logo/favicon.png",
     "logo/apple-touch-icon.png",
 ]
@@ -233,7 +234,7 @@ def copy_photos(items):
 def header(active, prefix=""):
     return f"""<header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header.png" alt="Cade's Liquidation"></a>
+    <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
       <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
       <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
