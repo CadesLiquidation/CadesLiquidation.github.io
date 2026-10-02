@@ -400,9 +400,9 @@ def build_detail(item, descriptions, photo_files):
     if len(photo_files) > 1:
         main = photo_files[0]
         thumbs = "\n".join(
-            f'<button class="thumb{" current" if i == 0 else ""}" data-full="../images/{esc(pf)}">'
+            f'<button class="thumb" data-full="../images/{esc(pf)}">'
             f'<img src="../images/{esc(pf)}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
-            for i, pf in enumerate(photo_files)
+            for i, pf in enumerate(photo_files[1:], start=1)
         )
         gallery = f"""<div class="gallery">{stock_badge}
       <img id="gallery-main" src="../images/{esc(main)}" alt="{esc(item['title'])}">
