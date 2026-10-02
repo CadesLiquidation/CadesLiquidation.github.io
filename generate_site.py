@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "23"
+ASSET_VER = "24"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -541,7 +541,16 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
 {cards}
   </div>
 </section>"""
-    body = body + related_html
+    promo_html = ("" if sold else """<section class="wrap">
+  <div class="bundle-promo">
+    <div>
+      <strong>Save up to 15% by bundling</strong>
+      <p>Combine this with other appliances and unlock bundle discounts automatically.</p>
+    </div>
+    <a class="btn btn-bundle btn-lg" href="../bundle.html">Build a bundle</a>
+  </div>
+</section>""")
+    body = body + promo_html + related_html
     product_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Product",

@@ -483,3 +483,12 @@ body {
   .bundle-layout { grid-template-columns: 1fr; }
   .bundle-aside { position: static; }
 }
+
+/* ===== Bundle promo on listing pages ===== */
+.bundle-promo { display: flex; align-items: center; justify-content: space-between; gap: 18px; background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%); color: #fff; border-radius: 14px; padding: 22px 26px; margin: 8px 0 28px; }
+.bundle-promo strong { font-size: 1.25rem; }
+.bundle-promo p { margin: 6px 0 0; color: rgba(255, 255, 255, 0.85); }
+.bundle-promo .btn { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .bundle-promo { flex-direction: column; align-items: flex-start; }
+}
