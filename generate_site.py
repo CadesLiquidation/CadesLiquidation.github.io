@@ -39,7 +39,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "33"
+ASSET_VER = "34"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -753,7 +753,7 @@ def build_faq():
         og_image="og-share.png", page_url="faq.html")
 
 
-def build_bundle(items, photo_of):
+def build_bundle(items, photo_of, descriptions):
     data = [{
         "id": it["listing_id"],
         "title": it["title"],
@@ -764,6 +764,10 @@ def build_bundle(items, photo_of):
         "retail": RETAIL_PRICES.get(it["listing_id"]),
         "fuel": it.get("fuel"),
         "color": it.get("color"),
+        "description": descriptions.get(it["listing_id"], ""),
+        "condition": ("Scratch & Dent"
+                      if DAMAGE_RE.search(descriptions.get(it["listing_id"], ""))
+                      else it.get("condition", "New")),
     } for it in items]
     cats = sorted({it["category"] for it in items})
     chips = "\n".join(
@@ -824,7 +828,7 @@ def main():
                            active, photo_of))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
-    write(os.path.join(OUT_DIR, "bundle.html"), build_bundle(active, photo_of))
+    write(os.path.join(OUT_DIR, "bundle.html"), build_bundle(active, photo_of, descriptions))
 
     # sitemap.xml (active listings only) + robots.txt
     urls = ["", "about.html", "faq.html", "bundle.html"] + [

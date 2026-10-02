@@ -68,7 +68,96 @@
       '<span class="bcard-title">' + escapeHTML(it.title) + "</span>" +
       retail +
       '<span class="price">' + escapeHTML(it.price) + "</span>" +
+      '<span class="bcard-details" role="button" tabindex="0" data-id="' + it.id + '">More details</span>' +
       "</button>";
+  }
+
+  var detailsModal = null;
+  var detailsId = null;
+
+  function findItem(id) {
+    for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
+    return null;
+  }
+
+  function buildDetailsModal() {
+    detailsModal = document.createElement("div");
+    detailsModal.className = "bmodal";
+    detailsModal.setAttribute("hidden", "");
+    detailsModal.innerHTML =
+      '<div class="bmodal-card" role="dialog" aria-modal="true" aria-label="Listing details">' +
+      '<button type="button" class="bmodal-x" aria-label="Close">\u00d7</button>' +
+      '<img class="bmodal-img" alt="">' +
+      '<div class="bmodal-body">' +
+      '<span class="badge bmodal-cat"></span>' +
+      '<h3 class="bmodal-title"></h3>' +
+      '<p class="bmodal-price"></p>' +
+      '<p class="bmodal-meta"></p>' +
+      '<p class="bmodal-desc"></p>' +
+      '<button type="button" class="btn bmodal-toggle"></button>' +
+      "</div></div>";
+    document.body.appendChild(detailsModal);
+    detailsModal.querySelector(".bmodal-x").addEventListener("click", closeDetails);
+    detailsModal.addEventListener("click", function (e) {
+      if (e.target === detailsModal) closeDetails();
+    });
+    detailsModal.querySelector(".bmodal-toggle").addEventListener("click", function () {
+      if (!detailsId) return;
+      if (selected[detailsId]) {
+        delete selected[detailsId];
+      } else {
+        var it = findItem(detailsId);
+        if (it) selected[detailsId] = it;
+      }
+      renderGrid();
+      renderSummary();
+      syncDetailsToggle();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (detailsModal && !detailsModal.hidden && e.key === "Escape") closeDetails();
+    });
+  }
+
+  function syncDetailsToggle() {
+    var btn = detailsModal.querySelector(".bmodal-toggle");
+    if (selected[detailsId]) {
+      btn.className = "btn btn-ghost bmodal-toggle";
+      btn.innerHTML = "\u2713 In your bundle \u2014 tap to remove";
+    } else {
+      btn.className = "btn btn-call bmodal-toggle";
+      btn.textContent = "Add to bundle";
+    }
+  }
+
+  function openDetails(id) {
+    var it = findItem(id);
+    if (!it) return;
+    detailsId = id;
+    var img = detailsModal.querySelector(".bmodal-img");
+    img.src = "images/" + it.photo;
+    img.alt = it.title;
+    detailsModal.querySelector(".bmodal-cat").textContent = it.category;
+    detailsModal.querySelector(".bmodal-title").textContent = it.title;
+    var priceHtml = it.retail
+      ? '<span class="bcard-retail">Retail $' + Number(it.retail).toLocaleString() + "</span> "
+      : "";
+    priceHtml += '<span class="price">' + escapeHTML(it.price) + "</span>";
+    detailsModal.querySelector(".bmodal-price").innerHTML = priceHtml;
+    detailsModal.querySelector(".bmodal-meta").textContent =
+      it.condition + (it.fuel ? " \u00b7 " + it.fuel : "");
+    detailsModal.querySelector(".bmodal-desc").innerHTML =
+      escapeHTML(it.description || "No additional details yet \u2014 text Cade with questions.")
+        .replace(/\n/g, "<br>");
+    syncDetailsToggle();
+    detailsModal.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeDetails() {
+    if (!detailsModal) return;
+    detailsModal.hidden = true;
+    document.body.style.overflow = "";
+    detailsId = null;
   }
 
   function renderGrid() {
@@ -161,6 +250,7 @@
 
   function init() {
     if (!$("bundle-grid")) return;
+    buildDetailsModal();
     renderGrid();
     renderTiers();
     renderSummary();
@@ -179,7 +269,21 @@
       renderGrid();
     });
 
+    $("bundle-grid").addEventListener("keydown", function (e) {
+      var det = e.target.closest(".bcard-details");
+      if (det && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        e.stopPropagation();
+        openDetails(det.getAttribute("data-id"));
+      }
+    });
+
     $("bundle-grid").addEventListener("click", function (e) {
+      var det = e.target.closest(".bcard-details");
+      if (det) {
+        openDetails(det.getAttribute("data-id"));
+        return;
+      }
       var card = e.target.closest(".bcard");
       if (!card) return;
       var id = card.getAttribute("data-id");
