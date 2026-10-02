@@ -16,8 +16,6 @@
   var selected = {};
   var tiers = DEFAULT_TIERS.slice();
   var activeFilter = "all";
-  var activeColor = "all";
-  var activeFuel = "all";
   var query = "";
 
   function $(id) { return document.getElementById(id); }
@@ -53,9 +51,7 @@
     return items.filter(function (it) {
       var okCat = activeFilter === "all" || it.category.toLowerCase() === activeFilter;
       var okQ = !query || it.title.toLowerCase().indexOf(query) !== -1;
-      var okColor = activeColor === "all" || it.color === activeColor;
-      var okFuel = activeFuel === "all" || it.fuel === activeFuel;
-      return okCat && okQ && okColor && okFuel;
+      return okCat && okQ;
     });
   }
 
@@ -163,82 +159,11 @@
     });
   }
 
-  function wireFilterPopup() {
-    var toggle = $("filter-toggle");
-    var pop = $("filter-pop");
-    var countBadge = $("filter-count");
-    if (!toggle || !pop) return;
-
-    function updateCount() {
-      var n = (activeColor !== "all" ? 1 : 0) + (activeFuel !== "all" ? 1 : 0);
-      countBadge.hidden = n === 0;
-      countBadge.textContent = n;
-    }
-    function setPills(containerId, val) {
-      var c = $(containerId);
-      if (!c) return;
-      Array.prototype.forEach.call(c.querySelectorAll(".fpill"), function (p) {
-        p.classList.toggle("active", p.getAttribute("data-val") === val);
-      });
-    }
-    function closePop() {
-      pop.hidden = true;
-      toggle.setAttribute("aria-expanded", "false");
-    }
-    pop.addEventListener("click", function (e) {
-      var pill = e.target.closest(".fpill");
-      if (pill) {
-        var val = pill.getAttribute("data-val");
-        var group = pill.parentElement.id;
-        if (group === "filter-colors") activeColor = val; else activeFuel = val;
-        setPills(group, val);
-        renderGrid();
-        updateCount();
-        return;
-      }
-      if (e.target.closest("#filter-clear")) {
-        activeColor = "all"; activeFuel = "all";
-        setPills("filter-colors", "all");
-        setPills("filter-fuels", "all");
-        renderGrid();
-        updateCount();
-      }
-    });
-    toggle.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var open = pop.hidden;
-      pop.hidden = !open;
-      toggle.setAttribute("aria-expanded", String(open));
-    });
-    document.addEventListener("click", function (e) {
-      if (!pop.hidden && !e.target.closest(".filter-wrap")) closePop();
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closePop();
-    });
-  }
-
   function init() {
     if (!$("bundle-grid")) return;
-    // color pills from what's actually in stock
-    var colors = [];
-    items.forEach(function (it) {
-      if (it.color && colors.indexOf(it.color) === -1) colors.push(it.color);
-    });
-    colors.sort();
-    var colorPills = $("filter-colors");
-    colors.forEach(function (c) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "fpill";
-      b.setAttribute("data-val", c);
-      b.textContent = c.charAt(0).toUpperCase() + c.slice(1);
-      colorPills.appendChild(b);
-    });
     renderGrid();
     renderTiers();
     renderSummary();
-    wireFilterPopup();
 
     document.querySelectorAll(".bfilter").forEach(function (btn) {
       btn.addEventListener("click", function () {

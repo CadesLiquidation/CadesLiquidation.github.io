@@ -37,78 +37,19 @@
     if (!grid) return;
     var buttons = document.querySelectorAll(".filter-btn");
     var emptyMsg = document.getElementById("grid-empty");
-    var toggle = document.getElementById("filter-toggle");
-    var pop = document.getElementById("filter-pop");
-    var countBadge = document.getElementById("filter-count");
-    var activeCat = "all", activeColor = "all", activeFuel = "all";
-
-    function updateCount() {
-      if (!countBadge) return;
-      var n = (activeColor !== "all" ? 1 : 0) + (activeFuel !== "all" ? 1 : 0);
-      countBadge.hidden = n === 0;
-      countBadge.textContent = n;
-    }
-    function setPills(containerId, val) {
-      var c = document.getElementById(containerId);
-      if (!c) return;
-      c.querySelectorAll(".fpill").forEach(function (p) {
-        p.classList.toggle("active", p.getAttribute("data-val") === val);
-      });
-    }
-    function apply() {
-      var visible = 0;
-      grid.querySelectorAll(".card").forEach(function (card) {
-        var cats = (card.getAttribute("data-cats") || "").split(" ");
-        var show = (activeCat === "all" || cats.indexOf(activeCat) !== -1) &&
-          (activeColor === "all" || card.getAttribute("data-color") === activeColor) &&
-          (activeFuel === "all" || card.getAttribute("data-fuel") === activeFuel);
-        card.style.display = show ? "" : "none";
-        if (show) visible++;
-      });
-      if (emptyMsg) emptyMsg.hidden = visible !== 0;
-      updateCount();
-    }
-    function closePop() {
-      if (pop) pop.hidden = true;
-      if (toggle) toggle.setAttribute("aria-expanded", "false");
-    }
-    if (pop) pop.addEventListener("click", function (e) {
-      var pill = e.target.closest(".fpill");
-      if (pill) {
-        var val = pill.getAttribute("data-val");
-        var group = pill.parentElement.id;
-        if (group === "filter-colors") activeColor = val; else activeFuel = val;
-        setPills(group, val);
-        apply();
-        return;
-      }
-      if (e.target.closest("#filter-clear")) {
-        activeColor = "all"; activeFuel = "all";
-        setPills("filter-colors", "all");
-        setPills("filter-fuels", "all");
-        apply();
-      }
-    });
-    if (toggle && pop) {
-      toggle.addEventListener("click", function (e) {
-        e.stopPropagation();
-        var open = pop.hidden;
-        pop.hidden = !open;
-        toggle.setAttribute("aria-expanded", String(open));
-      });
-      document.addEventListener("click", function (e) {
-        if (!pop.hidden && !e.target.closest(".filter-wrap")) closePop();
-      });
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") closePop();
-      });
-    }
     buttons.forEach(function (btn) {
       btn.addEventListener("click", function () {
         buttons.forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
-        activeCat = btn.getAttribute("data-filter");
-        apply();
+        var f = btn.getAttribute("data-filter");
+        var visible = 0;
+        grid.querySelectorAll(".card").forEach(function (card) {
+          var cats = (card.getAttribute("data-cats") || "").split(" ");
+          var show = f === "all" || cats.indexOf(f) !== -1;
+          card.style.display = show ? "" : "none";
+          if (show) visible++;
+        });
+        if (emptyMsg) emptyMsg.hidden = visible !== 0;
       });
     });
   }
