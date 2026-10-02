@@ -205,6 +205,7 @@ EXTRA_IMAGES = [
     "logo/logo-header-lockup.png",
     "logo/favicon.png",
     "logo/apple-touch-icon.png",
+    "social/og-share.png",
 ]
 
 
@@ -420,7 +421,7 @@ def build_index(items, photo_of):
         "description": PLACEHOLDER_TAGLINE,
         "telephone": "+13094344800",
         "url": SITE_URL + "/",
-        "image": f"{SITE_URL}/images/photo-31-ge-frenchdoor-hero.jpg",
+        "image": f"{SITE_URL}/images/og-share.png",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "1206 S Adelaide St Suite 7",
@@ -442,7 +443,7 @@ def build_index(items, photo_of):
         f"freezers, dishwashers and ovens at liquidation prices in {PLACEHOLDER_AREA}. "
         f"14-day money-back guarantee.",
         body, "catalog",
-        og_image="photo-31-ge-frenchdoor-hero.jpg", page_url="",
+        og_image="og-share.png", page_url="",
         json_ld=local_ld)
 
 
@@ -589,7 +590,7 @@ def build_about():
         f"About {PLACEHOLDER_NAME}: new, scratch-and-dent and used appliances "
         f"at liquidation prices in {PLACEHOLDER_AREA}.",
         body, "about",
-        og_image="photo-31-ge-frenchdoor-hero.jpg", page_url="about.html")
+        og_image="og-share.png", page_url="about.html")
 
 
 def build_faq():
@@ -635,7 +636,7 @@ def build_faq():
         "Policies: 14-day money-back guarantee, delivery available for a charge, "
         "sales tax applies. Answers about scratch-and-dent appliances.",
         body, "faq",
-        og_image="photo-31-ge-frenchdoor-hero.jpg", page_url="faq.html")
+        og_image="og-share.png", page_url="faq.html")
 
 
 def write(path, content):
