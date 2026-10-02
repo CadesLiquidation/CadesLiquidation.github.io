@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "16"
+ASSET_VER = "17"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -313,7 +313,7 @@ def build_index(items, photo_of):
     ]
     tiles = "\n".join(
         f'<button class="cat-tile" data-goto-filter="{key}">'
-        f'<img src="images/{img}" alt="{label}" loading="lazy">'
+        f'<img src="images/{img}?v={ASSET_VER}" alt="{label}" loading="lazy">'
         f"<span>{label}</span></button>"
         for label, img, key in categories
     )
