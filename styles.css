@@ -37,6 +37,7 @@ a { color: var(--brand); }
   padding-top: 12px; padding-bottom: 12px;
 }
 .brand { font-weight: 800; font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+.brand img { height: 54px; width: auto; display: block; }
 .main-nav { display: flex; gap: 4px; margin-left: auto; }
 .main-nav a {
   color: var(--muted); text-decoration: none; font-weight: 600;

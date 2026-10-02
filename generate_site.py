@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "19"
+ASSET_VER = "20"
 
 WARRANTY_NOTE = ("New and scratch-and-dent appliances may come with a 1-year "
                  "warranty, but a warranty is not guaranteed.")
@@ -198,6 +198,9 @@ EXTRA_IMAGES = [
     "photos/warehouse-2.jpg",
     "photos/photo-31-ge-frenchdoor-hero.jpg",
     "photos/cade.jpg",
+    "logo/logo-header.png",
+    "logo/favicon.png",
+    "logo/apple-touch-icon.png",
 ]
 
 
@@ -230,7 +233,7 @@ def copy_photos(items):
 def header(active, prefix=""):
     return f"""<header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{prefix}index.html" data-config="businessName">{esc(PLACEHOLDER_NAME)}</a>
+    <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header.png" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
       <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
       <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
@@ -267,6 +270,8 @@ def page_shell(title, meta_desc, body, active, prefix=""):
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(meta_desc)}">
 <link rel="stylesheet" href="{prefix}styles.css?v={ASSET_VER}">
+<link rel="icon" type="image/png" href="{prefix}images/favicon.png">
+<link rel="apple-touch-icon" href="{prefix}images/apple-touch-icon.png">
 </head>
 <body>
 {header(active, prefix)}
@@ -466,7 +471,7 @@ def build_about():
   <div class="owner">
     <img src="images/cade.jpg" alt="Cade McClellan, owner of Cade's Liquidation" loading="lazy">
     <div>
-      <p>I&rsquo;m <strong>Cade McClellan</strong> &mdash; I&rsquo;ve lived in Bloomington-Normal, Illinois
+      <p>I&rsquo;m <strong>Cade McClellan</strong> &mdash; I&rsquo;ve lived in Bloomington, Illinois
       practically my whole life, and I&rsquo;m currently at ISU working toward my Bachelor of Science
       degree. I&rsquo;ve always had an entrepreneur mindset and a real fascination with businesses
       and having my own.</p>
