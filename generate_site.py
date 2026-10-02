@@ -38,7 +38,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "29"
+ASSET_VER = "30"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.github.io"
@@ -126,8 +126,9 @@ def savings_html(listing_id, price_num):
     return f'<p class="savings">You save ${save:,.0f} ({pct}%)</p>'
 
 # Listing photos that are generic stock shots, not the actual unit for sale
-STOCK_PHOTOS = {"washer-dryer-set.jpg", "french-door-fridge.jpg",
-                "side-by-side-fridge.jpg", "wall-oven.jpg", "dishwasher.jpg"}
+STOCK_DIR = os.path.join(SRC_DIR, "stock")
+STOCK_PHOTOS = {f for f in os.listdir(STOCK_DIR)
+                if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp"))}
 
 DAMAGE_RE = re.compile(r"\b(ding|dings|dent|dents|dented|scratch|scratches|scratched)\b",
                        re.IGNORECASE)
@@ -330,7 +331,7 @@ def card_html(item, photo_file, prefix="", sold_badge=False):
     stock = photo_file in STOCK_PHOTOS
     img_html = (f'<div class="card-img{" stock-photo" if stock else ""}">'
                 f'<img src="{prefix}images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
-                + ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
+                + (f'<span class="stock-badge{" stock-badge-low" if sold_badge else ""}">Stock photo &mdash; not the actual unit</span>'
                    if stock else "")
                 + ('<span class="sold-badge">SOLD</span>' if sold_badge else "")
                 + "</div>")
@@ -378,7 +379,7 @@ def build_index(items, photo_of, sold):
         card_html(it, photo_of[it["listing_id"]][0], sold_badge=True) for it in sold_sorted)
     sold_section = f"""<section class="wrap">
   <h2 class="section-title">Recently sold</h2>
-  <p class="section-sub">These moved fast &mdash; new inventory lands every week.</p>
+  <p class="section-sub">These moved fast.</p>
   <div class="grid">
 {sold_cards}
   </div>
