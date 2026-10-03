@@ -510,7 +510,7 @@ def build_index(items, photo_of, sold):
         "priceRange": "$",
     }, indent=2)
     return page_shell(
-        f"{PLACEHOLDER_NAME} | New & Scratch-and-Dent Appliances in {PLACEHOLDER_AREA}",
+        f"{PLACEHOLDER_NAME} | Discount Appliances in {PLACEHOLDER_AREA}",
         f"Shop new and scratch-and-dent washers, dryers, refrigerators, ranges, "
         f"freezers, dishwashers and ovens at liquidation prices in {PLACEHOLDER_AREA}. "
         f"14-day money-back guarantee.",
@@ -531,6 +531,17 @@ def related_items(item, items, n=4):
             and it.get("status") != "sold"
             and it["category"] != item["category"]]
     return (same + rest)[:n]
+
+
+def seo_title(item):
+    """Title tag for a listing page, kept within ~70 chars for search engines."""
+    suffix = f" | {PLACEHOLDER_NAME}"
+    base = f"{item['title']}{suffix}"
+    if len(base) <= 70:
+        return base
+    budget = 70 - len(suffix) - 1  # room for the ellipsis
+    t = item["title"][:budget].rsplit(" ", 1)[0]
+    return f"{t}\u2026{suffix}"
 
 
 def build_detail(item, descriptions, photo_files, items, photo_of):
@@ -652,7 +663,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
         },
     }, indent=2)
     return page_shell(
-        f"{item['title']} | {item['price']} | {PLACEHOLDER_NAME}",
+        seo_title(item),
         meta_description(item, desc),
         body, "catalog", prefix="../",
         og_image=photo_files[0],
