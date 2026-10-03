@@ -44,6 +44,8 @@ ASSET_VER = "40"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
+# Google Analytics 4 measurement ID (his GA property).
+GA_MEASUREMENT_ID = "G-V2FXEV2VNY"
 # SMS number for prefilled text links (matches bundle.js PHONE).
 SMS_PHONE = "+13094344800"
 
@@ -322,6 +324,14 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(meta_desc)}">{robots}{og_tags}{ld_tag}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA_MEASUREMENT_ID}');
+</script>
 <link rel="stylesheet" href="{prefix}styles.css?v={ASSET_VER}">
 <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
 <link rel="apple-touch-icon" href="{prefix}images/apple-touch-icon.png">
