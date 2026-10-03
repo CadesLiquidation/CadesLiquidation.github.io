@@ -10,7 +10,8 @@
   "use strict";
 
   function configPath() {
-    return window.location.pathname.indexOf("/listings/") !== -1
+    var p = window.location.pathname;
+    return (p.indexOf("/listings/") !== -1 || p.indexOf("/guides/") !== -1)
       ? "../config.json"
       : "config.json";
   }
