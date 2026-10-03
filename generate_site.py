@@ -40,7 +40,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "40"
+ASSET_VER = "41"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -356,7 +356,7 @@ def card_html(item, photo_file, prefix="", sold_badge=False):
     drop_line = (f'<p class="price-drop">was {esc(item["prev_price"])}</p>'
                  if dropped and not sold_badge else "")
     img_html = (f'<div class="card-img{" stock-photo" if stock else ""}">'
-                f'<img src="{prefix}images/{esc(photo_file)}" alt="{esc(item["title"])}" loading="lazy">'
+                f'<img src="{prefix}images/{esc(photo_file)}?v={ASSET_VER}" alt="{esc(item["title"])}" loading="lazy">'
                 + (f'<span class="stock-badge{" stock-badge-low" if sold_badge else ""}">Stock photo &mdash; not the actual unit</span>'
                    if stock else "")
                 + ('<span class="sold-badge">SOLD</span>' if sold_badge else "")
@@ -575,17 +575,17 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
                 cls += " thumb-more"
                 extra = f' data-remaining="{total - 5}"'
             thumb_btns.append(
-                f'<button class="{cls}"{extra} data-full="../images/{esc(pf)}">'
-                f'<img src="../images/{esc(pf)}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
+                f'<button class="{cls}"{extra} data-full="../images/{esc(pf)}?v={ASSET_VER}">'
+                f'<img src="../images/{esc(pf)}?v={ASSET_VER}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
             )
         thumbs = "\n".join(thumb_btns)
         gallery = f"""<div class="gallery">{stock_badge}
-      <img id="gallery-main" src="../images/{esc(main)}" alt="{esc(item['title'])}">
+      <img id="gallery-main" src="../images/{esc(main)}?v={ASSET_VER}" alt="{esc(item['title'])}">
       <span class="zoom-hint">Tap to zoom</span>
       <div class="thumbs{" collapsed" if collapsed else ""}">{thumbs}</div>
     </div>"""
     else:
-        gallery = (f'<div class="gallery">{stock_badge}<img id="gallery-main" src="../images/{esc(photo_files[0])}" '
+        gallery = (f'<div class="gallery">{stock_badge}<img id="gallery-main" src="../images/{esc(photo_files[0])}?v={ASSET_VER}" '
                    f'alt="{esc(item["title"])}"><span class="zoom-hint">Tap to zoom</span></div>')
     mp_url = item.get("url", "")
     mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
@@ -843,7 +843,7 @@ def build_bundle(items, photo_of, descriptions):
         "price": it["price"],
         "price_num": it.get("price_num", 0),
         "category": it["category"],
-        "photo": photo_of[it["listing_id"]][0],
+        "photo": f"{photo_of[it['listing_id']][0]}?v={ASSET_VER}",
         "retail": RETAIL_PRICES.get(it["listing_id"]),
         "fuel": it.get("fuel"),
         "color": it.get("color"),
