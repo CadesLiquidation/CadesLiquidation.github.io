@@ -10,7 +10,7 @@
     { minItems: 4, discountPct: 7 }
   ];
   var PHONE = "+13094344800";
-  var SITE = "cadesliquidation.github.io";
+  var SITE = "cadesliquidation.com";
 
   var items = window.BUNDLE_ITEMS || [];
   var selected = {};
