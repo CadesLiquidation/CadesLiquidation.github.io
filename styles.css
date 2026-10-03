@@ -570,3 +570,28 @@ body {
 .description.collapsed { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
 .desc-toggle { background: none; border: none; color: var(--brand); font-weight: 700; cursor: pointer; padding: 6px 0 0; font-size: 0.95rem; font-family: inherit; }
 .desc-toggle:hover { text-decoration: underline; }
+
+/* ===== Buying guides ===== */
+.guide { max-width: 780px; padding-top: 28px; padding-bottom: 60px; }
+.guide h1 { font-size: 2rem; line-height: 1.2; margin: 8px 0 16px; }
+.guide h2 { font-size: 1.35rem; margin: 34px 0 10px; }
+.guide-intro p { font-size: 1.06rem; line-height: 1.65; }
+.guide p { line-height: 1.65; }
+.guide ul, .guide ol { line-height: 1.65; padding-left: 22px; }
+.guide li { margin-bottom: 8px; }
+.guide .grid { margin-top: 18px; }
+.guide-cta { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; margin: 36px 0 8px; text-align: center; }
+.guide-cta strong { font-size: 1.2rem; }
+.guide-cta .hero-cta { justify-content: center; margin-top: 14px; }
+.more-guides { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); }
+.more-guides strong { display: block; margin-bottom: 10px; }
+.more-guides nav { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.more-guides a { color: var(--brand); font-size: 0.93rem; }
+
+/* ===== Footer guides ===== */
+.footer-inner { display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-start; }
+.footer-guides { display: flex; flex-direction: column; gap: 6px; }
+.footer-guides strong { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.footer-guides a { color: inherit; font-size: 0.9rem; text-decoration: none; }
+.footer-guides a:hover { text-decoration: underline; }
+.delivery-link { color: #fff; font-weight: 700; white-space: nowrap; }

@@ -17,6 +17,7 @@ import re
 import shutil
 import sys
 import urllib.parse
+from guides import GUIDES
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(os.path.dirname(HERE), "cades-liquidation")
@@ -39,7 +40,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "37"
+ASSET_VER = "38"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -272,6 +273,9 @@ def header(active, prefix=""):
 
 
 def footer(prefix=""):
+    guide_links = "\n      ".join(
+        f'<a href="{prefix}guides/{g["slug"]}.html">{esc(g["h1"])}</a>'
+        for g in GUIDES)
     return f"""<footer class="site-footer">
   <div class="wrap footer-inner">
     <div>
@@ -279,6 +283,10 @@ def footer(prefix=""):
       <span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot;
       <span data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</span>
     </div>
+    <nav class="footer-guides" aria-label="Buying guides">
+      <strong>Buying guides</strong>
+      {guide_links}
+    </nav>
     <div class="footer-contact">
       <a class="btn btn-fb" data-config-href="facebookGroupUrl" hidden>Visit our Facebook group: <span data-config="facebookGroupName"></span></a>
     </div>
@@ -472,7 +480,7 @@ def build_index(items, photo_of, sold):
     <div>
       <strong>Need it delivered?</strong>
       <p><strong>$50 flat</strong> &mdash; delivered to your door anywhere in Bloomington-Normal, IL.</p>
-      <p class="delivery-fine">Outside the area or need installation? Text for a quote &mdash; installation services available for an additional charge.</p>
+      <p class="delivery-fine">Outside the area or need installation? Text for a quote &mdash; installation services available for an additional charge. <a href="guides/delivery.html" class="delivery-link">Delivery details &rarr;</a></p>
     </div>
     <a class="btn btn-call" href="{delivery_href}">Text Cade for a quote</a>
   </div>
@@ -707,6 +715,58 @@ def build_about():
         og_image="og-share.png", page_url="about.html")
 
 
+def build_guide(g, items, photo_of):
+    slug = g["slug"]
+    sections = "\n".join(
+        f"<h2>{esc(h)}</h2>\n{body}" for h, body in g["sections"])
+    listings_html = ""
+    if g.get("category"):
+        cats = [g["category"]]
+        if g["category"] in ("Washers", "Dryers"):
+            cats.append("Washers & Dryers")
+        cat_items = [it for it in items if it["category"] in cats]
+        if cat_items:
+            cards = "\n".join(
+                card_html(it, photo_of[it["listing_id"]][0], prefix="../")
+                for it in cat_items)
+            listings_html = f"""<h2>Current {esc(g["category"]).lower()} in stock</h2>
+<p>Live inventory &mdash; when it's gone, it's gone.</p>
+<div class="grid">
+{cards}
+</div>"""
+        else:
+            listings_html = (f"<h2>Current {esc(g['category']).lower()} in stock</h2>"
+                             "<p>Nothing in this category at the moment &mdash; "
+                             '<a href="../index.html#catalog">check the full catalog</a> '
+                             "or text us and we'll keep an eye out.</p>")
+    others = [o for o in GUIDES if o["slug"] != slug]
+    more = "\n".join(
+        f'<a href="{o["slug"]}.html">{esc(o["h1"])}</a>'
+        for o in others)
+    cta = ("""<div class="guide-cta">
+      <strong>Found what you need?</strong>
+      <p>Every unit is tested before it's listed and backed by a 14-day money-back guarantee.</p>
+      <div class="hero-cta">
+        <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
+        <a class="btn btn-bundle btn-lg" href="../bundle.html">Build a bundle &amp; save</a>
+      </div>
+    </div>""" if g.get("cta") else "")
+    body = f"""<div class="wrap guide">
+  <p class="breadcrumb"><a href="../index.html">&larr; Back to home</a></p>
+  <h1>{esc(g["h1"])}</h1>
+  <div class="guide-intro">{g["intro"]}</div>
+  {sections}
+  {listings_html}
+  {cta}
+  <div class="more-guides">
+    <strong>More buying guides</strong>
+    <nav>{more}</nav>
+  </div>
+</div>"""
+    return page_shell(g["title"], g["meta"], body, "", prefix="../",
+                      og_image="og-share.png", page_url=f"guides/{slug}.html")
+
+
 def build_faq():
     faqs = [
         ("What is your return policy?",
@@ -830,10 +890,15 @@ def main():
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
     write(os.path.join(OUT_DIR, "bundle.html"), build_bundle(active, photo_of, descriptions))
+    guides_dir = os.path.join(OUT_DIR, "guides")
+    for g in GUIDES:
+        write(os.path.join(guides_dir, f"{g['slug']}.html"),
+              build_guide(g, active, photo_of))
 
     # sitemap.xml (active listings only) + robots.txt
-    urls = ["", "about.html", "faq.html", "bundle.html"] + [
-        f"listings/{it['listing_id']}.html" for it in active]
+    urls = (["", "about.html", "faq.html", "bundle.html"]
+            + [f"guides/{g['slug']}.html" for g in GUIDES]
+            + [f"listings/{it['listing_id']}.html" for it in active])
     sitemap = ('<?xml version="1.0" encoding="utf-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                + "\n".join(f"  <url><loc>{SITE_URL}/{u}</loc></url>" for u in urls)
