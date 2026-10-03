@@ -40,7 +40,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "39"
+ASSET_VER = "40"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -283,13 +283,13 @@ def footer(prefix=""):
       <span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot;
       <span data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</span>
     </div>
+    <div class="footer-contact">
+      <a class="btn btn-fb" data-config-href="facebookGroupUrl" hidden>Visit our Facebook group: <span data-config="facebookGroupName"></span></a>
+    </div>
     <nav class="footer-guides" aria-label="Buying guides">
       <strong>Buying guides</strong>
       {guide_links}
     </nav>
-    <div class="footer-contact">
-      <a class="btn btn-fb" data-config-href="facebookGroupUrl" hidden>Visit our Facebook group: <span data-config="facebookGroupName"></span></a>
-    </div>
   </div>
   <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; {esc(ADDRESS_SHORT)}</div>
 </footer>

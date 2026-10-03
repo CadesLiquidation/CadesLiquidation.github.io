@@ -36,7 +36,23 @@ GUIDES = [
              "wall. The front \u2014 the part you actually look at every day \u2014 is "
              "usually flawless.</p>"
              "<p>Every listing on this site has real photos of the actual unit, so you "
-             "can see exactly what you're getting before you ever come look at it.</p>"),
+             "can see exactly what you're getting before you ever come look at it.</p>"
+             "<p>And here's the oldest trick in the book: got a small dent somewhere "
+             "visible? Stick a magnet over it. A photo, a kid's drawing, a pizza "
+             "coupon \u2014 done. Most of our customers do exactly that on day one "
+             "and never think about the dent again.</p>"),
+            ("Buy the nicer appliance for the same money",
+             "<p>Here's the move most of our customers figure out fast: a scratch-and-dent "
+             "<strong>$1,400 French-door refrigerator for $700</strong> beats a brand-new "
+             "$700 top-freezer every single time. Same money out of your pocket "
+             "\u2014 twice the appliance. The dent lives on the side you'll never see; "
+             "the ice maker, the water dispenser, and the extra space are what you "
+             "live with every day.</p>"
+             "<p>Scratch-and-dent flips the normal math. Instead of asking \u201cwhat "
+             "can I afford?\u201d, ask \u201cwhat's the nicest unit I can get for my "
+             "budget?\u201d You'll almost always land one or two tiers higher than "
+             "buying new \u2014 and nobody has ever come back wishing they'd bought "
+             "the cheaper one.</p>"),
             ("What's <em>not</em> wrong with them",
              "<p>Scratch-and-dent does <strong>not</strong> mean used, refurbished, or "
              "repaired. These units were never owned by anyone. Nothing was broken and "
@@ -88,7 +104,9 @@ GUIDES = [
              "the machine has to travel through \u2014 that's the measurement people "
              "forget. For top-loaders, check there's clearance above to open the lid; "
              "for front-loaders, make sure the door can swing open fully.</p>"),
-            ("Capacity",
+                        ("Spend a little more, get a lot more",
+             "<p>If a front-loader is only slightly more than the top-load you're eyeing, take the front-loader — gentler on clothes, bigger loads, lower water bills, and you'll use it for the next decade. And if you're buying a dryer too, grab them as a pair: bundling knocks up to 15% off, which usually covers the step up to the nicer model by itself.</p>"),
+("Capacity",
              "<p>Measured in cubic feet. Around <strong>4.5 cu. ft. and up</strong> "
              "handles a family comfortably, including bulky items like comforters. "
              "Smaller households can get by with less, but bigger tubs are more "
@@ -130,7 +148,9 @@ GUIDES = [
              "Allow a few extra inches of depth for the vent hose behind the machine, "
              "and check the door swing. If you're buying a washer and dryer together, "
              "matching widths look right and fit the space evenly.</p>"),
-            ("Venting",
+                        ("Buy the pair, save on both",
+             "<p>Here's the thing about dryers: the smartest money isn't in the dryer, it's in the <em>pair</em>. A matching washer and dryer bought together with the bundle discount (up to 15% off) often costs less than buying them one at a time — which means the nicer dryer you were debating basically pays for itself. Match your washer's width, pick your fuel type, and bundle them.</p>"),
+("Venting",
              "<p>Almost every home dryer in the US is <strong>vented</strong> \u2014 it "
              "needs a duct to the outside. Keep that duct short and clean; a clogged "
              "vent is the #1 reason dryers underperform and the #1 laundry-room fire "
@@ -176,7 +196,9 @@ GUIDES = [
              "off to buy you a couple of inches. Decide between <strong>counter-depth</strong> "
              "(flush with cabinets, less capacity) and <strong>standard depth</strong> "
              "(sticks out a few inches, holds more).</p>"),
-            ("Features: worth it or not?",
+                        ("This is where scratch-and-dent wins biggest",
+             "<p>Refrigerators are the category where the scratch-and-dent math is most dramatic. The jump from a basic top-freezer to a French door changes your daily life — wide shelves, ice and water in the door, a freezer drawer that actually organizes. And a dented French door routinely costs the same as a pristine basic model. Buy the nicer fridge. The dent lives on the side; the convenience lives in your kitchen.</p>"),
+("Features: worth it or not?",
              "<p>Ice and water in the door are genuinely convenient \u2014 and the most "
              "common thing to need a repair down the road. Door-in-door and smart "
              "screens are nice but add cost and complexity. For pure reliability-per-dollar, "
@@ -218,7 +240,9 @@ GUIDES = [
              "opening, and check the depth <strong>including the handle</strong> \u2014 "
              "that's the part that sticks out into the walkway. Confirm whether you "
              "have a gas hookup or a 240V outlet before you fall in love with a unit.</p>"),
-            ("Nice-to-have features",
+                        ("The upgrade worth paying for",
+             "<p>If there's one step-up worth the money on a range, it's <strong>convection</strong> — faster, more even cooking you'll notice every single week. Thanks to scratch-and-dent pricing, a convection range with a scuffed side panel typically costs about what a basic coil-top model does new. Same budget, much better cooking.</p>"),
+("Nice-to-have features",
              "<p>Convection fans cook faster and more evenly \u2014 genuinely useful. "
              "Air-fry modes are a fun bonus on newer models. Self-cleaning is convenient "
              "but hard on the oven's electronics over time; many techs quietly recommend "
@@ -260,7 +284,9 @@ GUIDES = [
              "<li>Check the lid or door seal all the way around \u2014 a weak seal is the main cause of frost buildup.</li>"
              "<li>Look inside for rust or heavy staining, which can signal a hard previous life.</li>"
              "</ul>"),
-            ("Where to put it",
+                        ("Chest or upright? Be honest with yourself",
+             "<p>Chest freezers win on price per cubic foot — but here's the honest truth: food you can't see is food you'll forget, and forgotten food is money in the trash. If the budget stretches, the upright is the freezer you'll actually enjoy owning. An organized upright wastes less food, which quietly pays you back all year.</p>"),
+("Where to put it",
              "<p>Freezers need a few inches of airflow around them and a level spot. "
              "Measure the space <em>and</em> the path getting it there \u2014 chest "
              "freezers are bulky and awkward to move. If you need it delivered, that's "
@@ -303,7 +329,9 @@ GUIDES = [
              "a cabinet opening \u2014 measure the opening, not the old dishwasher. "
              "Check that you have the water line, drain hookup, and power already in "
              "place; they're usually there if a dishwasher was installed before.</p>"),
-            ("A note on installation",
+                        ("The upgrade customers are happiest they made",
+             "<p>Ask anyone who owns one: the two things worth paying extra for in a dishwasher are <strong>quietness</strong> (under 50 dBA) and a <strong>stainless tub</strong>. You'll run this machine nearly every day for a decade — the difference between hearing it from the couch and forgetting it's on is worth every penny. This is the single most no-regrets upgrade in the appliance world.</p>"),
+("A note on installation",
              "<p>Swapping a dishwasher involves water, drain, and electrical connections "
              "under your sink. If that doesn't sound like your idea of a Saturday, "
              "installation services are available \u2014 just ask for a quote.</p>"),
@@ -341,6 +369,11 @@ GUIDES = [
              "hole it sits in. Manufacturers publish exact cutout specs, and there's "
              "very little forgiveness. When in doubt, text us the measurements and "
              "we'll confirm fit before you buy.</p>"),
+            ("Worth the step up",
+             "<p>If you're choosing between a basic single oven and a convection or "
+             "double oven for similar money, take the nicer one \u2014 you'll cook on "
+             "it for 15 years. Holiday cooking with two temperatures at once is one of "
+             "those things you don't know you needed until you've had it.</p>"),
             ("What to check before you buy",
              "<ul>"
              "<li>The oven should reach and hold temperature \u2014 every oven here is tested before listing.</li>"
