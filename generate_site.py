@@ -283,10 +283,12 @@ def header(active, prefix=""):
 </header>"""
 
 
-def footer(prefix=""):
+def footer(prefix="", fine_print=None):
     guide_links = "\n      ".join(
         f'<a href="{prefix}guides/{g["slug"]}.html">{esc(g["h1"])}</a>'
         for g in GUIDES)
+    small = (fine_print if fine_print is not None
+             else "14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies")
     return f"""<footer class="site-footer">
   <div class="wrap footer-inner">
     <div>
@@ -302,13 +304,13 @@ def footer(prefix=""):
       {guide_links}
     </nav>
   </div>
-  <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; {esc(ADDRESS_SHORT)}</div>
+  <div class="wrap footer-small">{small} &middot; {esc(ADDRESS_SHORT)}</div>
 </footer>
 <script src="{prefix}site.js?v={ASSET_VER}"></script>"""
 
 
 def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
-               page_url="", json_ld=None, noindex=False):
+               page_url="", json_ld=None, noindex=False, fine_print=None):
     og_tags = ""
     if og_image:
         abs_img = f"{SITE_URL}/images/{og_image}"
@@ -350,7 +352,7 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 <main>
 {body}
 </main>
-{footer(prefix)}
+{footer(prefix, fine_print)}
 </body>
 </html>
 """
@@ -800,7 +802,8 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
         body, "more", prefix="../",
         og_image=photo_files[0],
         page_url=f"listings/{item['listing_id']}.html",
-        json_ld=product_ld, noindex=sold)
+        json_ld=product_ld, noindex=sold,
+        fine_print="Delivery available for a charge")
 
 
 def build_about():
@@ -1043,7 +1046,8 @@ def build_more(items, photo_of, descriptions):
         f"Furniture, home decor, overstock and more discounted finds from "
         f"{PLACEHOLDER_NAME} in {PLACEHOLDER_AREA}. One-of-a-kind Marketplace deals.",
         body, "more",
-        og_image="og-share.png", page_url="more.html")
+        og_image="og-share.png", page_url="more.html",
+        fine_print="Delivery available for a charge")
 
 
 def write(path, content):
