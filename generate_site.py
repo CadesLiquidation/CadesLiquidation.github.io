@@ -83,6 +83,7 @@ RETAIL_PRICES = {
     "1643544697442082": 3000,  # Frigidaire Gallery Fridge (GRMS2773AF) — MSRP per Cade
     "1585063482717437": 649,   # Whirlpool Stainless Gas Range (WFG320M0MS) — label confirmed 2026-10-01
     "1723272132838470": 2599,  # GE 27cu French Door (GNE27JYMFS/GNE27JYMYFFS) — $2,599 list at 5 retailers 2026-10-06
+    "1026592053773314": 1599,  # GE Profile Dishwasher Black Stainless (PDT795SBVTS) — model read off the shipping label in his photo 2026-10-06; $1,599 list/MSRP at 6 retailers (verified again 2026-10-06)
 }
 
 
