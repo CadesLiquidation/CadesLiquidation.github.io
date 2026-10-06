@@ -761,7 +761,7 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
     </dl>
     {cta}
     <p class="appt-note">{esc(APPT_NOTE)}</p>
-    <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies</p>
+    <p class="guarantee-note">Furniture, decor &amp; overstock finds &middot; Delivery available for a charge</p>
   </div>
 </div>"""
     others = [it for it in more_items if it["listing_id"] != item["listing_id"]
