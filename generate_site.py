@@ -385,31 +385,23 @@ def card_html(item, photo_file, prefix="", sold_badge=False):
 
 
 def more_card_html(item, photo_file, description, prefix=""):
-    """Card for a non-appliance (More Deals) item. No detail page exists for
-    these — the card links straight to the Facebook listing, which is where
-    the real photos and messaging live."""
+    """Card for a non-appliance (More Deals) item. Links to its on-site detail
+    page, which carries the text-Cade CTA and the Facebook listing button."""
     cats = " ".join(filter_keys(item["category"]))
     desc = (description or "").strip().replace("\n", " ")
     if len(desc) > 140:
         desc = desc[:137].rsplit(" ", 1)[0] + "..."
     desc_html = f'<p class="more-desc">{esc(desc)}</p>' if desc else ""
-    # Manufacturer/retailer shots (not the actual unit) carry the disclaimer,
-    # per his standing rule. Keyed on filename so real photos he sends later
-    # (different names) automatically drop the badge.
-    stock_badge = ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
-                   if os.path.basename(photo_file).startswith("moredeals-") else "")
     return f"""<article class="card" data-cats="{cats}">
-  <a href="{esc(item['url'])}" target="_blank" rel="noopener" class="card-link">
+  <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
     <div class="card-img">
       <img src="{prefix}images/{esc(photo_file)}?v={ASSET_VER}" alt="{esc(item['title'])}" loading="lazy">
-      {stock_badge}
     </div>
     <div class="card-body">
       <span class="badge">{esc(item['category'])}</span>
       <h3>{esc(item['title'])}</h3>
       <p class="price">{esc(item['price'])}</p>
       {desc_html}
-      <p class="fb-cta">View on Facebook &rarr;</p>
     </div>
   </a>
 </article>"""
@@ -721,6 +713,96 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
         json_ld=product_ld, noindex=sold)
 
 
+def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
+    """Detail page for a More Deals (non-appliance) item. Mirrors the appliance
+    detail page: photo, price, description, text-Cade CTA and Facebook button.
+    No retail/savings lines and no 'one only' note — quantities vary on these."""
+    desc = descriptions.get(item["listing_id"], "")
+    desc_html = desc_to_html(desc)
+    if not desc_html:
+        desc_html = ("<p>Contact us for full details, dimensions, and current "
+                     "availability on this item.</p>")
+    gallery = (f'<div class="gallery"><img id="gallery-main" src="../images/{esc(photo_files[0])}?v={ASSET_VER}" '
+               f'alt="{esc(item["title"])}"><span class="zoom-hint">Tap to zoom</span></div>')
+    mp_url = item.get("url", "")
+    mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
+                 if mp_url else "")
+    sold = item.get("status") == "sold"
+    sold_banner = ('<div class="sold-banner">This item has sold &mdash; '
+                   '<a href="../more.html">browse more deals</a></div>'
+                   if sold else "")
+    ask_body = urllib.parse.quote(
+        f"Hi Cade, is this still available? {item['title']} ({item['price']})")
+    ask_href = f"sms:{SMS_PHONE}?&body={ask_body}"
+    cta = ("" if sold else f"""<div class="detail-cta">
+      <div class="detail-cta-main">
+        <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
+        {mp_button}
+      </div>
+      <div class="detail-cta-sub">
+        <a class="btn btn-ghost" href="{ask_href}">Is this still available?</a>
+        <button type="button" class="btn btn-ghost" id="share-listing">Share this listing</button>
+      </div>
+    </div>""")
+    body = f"""<div class="wrap detail">
+  <p class="breadcrumb"><a href="../more.html">&larr; Back to More Deals</a></p>
+  {sold_banner}
+  {gallery}
+  <div class="detail-info">
+    <span class="badge">{esc(item['category'])}</span>
+    <h1>{esc(item['title'])}</h1>
+    <p class="price price-lg">{esc(item['price'])}</p>
+    <div class="description" id="listing-desc">{desc_html}</div>
+    <button type="button" class="desc-toggle" id="desc-toggle" hidden>View more</button>
+    <dl class="facts">
+      <div><dt>Condition</dt><dd>{esc(item.get('condition', 'New') or 'New')}</dd></div>
+      <div><dt>Category</dt><dd>{esc(item['category'])}</dd></div>
+      <div><dt>Price</dt><dd>{esc(item['price'])}</dd></div>
+    </dl>
+    {cta}
+    <p class="appt-note">{esc(APPT_NOTE)}</p>
+    <p class="guarantee-note">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies</p>
+  </div>
+</div>"""
+    others = [it for it in more_items if it["listing_id"] != item["listing_id"]
+              and it.get("status") != "sold"][:4]
+    related_html = ""
+    if others and not sold:
+        cards = "\n".join(more_card_html(it, photo_of[it["listing_id"]][0],
+                                         descriptions.get(it["listing_id"], ""),
+                                         prefix="../")
+                          for it in others)
+        related_html = f"""<section class="wrap">
+  <h2 class="section-title">More deals</h2>
+  <div class="grid">
+{cards}
+  </div>
+</section>"""
+    body = body + related_html
+    product_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": item["title"],
+        "image": f"{SITE_URL}/images/{photo_files[0]}",
+        "description": meta_description(item, desc),
+        "offers": {
+            "@type": "Offer",
+            "price": item.get("price_num", 0),
+            "priceCurrency": "USD",
+            "availability": ("https://schema.org/OutOfStock" if sold
+                             else "https://schema.org/InStock"),
+            "url": f"{SITE_URL}/listings/{item['listing_id']}.html",
+        },
+    }, indent=2)
+    return page_shell(
+        seo_title(item),
+        meta_description(item, desc),
+        body, "more", prefix="../",
+        og_image=photo_files[0],
+        page_url=f"listings/{item['listing_id']}.html",
+        json_ld=product_ld, noindex=sold)
+
+
 def build_about():
     body = f"""<div class="wrap prose">
   <h1>About us</h1>
@@ -945,7 +1027,7 @@ def build_more(items, photo_of, descriptions):
              "here whenever Cade posts them on Facebook.</p>" if not items else "")
     body = f"""<section class="wrap">
   <h1>More Deals</h1>
-  <p class="section-sub">Beyond appliances: furniture, home decor, overstock finds, and anything else Cade lists on Facebook Marketplace. One of each, just like the appliances &mdash; when it&rsquo;s gone, it&rsquo;s gone. Photos and messaging live on the Facebook listings.</p>
+  <p class="section-sub">Beyond appliances: furniture, home decor, and overstock finds at the same kind of discounts. Quantities vary by item &mdash; tap one for details and text Cade with any questions.</p>
   <div class="catalog-toolbar">
     <input type="search" id="catalog-search" placeholder="Search more deals..." aria-label="Search more deals">
   </div>
@@ -982,6 +1064,8 @@ def main():
                   if it.get("category") in NON_APPLIANCE_CATS]
     sold_appliances = [it for it in sold
                        if it.get("category") not in NON_APPLIANCE_CATS]
+    sold_more = [it for it in sold
+                 if it.get("category") in NON_APPLIANCE_CATS]
     print(f"Loaded {len(items)} listings ({len(appliances)} active appliances, "
           f"{len(more_items)} more-deals, {len(sold)} sold), "
           f"{len(descriptions)} descriptions.")
@@ -996,6 +1080,10 @@ def main():
         write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
               build_detail(it, descriptions, photo_of[it["listing_id"]],
                            appliances, photo_of))
+    for it in more_items + sold_more:
+        write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
+              build_more_detail(it, descriptions, photo_of[it["listing_id"]],
+                                more_items, photo_of))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
     write(os.path.join(OUT_DIR, "more.html"),
@@ -1010,7 +1098,8 @@ def main():
     # sitemap.xml (active listings only) + robots.txt
     urls = (["", "about.html", "faq.html", "bundle.html", "more.html"]
             + [f"guides/{g['slug']}.html" for g in GUIDES]
-            + [f"listings/{it['listing_id']}.html" for it in appliances])
+            + [f"listings/{it['listing_id']}.html" for it in appliances]
+            + [f"listings/{it['listing_id']}.html" for it in more_items])
     sitemap = ('<?xml version="1.0" encoding="utf-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                + "\n".join(f"  <url><loc>{SITE_URL}/{u}</loc></url>" for u in urls)
