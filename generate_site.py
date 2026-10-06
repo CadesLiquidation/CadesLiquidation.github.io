@@ -393,10 +393,16 @@ def more_card_html(item, photo_file, description, prefix=""):
     if len(desc) > 140:
         desc = desc[:137].rsplit(" ", 1)[0] + "..."
     desc_html = f'<p class="more-desc">{esc(desc)}</p>' if desc else ""
+    # Manufacturer/retailer shots (not the actual unit) carry the disclaimer,
+    # per his standing rule. Keyed on filename so real photos he sends later
+    # (different names) automatically drop the badge.
+    stock_badge = ('<span class="stock-badge">Stock photo &mdash; not the actual unit</span>'
+                   if os.path.basename(photo_file).startswith("moredeals-") else "")
     return f"""<article class="card" data-cats="{cats}">
   <a href="{esc(item['url'])}" target="_blank" rel="noopener" class="card-link">
     <div class="card-img">
       <img src="{prefix}images/{esc(photo_file)}?v={ASSET_VER}" alt="{esc(item['title'])}" loading="lazy">
+      {stock_badge}
     </div>
     <div class="card-body">
       <span class="badge">{esc(item['category'])}</span>
