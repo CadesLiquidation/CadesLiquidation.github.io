@@ -292,7 +292,7 @@ def copy_photos(items):
 def header(active, prefix=""):
     return f"""<header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png" alt="Cade's Liquidation"></a>
+    <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png?v={ASSET_VER}" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
       <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
       <a href="{prefix}bundle.html" class="{'active' if active == 'bundles' else ''}">Bundles</a>
@@ -492,9 +492,9 @@ def build_index(items, photo_of, sold):
       <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
     </div>
     <div class="hero-collage">
-      <img class="collage-main" src="images/photo-31-ge-frenchdoor-hero.jpg" alt="GE French door refrigerator" fetchpriority="high">
-      <img class="collage-a" src="images/photo-12-lg-set-black.jpg" alt="Washer and dryer set">
-      <img class="collage-b" src="images/photo-18-frigidaire-gallery.jpg" alt="Refrigerator">
+      <img class="collage-main" src="images/photo-31-ge-frenchdoor-hero.jpg?v={ASSET_VER}" alt="GE French door refrigerator" fetchpriority="high">
+      <img class="collage-a" src="images/photo-12-lg-set-black.jpg?v={ASSET_VER}" alt="Washer and dryer set">
+      <img class="collage-b" src="images/photo-18-frigidaire-gallery.jpg?v={ASSET_VER}" alt="Refrigerator">
     </div>
   </div>
 </section>
@@ -536,7 +536,7 @@ def build_index(items, photo_of, sold):
 {sold_section}
 <section class="visit-band">
   <div class="wrap visit-inner">
-    <img src="images/warehouse-2.jpg" alt="Our warehouse stocked with appliances" loading="lazy">
+    <img src="images/warehouse-2.jpg?v={ASSET_VER}" alt="Our warehouse stocked with appliances" loading="lazy">
     <div class="visit-copy">
       <h2>Come see it in person</h2>
       <p>Our warehouse is stocked with washers, dryers, refrigerators, ranges and more
