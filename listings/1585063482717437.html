@@ -31,15 +31,21 @@
   }
 }
 </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V2FXEV2VNY"></script>
+<!-- Google tag (gtag.js) — library loads after page load so analytics
+     never blocks rendering or interactivity -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-V2FXEV2VNY');
+  window.addEventListener('load', function() {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-V2FXEV2VNY';
+    document.head.appendChild(s);
+    gtag('config', 'G-V2FXEV2VNY');
+  });
 </script>
-<link rel="stylesheet" href="../styles.css?v=43">
+<link rel="stylesheet" href="../styles.css?v=44">
 <link rel="icon" type="image/png" href="../images/favicon.png">
 <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
 
@@ -63,15 +69,15 @@
   <p class="breadcrumb"><a href="../index.html">&larr; Back to catalog</a></p>
   <div class="sold-banner">This item has sold &mdash; <a href="../index.html">browse the current catalog</a></div>
   <div class="gallery">
-      <img id="gallery-main" src="../images/photo-01-gas-range.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range">
+      <img id="gallery-main" src="../images/photo-01-gas-range.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range">
       <span class="zoom-hint">Tap to zoom</span>
-      <div class="thumbs collapsed"><button class="thumb" data-full="../images/photo-128-whirlpool-range-front.jpg?v=43"><img src="../images/photo-128-whirlpool-range-front.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 2"></button>
-<button class="thumb" data-full="../images/photo-129-whirlpool-range-cooktop.jpg?v=43"><img src="../images/photo-129-whirlpool-range-cooktop.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 3"></button>
-<button class="thumb" data-full="../images/photo-130-whirlpool-range-controls.jpg?v=43"><img src="../images/photo-130-whirlpool-range-controls.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 4"></button>
-<button class="thumb" data-full="../images/photo-131-whirlpool-range-oveninterior.jpg?v=43"><img src="../images/photo-131-whirlpool-range-oveninterior.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 5"></button>
-<button class="thumb thumb-more" data-remaining="3" data-full="../images/photo-132-whirlpool-range-ovenopen.jpg?v=43"><img src="../images/photo-132-whirlpool-range-ovenopen.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 6"></button>
-<button class="thumb" data-full="../images/photo-133-whirlpool-range-back.jpg?v=43"><img src="../images/photo-133-whirlpool-range-back.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 7"></button>
-<button class="thumb" data-full="../images/photo-134-whirlpool-range-modellabel.jpg?v=43"><img src="../images/photo-134-whirlpool-range-modellabel.jpg?v=43" alt="NEW Whirlpool Stainless Gas Range - photo 8"></button></div>
+      <div class="thumbs collapsed"><button class="thumb" data-full="../images/photo-128-whirlpool-range-front.jpg?v=44"><img src="../images/photo-128-whirlpool-range-front.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 2"></button>
+<button class="thumb" data-full="../images/photo-129-whirlpool-range-cooktop.jpg?v=44"><img src="../images/photo-129-whirlpool-range-cooktop.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 3"></button>
+<button class="thumb" data-full="../images/photo-130-whirlpool-range-controls.jpg?v=44"><img src="../images/photo-130-whirlpool-range-controls.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 4"></button>
+<button class="thumb" data-full="../images/photo-131-whirlpool-range-oveninterior.jpg?v=44"><img src="../images/photo-131-whirlpool-range-oveninterior.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 5"></button>
+<button class="thumb thumb-more" data-remaining="3" data-full="../images/photo-132-whirlpool-range-ovenopen.jpg?v=44"><img src="../images/photo-132-whirlpool-range-ovenopen.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 6"></button>
+<button class="thumb" data-full="../images/photo-133-whirlpool-range-back.jpg?v=44"><img src="../images/photo-133-whirlpool-range-back.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 7"></button>
+<button class="thumb" data-full="../images/photo-134-whirlpool-range-modellabel.jpg?v=44"><img src="../images/photo-134-whirlpool-range-modellabel.jpg?v=44" alt="NEW Whirlpool Stainless Gas Range - photo 8"></button></div>
     </div>
   <div class="detail-info">
     <span class="badge">Ranges</span>
@@ -100,7 +106,7 @@
   <div class="grid">
 <article class="card" data-cats="ranges" data-fuel="electric" data-color="stainless">
   <a href="../listings/2024831725140515.html" class="card-link">
-    <div class="card-img"><img src="../images/photo-03-electric-range.jpg?v=43" alt="New GE Electric Glass Top Range" loading="lazy"></div>
+    <div class="card-img"><img src="../images/photo-03-electric-range.jpg?v=44" alt="New GE Electric Glass Top Range" loading="lazy"></div>
     <div class="card-body">
       <span class="badge">Ranges</span>
       <h3>New GE Electric Glass Top Range</h3>
@@ -112,7 +118,7 @@
 </article>
 <article class="card" data-cats="dryers" data-fuel="gas" data-color="white">
   <a href="../listings/2158066711761746.html" class="card-link">
-    <div class="card-img"><img src="../images/photo-19-samsung-dryer.jpg?v=43" alt="7.5 Samsung Dryer" loading="lazy"></div>
+    <div class="card-img"><img src="../images/photo-19-samsung-dryer.jpg?v=44" alt="7.5 Samsung Dryer" loading="lazy"></div>
     <div class="card-body">
       <span class="badge">Dryers</span>
       <h3>7.5 Samsung Dryer</h3>
@@ -124,7 +130,7 @@
 </article>
 <article class="card" data-cats="dishwashers" data-fuel="" data-color="white">
   <a href="../listings/1730395268258466.html" class="card-link">
-    <div class="card-img"><img src="../images/photo-20-amana-dishwasher.jpg?v=43" alt="Amana 24” White Dishwasher" loading="lazy"></div>
+    <div class="card-img"><img src="../images/photo-20-amana-dishwasher.jpg?v=44" alt="Amana 24” White Dishwasher" loading="lazy"></div>
     <div class="card-body">
       <span class="badge">Dishwashers</span>
       <h3>Amana 24” White Dishwasher</h3>
@@ -136,7 +142,7 @@
 </article>
 <article class="card" data-cats="refrigerators" data-fuel="" data-color="">
   <a href="../listings/1795785794917959.html" class="card-link">
-    <div class="card-img"><img src="../images/photo-28-lg-instaview.jpg?v=43" alt="NEW 29 Smart LG InstaView Refrigerator" loading="lazy"></div>
+    <div class="card-img"><img src="../images/photo-28-lg-instaview.jpg?v=44" alt="NEW 29 Smart LG InstaView Refrigerator" loading="lazy"></div>
     <div class="card-body">
       <span class="badge">Refrigerators</span>
       <h3>NEW 29 Smart LG InstaView Refrigerator</h3>
@@ -174,6 +180,6 @@
   </div>
   <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; 1206 S Adelaide St Suite 7, Normal, IL</div>
 </footer>
-<script src="../site.js?v=43"></script>
+<script src="../site.js?v=44"></script>
 </body>
 </html>

@@ -72,16 +72,25 @@
     var btn = document.getElementById("desc-toggle");
     if (!desc || !btn) return;
     desc.classList.add("collapsed");
-    // only offer the toggle when the text actually overflows
-    if (desc.scrollHeight <= desc.clientHeight + 4) {
-      desc.classList.remove("collapsed");
-      return;
-    }
-    btn.hidden = false;
     btn.addEventListener("click", function () {
       var collapsed = desc.classList.toggle("collapsed");
       btn.textContent = collapsed ? "View more" : "Show less";
     });
+    // Only offer the toggle when the text actually overflows. Reading
+    // scrollHeight forces a synchronous layout, so defer the measurement
+    // until the browser is idle to keep it off the load critical path.
+    function measure() {
+      if (desc.scrollHeight <= desc.clientHeight + 4) {
+        desc.classList.remove("collapsed");
+        return;
+      }
+      btn.hidden = false;
+    }
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(measure, { timeout: 2000 });
+    } else {
+      setTimeout(measure, 0);
+    }
   }
 
   function initShare() {

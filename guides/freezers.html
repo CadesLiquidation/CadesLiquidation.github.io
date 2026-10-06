@@ -14,15 +14,21 @@
 <meta name="twitter:title" content="Freezer Buying Guide: Chest vs. Upright | Cade&#x27;s Liquidation">
 <meta name="twitter:description" content="Chest vs. upright freezers, garage-ready models, and what to check — a practical freezer buying guide from Cade&#x27;s Liquidation in Bloomington-Normal, IL.">
 <meta name="twitter:image" content="https://cadesliquidation.com/images/og-share.png">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V2FXEV2VNY"></script>
+<!-- Google tag (gtag.js) — library loads after page load so analytics
+     never blocks rendering or interactivity -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-V2FXEV2VNY');
+  window.addEventListener('load', function() {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-V2FXEV2VNY';
+    document.head.appendChild(s);
+    gtag('config', 'G-V2FXEV2VNY');
+  });
 </script>
-<link rel="stylesheet" href="../styles.css?v=43">
+<link rel="stylesheet" href="../styles.css?v=44">
 <link rel="icon" type="image/png" href="../images/favicon.png">
 <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
 
@@ -103,6 +109,6 @@
   </div>
   <div class="wrap footer-small">14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies &middot; 1206 S Adelaide St Suite 7, Normal, IL</div>
 </footer>
-<script src="../site.js?v=43"></script>
+<script src="../site.js?v=44"></script>
 </body>
 </html>

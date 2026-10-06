@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "43"
+ASSET_VER = "44"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -358,13 +358,19 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(meta_desc)}">{robots}{og_tags}{ld_tag}
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+<!-- Google tag (gtag.js) — library loads after page load so analytics
+     never blocks rendering or interactivity -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){{dataLayer.push(arguments);}}
   gtag('js', new Date());
-  gtag('config', '{GA_MEASUREMENT_ID}');
+  window.addEventListener('load', function() {{
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}';
+    document.head.appendChild(s);
+    gtag('config', '{GA_MEASUREMENT_ID}');
+  }});
 </script>
 <link rel="stylesheet" href="{prefix}styles.css?v={ASSET_VER}">
 <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
