@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "42"
+ASSET_VER = "43"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -242,6 +242,27 @@ EXTRA_IMAGES = [
 ]
 
 
+def optimize_copy(src, dst, max_w=800, quality=78):
+    """Copy an image into the build, downscaling large JPEGs for the web.
+
+    Originals in SRC_DIR are never touched; only the build copy is optimized.
+    """
+    if src.lower().endswith((".jpg", ".jpeg")):
+        try:
+            from PIL import Image
+            im = Image.open(src)
+            if im.mode in ("RGBA", "P"):
+                im = im.convert("RGB")
+            if im.width > max_w:
+                im.thumbnail((max_w, max_w * 10), Image.LANCZOS)
+            im.save(dst, "JPEG", quality=quality, progressive=True,
+                    optimize=True)
+            return
+        except Exception as e:
+            print(f"WARNING: optimize failed for {src}: {e}", file=sys.stderr)
+    shutil.copy2(src, dst)
+
+
 def copy_photos(items):
     os.makedirs(IMG_DIR, exist_ok=True)
     used = set()
@@ -254,12 +275,12 @@ def copy_photos(items):
                 continue
             name = os.path.basename(src_rel)
             used.add(name)
-            shutil.copy2(src, os.path.join(IMG_DIR, name))
+            optimize_copy(src, os.path.join(IMG_DIR, name))
     for rel in EXTRA_IMAGES:
         src = os.path.join(SRC_DIR, rel)
         if os.path.exists(src):
             name = os.path.basename(rel)
-            shutil.copy2(src, os.path.join(IMG_DIR, name))
+            optimize_copy(src, os.path.join(IMG_DIR, name))
             used.add(name)
     # remove stale images no longer referenced
     for f in os.listdir(IMG_DIR):
@@ -311,7 +332,8 @@ def footer(prefix="", fine_print=None):
 
 
 def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
-               page_url="", json_ld=None, noindex=False, fine_print=None):
+               page_url="", json_ld=None, noindex=False, fine_print=None,
+               preload=None):
     og_tags = ""
     if og_image:
         abs_img = f"{SITE_URL}/images/{og_image}"
@@ -347,6 +369,7 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 <link rel="stylesheet" href="{prefix}styles.css?v={ASSET_VER}">
 <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
 <link rel="apple-touch-icon" href="{prefix}images/apple-touch-icon.png">
+{f'<link rel="preload" as="image" href="{prefix}images/{preload}?v={ASSET_VER}" fetchpriority="high">' if preload else ""}
 </head>
 <body>
 {header(active, prefix)}
@@ -463,7 +486,7 @@ def build_index(items, photo_of, sold):
       <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
     </div>
     <div class="hero-collage">
-      <img class="collage-main" src="images/photo-31-ge-frenchdoor-hero.jpg" alt="GE French door refrigerator">
+      <img class="collage-main" src="images/photo-31-ge-frenchdoor-hero.jpg" alt="GE French door refrigerator" fetchpriority="high">
       <img class="collage-a" src="images/photo-12-lg-set-black.jpg" alt="Washer and dryer set">
       <img class="collage-b" src="images/photo-18-frigidaire-gallery.jpg" alt="Refrigerator">
     </div>
@@ -561,7 +584,7 @@ def build_index(items, photo_of, sold):
         f"14-day money-back guarantee.",
         body, "catalog",
         og_image="og-share.png", page_url="",
-        json_ld=local_ld)
+        json_ld=local_ld, preload="photo-31-ge-frenchdoor-hero.jpg")
 
 
 def related_items(item, items, n=4):
