@@ -39,8 +39,12 @@ PLACEHOLDER_RATING = "4.9 \u00b7 273+ Facebook Marketplace ratings"
 FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
 
+# Categories that belong on the "More Deals" page instead of the appliance
+# catalog / bundle builder / buying guides.
+NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
+
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "41"
+ASSET_VER = "42"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -222,6 +226,9 @@ EXTRA_IMAGES = [
     "stock/chest-freezer.jpg",
     "stock/dishwasher.jpg",
     "stock/wall-oven.jpg",
+    "stock/furniture.jpg",
+    "stock/decor.jpg",
+    "stock/overstock.jpg",
     "photos/warehouse-1.jpg",
     "photos/warehouse-2.jpg",
     "photos/photo-31-ge-frenchdoor-hero.jpg",
@@ -266,6 +273,7 @@ def header(active, prefix=""):
     <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
       <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
+      <a href="{prefix}more.html" class="{'active' if active == 'more' else ''}">More Deals</a>
       <a href="{prefix}bundle.html" class="{'active' if active == 'bundles' else ''}">Bundles</a>
       <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
       <a href="{prefix}faq.html" class="{'active' if active == 'faq' else ''}">FAQ</a>
@@ -371,6 +379,31 @@ def card_html(item, photo_file, prefix="", sold_badge=False):
       {retail_html(item['listing_id'], item.get('price_num', 0))}
       <p class="price">{esc(item['price'])}</p>
       {drop_line}
+    </div>
+  </a>
+</article>"""
+
+
+def more_card_html(item, photo_file, description, prefix=""):
+    """Card for a non-appliance (More Deals) item. No detail page exists for
+    these — the card links straight to the Facebook listing, which is where
+    the real photos and messaging live."""
+    cats = " ".join(filter_keys(item["category"]))
+    desc = (description or "").strip().replace("\n", " ")
+    if len(desc) > 140:
+        desc = desc[:137].rsplit(" ", 1)[0] + "..."
+    desc_html = f'<p class="more-desc">{esc(desc)}</p>' if desc else ""
+    return f"""<article class="card" data-cats="{cats}">
+  <a href="{esc(item['url'])}" target="_blank" rel="noopener" class="card-link">
+    <div class="card-img">
+      <img src="{prefix}images/{esc(photo_file)}?v={ASSET_VER}" alt="{esc(item['title'])}" loading="lazy">
+    </div>
+    <div class="card-body">
+      <span class="badge">{esc(item['category'])}</span>
+      <h3>{esc(item['title'])}</h3>
+      <p class="price">{esc(item['price'])}</p>
+      {desc_html}
+      <p class="fb-cta">View on Facebook &rarr;</p>
     </div>
   </a>
 </article>"""
@@ -887,6 +920,44 @@ def build_bundle(items, photo_of, descriptions):
         og_image="og-share.png", page_url="bundle.html")
 
 
+def build_more(items, photo_of, descriptions):
+    """The 'More Deals' page: everything Cade sells that isn't an appliance —
+    furniture, home decor, overstock finds. Cards link to the Facebook listings
+    (where the real photos live); there are no on-site detail pages for these."""
+    present = [c for c in ["Furniture", "Home Decor", "Overstock"]
+               if any(it["category"] == c for it in items)]
+    filters = "\n".join(
+        f'<button class="filter-btn{" active" if f == "All" else ""}" data-filter="{f.lower()}">{f}</button>'
+        for f in ["All"] + present
+    )
+    cards = "\n".join(
+        more_card_html(it, photo_of[it["listing_id"]][0],
+                       descriptions.get(it["listing_id"], ""))
+        for it in sorted(items, key=lambda it: it.get("price_num", 0))
+    )
+    empty = ("<p>Nothing here right now — new overstock and furniture land "
+             "here whenever Cade posts them on Facebook.</p>" if not items else "")
+    body = f"""<section class="wrap">
+  <h1>More Deals</h1>
+  <p class="section-sub">Beyond appliances: furniture, home decor, overstock finds, and anything else Cade lists on Facebook Marketplace. One of each, just like the appliances &mdash; when it&rsquo;s gone, it&rsquo;s gone. Photos and messaging live on the Facebook listings.</p>
+  <div class="catalog-toolbar">
+    <input type="search" id="catalog-search" placeholder="Search more deals..." aria-label="Search more deals">
+  </div>
+  <div class="filters">{filters}</div>
+  <div class="grid" id="catalog-grid">
+{cards}
+  </div>
+  <p class="grid-empty" id="grid-empty" hidden>No items match your search.</p>
+  {empty}
+</section>"""
+    return page_shell(
+        f"More Deals: Furniture & Overstock | {PLACEHOLDER_NAME}",
+        f"Furniture, home decor, overstock and more discounted finds from "
+        f"{PLACEHOLDER_NAME} in {PLACEHOLDER_AREA}. One-of-a-kind Marketplace deals.",
+        body, "more",
+        og_image="og-share.png", page_url="more.html")
+
+
 def write(path, content):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
@@ -897,30 +968,43 @@ def main():
     items, descriptions = load_data()
     active = [it for it in items if it.get("status") != "sold"]
     sold = [it for it in items if it.get("status") == "sold"]
-    print(f"Loaded {len(items)} listings ({len(active)} active, {len(sold)} sold), "
+    # Appliances go to the catalog / bundle builder / guides / detail pages;
+    # everything else (furniture, decor, overstock) goes to the More Deals page.
+    appliances = [it for it in active
+                  if it.get("category") not in NON_APPLIANCE_CATS]
+    more_items = [it for it in active
+                  if it.get("category") in NON_APPLIANCE_CATS]
+    sold_appliances = [it for it in sold
+                       if it.get("category") not in NON_APPLIANCE_CATS]
+    print(f"Loaded {len(items)} listings ({len(appliances)} active appliances, "
+          f"{len(more_items)} more-deals, {len(sold)} sold), "
           f"{len(descriptions)} descriptions.")
     copy_photos(items)
     photo_of = {it["listing_id"]: [os.path.basename(p) for p in resolve_photos(it)]
                 for it in items}
 
     os.makedirs(LISTINGS_DIR, exist_ok=True)
-    write(os.path.join(OUT_DIR, "index.html"), build_index(active, photo_of, sold))
-    for it in items:
+    write(os.path.join(OUT_DIR, "index.html"),
+          build_index(appliances, photo_of, sold_appliances))
+    for it in appliances + sold_appliances:
         write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
               build_detail(it, descriptions, photo_of[it["listing_id"]],
-                           active, photo_of))
+                           appliances, photo_of))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
-    write(os.path.join(OUT_DIR, "bundle.html"), build_bundle(active, photo_of, descriptions))
+    write(os.path.join(OUT_DIR, "more.html"),
+          build_more(more_items, photo_of, descriptions))
+    write(os.path.join(OUT_DIR, "bundle.html"),
+          build_bundle(appliances, photo_of, descriptions))
     guides_dir = os.path.join(OUT_DIR, "guides")
     for g in GUIDES:
         write(os.path.join(guides_dir, f"{g['slug']}.html"),
-              build_guide(g, active, photo_of))
+              build_guide(g, appliances, photo_of))
 
     # sitemap.xml (active listings only) + robots.txt
-    urls = (["", "about.html", "faq.html", "bundle.html"]
+    urls = (["", "about.html", "faq.html", "bundle.html", "more.html"]
             + [f"guides/{g['slug']}.html" for g in GUIDES]
-            + [f"listings/{it['listing_id']}.html" for it in active])
+            + [f"listings/{it['listing_id']}.html" for it in appliances])
     sitemap = ('<?xml version="1.0" encoding="utf-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                + "\n".join(f"  <url><loc>{SITE_URL}/{u}</loc></url>" for u in urls)
@@ -928,8 +1012,9 @@ def main():
     write(os.path.join(OUT_DIR, "sitemap.xml"), sitemap)
     write(os.path.join(OUT_DIR, "robots.txt"),
           f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
-    print(f"Wrote index.html, about.html, faq.html, sitemap.xml, robots.txt, "
-          f"{len(items)} listing pages ({len(sold)} sold).")
+    print(f"Wrote index.html, more.html, about.html, faq.html, sitemap.xml, "
+          f"robots.txt, {len(appliances) + len(sold_appliances)} listing pages "
+          f"({len(sold_appliances)} sold).")
 
 
 if __name__ == "__main__":

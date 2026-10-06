@@ -535,6 +535,10 @@ body {
 .price-drop { color: #15803d; font-weight: 700; margin: 2px 0 0; }
 .card-body .price-drop { font-size: 0.85rem; }
 
+/* ===== More Deals cards ===== */
+.more-desc { color: var(--muted); font-size: 0.88rem; margin: 6px 0 0; }
+.fb-cta { color: var(--brand); font-weight: 700; font-size: 0.9rem; margin: 8px 0 0; }
+
 /* ===== Detail CTA layout ===== */
 .detail-cta { display: flex; flex-direction: column; gap: 12px; }
 .detail-cta-main { display: flex; flex-direction: column; gap: 10px; }
