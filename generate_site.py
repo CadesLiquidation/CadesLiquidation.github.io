@@ -273,8 +273,8 @@ def header(active, prefix=""):
     <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
       <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
-      <a href="{prefix}more.html" class="{'active' if active == 'more' else ''}">More Deals</a>
       <a href="{prefix}bundle.html" class="{'active' if active == 'bundles' else ''}">Bundles</a>
+      <a href="{prefix}more.html" class="{'active' if active == 'more' else ''}">More Deals</a>
       <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
       <a href="{prefix}faq.html" class="{'active' if active == 'faq' else ''}">FAQ</a>
     </nav>
