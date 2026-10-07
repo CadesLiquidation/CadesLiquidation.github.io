@@ -359,6 +359,7 @@ def page_shell(title, meta_desc, body, active, prefix="", og_image=None,
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(meta_desc)}">{robots}{og_tags}{ld_tag}
+<link rel="canonical" href="{esc(f'{SITE_URL}/{page_url}')}">
 <!-- Google tag (gtag.js) — library loads after page load so analytics
      never blocks rendering or interactivity -->
 <script>
