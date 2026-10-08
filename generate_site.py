@@ -27,7 +27,6 @@ LISTINGS_DIR = os.path.join(OUT_DIR, "listings")
 
 PLACEHOLDER_NAME = "Cade's Liquidation"
 PLACEHOLDER_TAGLINE = "New & scratch-and-dent appliances at liquidation prices"
-PLACEHOLDER_HEADLINE = "Scratch-and-Dent Appliances in Bloomington-Normal, IL"
 PLACEHOLDER_ABOUT = (
     "Cade's Liquidation is run by Cade McClellan. We sell new, scratch-and-dent, "
     "and gently used appliances at liquidation prices: washers, dryers, "
@@ -485,8 +484,8 @@ def build_index(items, photo_of, sold):
     body = f"""<section class="hero">
   <div class="wrap hero-inner">
     <div class="hero-copy">
-      <p class="eyebrow">New &middot; Scratch-and-dent &middot; Gently used</p>
-      <h1 data-config="headline">{esc(PLACEHOLDER_HEADLINE)}</h1>
+      <p class="eyebrow"><span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot; Scratch-and-dent deals</p>
+      <h1 data-config="businessName">{esc(PLACEHOLDER_NAME)}</h1>
       <p class="tagline" data-config="tagline">{esc(PLACEHOLDER_TAGLINE)}</p>
       <button class="rating rating-btn" id="reviews-open" type="button" title="Read customer reviews"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span class="rating-text" data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span></button>
       <div class="hero-cta">
