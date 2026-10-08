@@ -63,7 +63,7 @@
     return '<button class="bcard' + (sel ? " selected" : "") + '" data-id="' + it.id +
       '" aria-pressed="' + sel + '">' +
       '<span class="bcard-check" aria-hidden="true">\u2713</span>' +
-      '<span class="bcard-img"><img src="images/' + it.photo + '" alt="" loading="lazy"></span>' +
+      '<span class="bcard-img"><img src="/images/' + it.photo + '" alt="" loading="lazy"></span>' +
       '<span class="badge">' + escapeHTML(it.category) + "</span>" +
       '<span class="bcard-title">' + escapeHTML(it.title) + "</span>" +
       retail +
@@ -134,7 +134,7 @@
     if (!it) return;
     detailsId = id;
     var img = detailsModal.querySelector(".bmodal-img");
-    img.src = "images/" + it.photo;
+    img.src = "/images/" + it.photo;
     img.alt = it.title;
     detailsModal.querySelector(".bmodal-cat").textContent = it.category;
     detailsModal.querySelector(".bmodal-title").textContent = it.title;
@@ -197,7 +197,7 @@
     var retailTotal = list.reduce(function (s, it) { return s + (it.retail || 0); }, 0);
 
     var itemsHTML = list.map(function (it) {
-      return '<li><img src="images/' + it.photo + '" alt="">' +
+      return '<li><img src="/images/' + it.photo + '" alt="">' +
         '<span class="bitem-title">' + escapeHTML(it.title) + "</span>" +
         '<span class="bitem-price">' + escapeHTML(it.price) + "</span>" +
         '<button class="bremove" data-id="' + it.id + '" aria-label="Remove">&times;</button></li>';

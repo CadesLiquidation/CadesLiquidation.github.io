@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "46"
+ASSET_VER = "47"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -839,13 +839,13 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
         fine_print="Delivery available for a charge")
 
 
-def build_about():
+def build_about(prefix="../"):
     body = f"""<div class="wrap prose">
   <h1>About us</h1>
   <p data-config="aboutText">{esc(PLACEHOLDER_ABOUT)}</p>
   <h2>Meet Cade</h2>
   <div class="owner">
-    <img src="images/cade.jpg" alt="Cade McClellan, owner of Cade's Liquidation" loading="lazy">
+    <img src="{prefix}images/cade.jpg" alt="Cade McClellan, owner of Cade's Liquidation" loading="lazy">
     <div>
       <p>I&rsquo;m <strong>Cade McClellan</strong> &mdash; I&rsquo;ve lived in Bloomington, Illinois
       practically my whole life, and I&rsquo;m currently at ISU working toward my Bachelor of Science
@@ -860,7 +860,7 @@ def build_about():
     </div>
   </div>
   <figure class="about-photo">
-    <img src="images/warehouse-1.jpg" alt="Inside our appliance warehouse" loading="lazy">
+    <img src="{prefix}images/warehouse-1.jpg" alt="Inside our appliance warehouse" loading="lazy">
     <figcaption>Inside the warehouse &mdash; new inventory arrives regularly.</figcaption>
   </figure>
   <p>We specialize in <strong>scratch-and-dent</strong> appliances: brand-new units with
