@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "45"
+ASSET_VER = "46"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -293,14 +293,14 @@ def copy_photos(items):
 def header(active, prefix=""):
     return f"""<header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{prefix}index.html"><img src="{prefix}images/logo-header-lockup.png?v={ASSET_VER}" alt="Cade's Liquidation"></a>
+    <a class="brand" href="{prefix}"><img src="{prefix}images/logo-header-lockup.png?v={ASSET_VER}" alt="Cade's Liquidation"></a>
     <nav class="main-nav">
-      <a href="{prefix}index.html" class="{'active' if active == 'catalog' else ''}">Catalog</a>
-      <a href="{prefix}bundle.html" class="{'active' if active == 'bundles' else ''}">Bundles</a>
-      <a href="{prefix}more.html" class="{'active' if active == 'more' else ''}">More Deals</a>
-      <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
-      <a href="{prefix}faq.html" class="{'active' if active == 'faq' else ''}">FAQ</a>
-      <a href="{prefix}contact.html" class="{'active' if active == 'contact' else ''}">Contact</a>
+      <a href="{prefix}" class="{'active' if active == 'catalog' else ''}">Catalog</a>
+      <a href="{prefix}bundle/" class="{'active' if active == 'bundles' else ''}">Bundles</a>
+      <a href="{prefix}more/" class="{'active' if active == 'more' else ''}">More Deals</a>
+      <a href="{prefix}about/" class="{'active' if active == 'about' else ''}">About</a>
+      <a href="{prefix}faq/" class="{'active' if active == 'faq' else ''}">FAQ</a>
+      <a href="{prefix}contact/" class="{'active' if active == 'contact' else ''}">Contact</a>
     </nav>
     <a class="btn btn-call" data-config-href="phoneHref" hidden><span data-config="phone">Call us</span></a>
   </div>
@@ -309,7 +309,7 @@ def header(active, prefix=""):
 
 def footer(prefix="", fine_print=None):
     guide_links = "\n      ".join(
-        f'<a href="{prefix}guides/{g["slug"]}.html">{esc(g["h1"])}</a>'
+        f'<a href="{prefix}guides/{g["slug"]}/">{esc(g["h1"])}</a>'
         for g in GUIDES)
     small = (fine_print if fine_print is not None
              else "14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies")
@@ -406,7 +406,7 @@ def card_html(item, photo_file, prefix="", sold_badge=False):
                 + drop_badge
                 + "</div>")
     return f"""<article class="card" data-cats="{cats}" data-fuel="{item.get('fuel') or ''}" data-color="{item.get('color') or ''}">
-  <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
+  <a href="{prefix}listings/{item['listing_id']}/" class="card-link">
     {img_html}
     <div class="card-body">
       <span class="badge">{esc(item['category'])}</span>
@@ -428,7 +428,7 @@ def more_card_html(item, photo_file, description, prefix=""):
         desc = desc[:137].rsplit(" ", 1)[0] + "..."
     desc_html = f'<p class="more-desc">{esc(desc)}</p>' if desc else ""
     return f"""<article class="card" data-cats="{cats}">
-  <a href="{prefix}listings/{item['listing_id']}.html" class="card-link">
+  <a href="{prefix}listings/{item['listing_id']}/" class="card-link">
     <div class="card-img">
       <img src="{prefix}images/{esc(photo_file)}?v={ASSET_VER}" alt="{esc(item['title'])}" loading="lazy">
     </div>
@@ -490,7 +490,7 @@ def build_index(items, photo_of, sold):
       <button class="rating rating-btn" id="reviews-open" type="button" title="Read customer reviews"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span> <span class="rating-text" data-config="ratingText">{esc(PLACEHOLDER_RATING)}</span></button>
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
-        <a class="btn btn-bundle btn-lg" href="bundle.html">Build a bundle &amp; save</a>
+        <a class="btn btn-bundle btn-lg" href="bundle/">Build a bundle &amp; save</a>
       </div>
       <p class="appt-note appt-note-hero">{esc(APPT_NOTE)}</p>
     </div>
@@ -557,7 +557,7 @@ def build_index(items, photo_of, sold):
     <div>
       <strong>Need it delivered?</strong>
       <p><strong>$50 flat</strong> &mdash; delivered to your door anywhere in Bloomington-Normal, IL.</p>
-      <p class="delivery-fine">Outside the area or need installation? Text for a quote &mdash; installation services available for an additional charge. <a href="guides/delivery.html" class="delivery-link">Delivery details &rarr;</a></p>
+      <p class="delivery-fine">Outside the area or need installation? Text for a quote &mdash; installation services available for an additional charge. <a href="guides/delivery/" class="delivery-link">Delivery details &rarr;</a></p>
     </div>
     <a class="btn btn-call" href="{delivery_href}">Text Cade for a quote</a>
   </div>
@@ -641,17 +641,17 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
                 cls += " thumb-more"
                 extra = f' data-remaining="{total - 5}"'
             thumb_btns.append(
-                f'<button class="{cls}"{extra} data-full="../images/{esc(pf)}?v={ASSET_VER}">'
-                f'<img src="../images/{esc(pf)}?v={ASSET_VER}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
+                f'<button class="{cls}"{extra} data-full="../../images/{esc(pf)}?v={ASSET_VER}">'
+                f'<img src="../../images/{esc(pf)}?v={ASSET_VER}" alt="{esc(item["title"])} - photo {i + 1}"></button>'
             )
         thumbs = "\n".join(thumb_btns)
         gallery = f"""<div class="gallery">{stock_badge}
-      <img id="gallery-main" src="../images/{esc(main)}?v={ASSET_VER}" alt="{esc(item['title'])}">
+      <img id="gallery-main" src="../../images/{esc(main)}?v={ASSET_VER}" alt="{esc(item['title'])}">
       <span class="zoom-hint">Tap to zoom</span>
       <div class="thumbs{" collapsed" if collapsed else ""}">{thumbs}</div>
     </div>"""
     else:
-        gallery = (f'<div class="gallery">{stock_badge}<img id="gallery-main" src="../images/{esc(photo_files[0])}?v={ASSET_VER}" '
+        gallery = (f'<div class="gallery">{stock_badge}<img id="gallery-main" src="../../images/{esc(photo_files[0])}?v={ASSET_VER}" '
                    f'alt="{esc(item["title"])}"><span class="zoom-hint">Tap to zoom</span></div>')
     mp_url = item.get("url", "")
     mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
@@ -659,7 +659,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     cond = "Scratch & Dent" if DAMAGE_RE.search(desc) else item.get("condition", "New")
     sold = item.get("status") == "sold"
     sold_banner = ('<div class="sold-banner">This item has sold &mdash; '
-                   '<a href="../index.html">browse the current catalog</a></div>'
+                   '<a href="../../">browse the current catalog</a></div>'
                    if sold else "")
     one_only = ("" if sold else
                 '<p class="one-only">One only &mdash; when it&rsquo;s gone, it&rsquo;s gone.</p>')
@@ -680,7 +680,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
       </div>
     </div>""")
     body = f"""<div class="wrap detail">
-  <p class="breadcrumb"><a href="../index.html">&larr; Back to catalog</a></p>
+  <p class="breadcrumb"><a href="../../">&larr; Back to catalog</a></p>
   {sold_banner}
   {gallery}
   <div class="detail-info">
@@ -706,7 +706,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     related = related_items(item, items)
     related_html = ""
     if related:
-        cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0], prefix="../")
+        cards = "\n".join(card_html(it, photo_of[it["listing_id"]][0], prefix="../../")
                           for it in related)
         related_html = f"""<section class="wrap">
   <h2 class="section-title">Similar listings</h2>
@@ -720,7 +720,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
       <strong>Save up to 15% by bundling</strong>
       <p>Combine this with other appliances and unlock bundle discounts automatically.</p>
     </div>
-    <a class="btn btn-bundle btn-lg" href="../bundle.html">Build a bundle</a>
+    <a class="btn btn-bundle btn-lg" href="../../bundle/">Build a bundle</a>
   </div>
 </section>""")
     body = body + promo_html + related_html
@@ -736,15 +736,15 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
             "priceCurrency": "USD",
             "availability": ("https://schema.org/OutOfStock" if sold
                              else "https://schema.org/InStock"),
-            "url": f"{SITE_URL}/listings/{item['listing_id']}.html",
+            "url": f"{SITE_URL}/listings/{item['listing_id']}/",
         },
     }, indent=2)
     return page_shell(
         seo_title(item),
         meta_description(item, desc),
-        body, "catalog", prefix="../",
+        body, "catalog", prefix="../../",
         og_image=photo_files[0],
-        page_url=f"listings/{item['listing_id']}.html",
+        page_url=f"listings/{item['listing_id']}/",
         json_ld=product_ld, noindex=sold)
 
 
@@ -757,14 +757,14 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
     if not desc_html:
         desc_html = ("<p>Contact us for full details, dimensions, and current "
                      "availability on this item.</p>")
-    gallery = (f'<div class="gallery"><img id="gallery-main" src="../images/{esc(photo_files[0])}?v={ASSET_VER}" '
+    gallery = (f'<div class="gallery"><img id="gallery-main" src="../../images/{esc(photo_files[0])}?v={ASSET_VER}" '
                f'alt="{esc(item["title"])}"><span class="zoom-hint">Tap to zoom</span></div>')
     mp_url = item.get("url", "")
     mp_button = (f'<a class="btn btn-fb btn-lg" href="{esc(mp_url)}">View this listing on Facebook Marketplace</a>'
                  if mp_url else "")
     sold = item.get("status") == "sold"
     sold_banner = ('<div class="sold-banner">This item has sold &mdash; '
-                   '<a href="../more.html">browse more deals</a></div>'
+                   '<a href="../../more/">browse more deals</a></div>'
                    if sold else "")
     ask_body = urllib.parse.quote(
         f"Hi Cade, is this still available? {item['title']} ({item['price']})")
@@ -780,7 +780,7 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
       </div>
     </div>""")
     body = f"""<div class="wrap detail">
-  <p class="breadcrumb"><a href="../more.html">&larr; Back to More Deals</a></p>
+  <p class="breadcrumb"><a href="../../more/">&larr; Back to More Deals</a></p>
   {sold_banner}
   {gallery}
   <div class="detail-info">
@@ -805,7 +805,7 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
     if others and not sold:
         cards = "\n".join(more_card_html(it, photo_of[it["listing_id"]][0],
                                          descriptions.get(it["listing_id"], ""),
-                                         prefix="../")
+                                         prefix="../../")
                           for it in others)
         related_html = f"""<section class="wrap">
   <h2 class="section-title">More deals</h2>
@@ -826,15 +826,15 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
             "priceCurrency": "USD",
             "availability": ("https://schema.org/OutOfStock" if sold
                              else "https://schema.org/InStock"),
-            "url": f"{SITE_URL}/listings/{item['listing_id']}.html",
+            "url": f"{SITE_URL}/listings/{item['listing_id']}/",
         },
     }, indent=2)
     return page_shell(
         seo_title(item),
         meta_description(item, desc),
-        body, "more", prefix="../",
+        body, "more", prefix="../../",
         og_image=photo_files[0],
-        page_url=f"listings/{item['listing_id']}.html",
+        page_url=f"listings/{item['listing_id']}/",
         json_ld=product_ld, noindex=sold,
         fine_print="Delivery available for a charge")
 
@@ -891,7 +891,7 @@ def build_about():
         f"About {PLACEHOLDER_NAME}: new, scratch-and-dent and used appliances "
         f"at liquidation prices in {PLACEHOLDER_AREA}.",
         body, "about",
-        og_image="og-share.png", page_url="about.html")
+        og_image="og-share.png", page_url="about/", prefix="../")
 
 
 def build_guide(g, items, photo_of):
@@ -906,7 +906,7 @@ def build_guide(g, items, photo_of):
         cat_items = [it for it in items if it["category"] in cats]
         if cat_items:
             cards = "\n".join(
-                card_html(it, photo_of[it["listing_id"]][0], prefix="../")
+                card_html(it, photo_of[it["listing_id"]][0], prefix="../../")
                 for it in cat_items)
             listings_html = f"""<h2>Current {esc(g["category"]).lower()} in stock</h2>
 <p>Live inventory &mdash; when it's gone, it's gone.</p>
@@ -916,22 +916,22 @@ def build_guide(g, items, photo_of):
         else:
             listings_html = (f"<h2>Current {esc(g['category']).lower()} in stock</h2>"
                              "<p>Nothing in this category at the moment &mdash; "
-                             '<a href="../index.html#catalog">check the full catalog</a> '
+                             '<a href="../../#catalog">check the full catalog</a> '
                              "or text us and we'll keep an eye out.</p>")
     others = [o for o in GUIDES if o["slug"] != slug]
     more = "\n".join(
-        f'<a href="{o["slug"]}.html">{esc(o["h1"])}</a>'
+        f'<a href="../{o["slug"]}/">{esc(o["h1"])}</a>'
         for o in others)
     cta = ("""<div class="guide-cta">
       <strong>Found what you need?</strong>
       <p>Every unit is tested before it's listed and backed by a 14-day money-back guarantee.</p>
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
-        <a class="btn btn-bundle btn-lg" href="../bundle.html">Build a bundle &amp; save</a>
+        <a class="btn btn-bundle btn-lg" href="../../bundle/">Build a bundle &amp; save</a>
       </div>
     </div>""" if g.get("cta") else "")
     body = f"""<div class="wrap guide">
-  <p class="breadcrumb"><a href="../index.html">&larr; Back to home</a></p>
+  <p class="breadcrumb"><a href="../../">&larr; Back to home</a></p>
   <h1>{esc(g["h1"])}</h1>
   <div class="guide-intro">{g["intro"]}</div>
   {sections}
@@ -942,8 +942,8 @@ def build_guide(g, items, photo_of):
     <nav>{more}</nav>
   </div>
 </div>"""
-    return page_shell(g["title"], g["meta"], body, "", prefix="../",
-                      og_image="og-share.png", page_url=f"guides/{slug}.html")
+    return page_shell(g["title"], g["meta"], body, "", prefix="../../",
+                      og_image="og-share.png", page_url=f"guides/{slug}/")
 
 
 def build_faq():
@@ -990,7 +990,7 @@ def build_faq():
         "Policies: 14-day money-back guarantee, delivery available for a charge, "
         "sales tax applies. Answers about scratch-and-dent appliances.",
         body, "faq",
-        og_image="og-share.png", page_url="faq.html")
+        og_image="og-share.png", page_url="faq/", prefix="../")
 
 
 def build_contact():
@@ -1019,7 +1019,7 @@ def build_contact():
     <input type="hidden" name="_subject" value="New contact form message &mdash; Cade&apos;s Liquidation">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="{SITE_URL}/thankyou.html">
+    <input type="hidden" name="_next" value="{SITE_URL}/thankyou/">
     <input type="hidden" name="_autoresponse" value="Thanks for reaching out to Cade&apos;s Liquidation! We got your message and will get back to you shortly.">
     <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="form-row">
@@ -1058,7 +1058,7 @@ def build_contact():
         f"Contact {PLACEHOLDER_NAME}: call, text, or email us about products, "
         f"appointments, delivery, or bulk orders in {PLACEHOLDER_AREA}.",
         body, "contact",
-        og_image="og-share.png", page_url="contact.html")
+        og_image="og-share.png", page_url="contact/", prefix="../")
 
 
 def build_thankyou():
@@ -1068,14 +1068,14 @@ def build_thankyou():
   If it&apos;s urgent, call or text us directly:</p>
   <div class="hero-cta">
     <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
-    <a class="btn btn-lg" href="index.html">Back to the catalog</a>
+    <a class="btn btn-lg" href="../">Back to the catalog</a>
   </div>
 </div>"""
     return page_shell(
         f"Message sent | {PLACEHOLDER_NAME}",
         "Thanks for contacting Cade's Liquidation. We'll be in touch shortly.",
         body, "",
-        page_url="thankyou.html", noindex=True)
+        page_url="thankyou/", noindex=True, prefix="../")
 
 
 def build_bundle(items, photo_of, descriptions):
@@ -1119,14 +1119,14 @@ def build_bundle(items, photo_of, descriptions):
   <a href="#bundle-summary" class="btn btn-call">Review bundle</a>
 </div>
 <script>var BUNDLE_ITEMS = {json.dumps(data)};</script>
-<script src="bundle.js?v={ASSET_VER}"></script>"""
+<script src="../bundle.js?v={ASSET_VER}"></script>"""
     return page_shell(
         f"Bundle Builder | {PLACEHOLDER_NAME}",
         f"Build your own appliance bundle at {PLACEHOLDER_NAME} and save: "
         f"bundle discounts on washers, dryers, refrigerators, ranges and more "
         f"in {PLACEHOLDER_AREA}.",
         body, "bundles",
-        og_image="og-share.png", page_url="bundle.html")
+        og_image="og-share.png", page_url="bundle/", prefix="../")
 
 
 def build_more(items, photo_of, descriptions):
@@ -1141,7 +1141,8 @@ def build_more(items, photo_of, descriptions):
     )
     cards = "\n".join(
         more_card_html(it, photo_of[it["listing_id"]][0],
-                       descriptions.get(it["listing_id"], ""))
+                       descriptions.get(it["listing_id"], ""),
+                       prefix="../")
         for it in sorted(items, key=lambda it: it.get("price_num", 0))
     )
     empty = ("<p>Nothing here right now — new overstock and furniture land "
@@ -1164,7 +1165,7 @@ def build_more(items, photo_of, descriptions):
         f"Furniture, home decor, overstock and more discounted finds from "
         f"{PLACEHOLDER_NAME} in {PLACEHOLDER_AREA}. One-of-a-kind Marketplace deals.",
         body, "more",
-        og_image="og-share.png", page_url="more.html",
+        og_image="og-share.png", page_url="more/", prefix="../",
         fine_print="Delivery available for a charge")
 
 
@@ -1198,32 +1199,58 @@ def main():
     os.makedirs(LISTINGS_DIR, exist_ok=True)
     write(os.path.join(OUT_DIR, "index.html"),
           build_index(appliances, photo_of, sold_appliances))
+    # Directory-style clean URLs: about/index.html serves at /about/, etc.
+    # redirect_stubs maps each legacy .html URL to its new directory URL so
+    # old indexed/shared links keep working.
+    redirect_stubs = {}
     for it in appliances + sold_appliances:
-        write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
+        new_url = f"listings/{it['listing_id']}/"
+        write(os.path.join(LISTINGS_DIR, it["listing_id"], "index.html"),
               build_detail(it, descriptions, photo_of[it["listing_id"]],
                            appliances, photo_of))
+        redirect_stubs[f"listings/{it['listing_id']}.html"] = new_url
     for it in more_items + sold_more:
-        write(os.path.join(LISTINGS_DIR, f"{it['listing_id']}.html"),
+        new_url = f"listings/{it['listing_id']}/"
+        write(os.path.join(LISTINGS_DIR, it["listing_id"], "index.html"),
               build_more_detail(it, descriptions, photo_of[it["listing_id"]],
                                 more_items, photo_of))
-    write(os.path.join(OUT_DIR, "about.html"), build_about())
-    write(os.path.join(OUT_DIR, "faq.html"), build_faq())
-    write(os.path.join(OUT_DIR, "contact.html"), build_contact())
-    write(os.path.join(OUT_DIR, "thankyou.html"), build_thankyou())
-    write(os.path.join(OUT_DIR, "more.html"),
+        redirect_stubs[f"listings/{it['listing_id']}.html"] = new_url
+    for name in ["about", "faq", "contact", "thankyou", "more", "bundle"]:
+        redirect_stubs[f"{name}.html"] = f"{name}/"
+    write(os.path.join(OUT_DIR, "about", "index.html"), build_about())
+    write(os.path.join(OUT_DIR, "faq", "index.html"), build_faq())
+    write(os.path.join(OUT_DIR, "contact", "index.html"), build_contact())
+    write(os.path.join(OUT_DIR, "thankyou", "index.html"), build_thankyou())
+    write(os.path.join(OUT_DIR, "more", "index.html"),
           build_more(more_items, photo_of, descriptions))
-    write(os.path.join(OUT_DIR, "bundle.html"),
+    write(os.path.join(OUT_DIR, "bundle", "index.html"),
           build_bundle(appliances, photo_of, descriptions))
     guides_dir = os.path.join(OUT_DIR, "guides")
     for g in GUIDES:
-        write(os.path.join(guides_dir, f"{g['slug']}.html"),
+        write(os.path.join(guides_dir, g["slug"], "index.html"),
               build_guide(g, appliances, photo_of))
+        redirect_stubs[f"guides/{g['slug']}.html"] = f"guides/{g['slug']}/"
+    for old, new in redirect_stubs.items():
+        abs_new = f"{SITE_URL}/{new}"
+        write(os.path.join(OUT_DIR, old),
+              f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Redirecting...</title>
+<link rel="canonical" href="{abs_new}">
+<meta http-equiv="refresh" content="0; url={abs_new}">
+<meta name="robots" content="noindex">
+</head>
+<body><p>Redirecting to <a href="{abs_new}">{abs_new}</a>...</p></body>
+</html>
+""")
 
     # sitemap.xml (active listings only) + robots.txt
-    urls = (["", "about.html", "faq.html", "contact.html", "bundle.html", "more.html"]
-            + [f"guides/{g['slug']}.html" for g in GUIDES]
-            + [f"listings/{it['listing_id']}.html" for it in appliances]
-            + [f"listings/{it['listing_id']}.html" for it in more_items])
+    urls = (["", "about/", "faq/", "contact/", "bundle/", "more/"]
+            + [f"guides/{g['slug']}/" for g in GUIDES]
+            + [f"listings/{it['listing_id']}/" for it in appliances]
+            + [f"listings/{it['listing_id']}/" for it in more_items])
     sitemap = ('<?xml version="1.0" encoding="utf-8"?>\n'
                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                + "\n".join(f"  <url><loc>{SITE_URL}/{u}</loc></url>" for u in urls)

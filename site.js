@@ -11,9 +11,11 @@
 
   function configPath() {
     var p = window.location.pathname;
-    return (p.indexOf("/listings/") !== -1 || p.indexOf("/guides/") !== -1)
-      ? "../config.json"
-      : "config.json";
+    if (p.indexOf("/listings/") !== -1 || p.indexOf("/guides/") !== -1)
+      return "../../config.json";
+    if (p === "/" || p === "/index.html")
+      return "config.json";
+    return "../config.json";
   }
 
   function applyConfig(config) {
