@@ -20,6 +20,7 @@ If anything changes, edit the file as described below.
 |---|---|
 | `businessName` | Top of every page, page titles, footer |
 | `tagline` | Under the store name on the home page |
+| `headline` | The big headline on the home page — what you sell + where (keep the business name out of it; that's better for Google) |
 | `ratingText` | Under the tagline on the home page |
 | `phone` | The number buyers see on "Call or text" buttons |
 | `phoneHref` | Makes the call buttons actually dial on phones (format: `tel:+1` + number, no spaces or dashes) |
