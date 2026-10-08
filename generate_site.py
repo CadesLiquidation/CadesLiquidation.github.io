@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "44"
+ASSET_VER = "45"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -300,6 +300,7 @@ def header(active, prefix=""):
       <a href="{prefix}more.html" class="{'active' if active == 'more' else ''}">More Deals</a>
       <a href="{prefix}about.html" class="{'active' if active == 'about' else ''}">About</a>
       <a href="{prefix}faq.html" class="{'active' if active == 'faq' else ''}">FAQ</a>
+      <a href="{prefix}contact.html" class="{'active' if active == 'contact' else ''}">Contact</a>
     </nav>
     <a class="btn btn-call" data-config-href="phoneHref" hidden><span data-config="phone">Call us</span></a>
   </div>
@@ -992,6 +993,91 @@ def build_faq():
         og_image="og-share.png", page_url="faq.html")
 
 
+def build_contact():
+    cfg = json.load(open(os.path.join(HERE, "config.json")))
+    email = cfg.get("email", "contact@cadesliquidation.com")
+    body = f"""<div class="wrap prose">
+  <h1>Contact us</h1>
+  <p>Question about a product, want to book a visit, or talking bulk orders?
+  Reach out &mdash; we usually reply the same day.</p>
+  <div class="contact-grid">
+    <a class="contact-card" data-config-href="phoneHref" hidden>
+      <strong>Call or text</strong>
+      <span data-config="phone"></span>
+    </a>
+    <a class="contact-card" data-config-href="emailHref" hidden>
+      <strong>Email</strong>
+      <span data-config="email"></span>
+    </a>
+    <div class="contact-card">
+      <strong>Visit</strong>
+      <span>{esc(ADDRESS_SHORT)} &mdash; by appointment only</span>
+    </div>
+  </div>
+  <h2>Send a message</h2>
+  <form class="contact-form" action="https://formsubmit.co/{esc(email)}" method="POST">
+    <input type="hidden" name="_subject" value="New contact form message &mdash; Cade&apos;s Liquidation">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="{SITE_URL}/thankyou.html">
+    <input type="hidden" name="_autoresponse" value="Thanks for reaching out to Cade&apos;s Liquidation! We got your message and will get back to you shortly.">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="form-row">
+      <div class="form-field">
+        <label for="cf-name">Name</label>
+        <input id="cf-name" type="text" name="name" required autocomplete="name">
+      </div>
+      <div class="form-field">
+        <label for="cf-phone">Phone <span class="opt">(optional)</span></label>
+        <input id="cf-phone" type="tel" name="phone" autocomplete="tel">
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="cf-email">Email</label>
+      <input id="cf-email" type="email" name="email" required autocomplete="email">
+    </div>
+    <div class="form-field">
+      <label for="cf-reason">What are you reaching out about?</label>
+      <select id="cf-reason" name="reason">
+        <option>Question about a product</option>
+        <option>Book an appointment</option>
+        <option>Delivery question</option>
+        <option>Business or bulk order</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="cf-msg">Message</label>
+      <textarea id="cf-msg" name="message" rows="5" required></textarea>
+    </div>
+    <button class="btn btn-call btn-lg" type="submit">Send message</button>
+  </form>
+</div>"""
+    return page_shell(
+        f"Contact Us | {PLACEHOLDER_NAME}",
+        f"Contact {PLACEHOLDER_NAME}: call, text, or email us about products, "
+        f"appointments, delivery, or bulk orders in {PLACEHOLDER_AREA}.",
+        body, "contact",
+        og_image="og-share.png", page_url="contact.html")
+
+
+def build_thankyou():
+    body = """<div class="wrap prose">
+  <h1>Message sent</h1>
+  <p>Thanks for reaching out &mdash; we&apos;ll get back to you shortly.
+  If it&apos;s urgent, call or text us directly:</p>
+  <div class="hero-cta">
+    <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
+    <a class="btn btn-lg" href="index.html">Back to the catalog</a>
+  </div>
+</div>"""
+    return page_shell(
+        f"Message sent | {PLACEHOLDER_NAME}",
+        "Thanks for contacting Cade's Liquidation. We'll be in touch shortly.",
+        body, "",
+        page_url="thankyou.html", noindex=True)
+
+
 def build_bundle(items, photo_of, descriptions):
     data = [{
         "id": it["listing_id"],
@@ -1122,6 +1208,8 @@ def main():
                                 more_items, photo_of))
     write(os.path.join(OUT_DIR, "about.html"), build_about())
     write(os.path.join(OUT_DIR, "faq.html"), build_faq())
+    write(os.path.join(OUT_DIR, "contact.html"), build_contact())
+    write(os.path.join(OUT_DIR, "thankyou.html"), build_thankyou())
     write(os.path.join(OUT_DIR, "more.html"),
           build_more(more_items, photo_of, descriptions))
     write(os.path.join(OUT_DIR, "bundle.html"),
@@ -1132,7 +1220,7 @@ def main():
               build_guide(g, appliances, photo_of))
 
     # sitemap.xml (active listings only) + robots.txt
-    urls = (["", "about.html", "faq.html", "bundle.html", "more.html"]
+    urls = (["", "about.html", "faq.html", "contact.html", "bundle.html", "more.html"]
             + [f"guides/{g['slug']}.html" for g in GUIDES]
             + [f"listings/{it['listing_id']}.html" for it in appliances]
             + [f"listings/{it['listing_id']}.html" for it in more_items])
