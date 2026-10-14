@@ -946,6 +946,47 @@ def build_guide(g, items, photo_of):
                       og_image="og-share.png", page_url=f"guides/{slug}/")
 
 
+def html_to_text(s):
+    """Crude HTML -> plain text for llms-full.txt (guides are simple markup)."""
+    s = re.sub(r"<br\s*/?>", "\n", s, flags=re.I)
+    s = re.sub(r"</(p|li|h[1-6]|tr)>", "\n", s, flags=re.I)
+    s = re.sub(r"<[^>]+>", "", s)
+    s = html.unescape(s)
+    return "\n".join(ln.strip() for ln in s.split("\n") if ln.strip())
+
+
+def build_llms_full(appliances, more_items):
+    """Full-content companion to llms.txt (the llms-full.txt convention).
+    Regenerated on every build so the inventory section never goes stale."""
+    parts = []
+    with open(os.path.join(HERE, "llms.txt")) as f:
+        parts.append(f.read().rstrip())
+    parts.append("\n---\n\n# Full content\n")
+    parts.append("What follows is the complete text of the site's buying guides, "
+                 "plus the current inventory as of this build.\n")
+    for g in GUIDES:
+        parts.append(f"\n## {html_to_text(g['h1'])}\n")
+        parts.append(f"URL: {SITE_URL}/guides/{g['slug']}/\n")
+        parts.append(html_to_text(g["intro"]) + "\n")
+        for heading, body in g["sections"]:
+            parts.append(f"\n### {html_to_text(heading)}\n")
+            parts.append(html_to_text(body) + "\n")
+    parts.append("\n## Current inventory\n")
+    parts.append("(One only per appliance — when it's gone, it's gone. "
+                 "More Deals items may have multiple available.)\n")
+    for it in appliances:
+        parts.append(f"- {it.get('title', '')} — {it.get('price', '')} "
+                     f"({it.get('category', '')}) — "
+                     f"{SITE_URL}/listings/{it['listing_id']}/")
+    if more_items:
+        parts.append("\n### More Deals (furniture, decor & overstock)\n")
+        for it in more_items:
+            parts.append(f"- {it.get('title', '')} — {it.get('price', '')} "
+                         f"({it.get('category', '')}) — "
+                         f"{SITE_URL}/listings/{it['listing_id']}/")
+    return "\n".join(parts).rstrip() + "\n"
+
+
 def build_faq():
     faqs = [
         ("What is your return policy?",
@@ -1258,6 +1299,8 @@ def main():
     write(os.path.join(OUT_DIR, "sitemap.xml"), sitemap)
     write(os.path.join(OUT_DIR, "robots.txt"),
           f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
+    write(os.path.join(OUT_DIR, "llms-full.txt"),
+          build_llms_full(appliances, more_items))
     print(f"Wrote index.html, more.html, about.html, faq.html, sitemap.xml, "
           f"robots.txt, {len(appliances) + len(sold_appliances)} listing pages "
           f"({len(sold_appliances)} sold).")

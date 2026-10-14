@@ -44,3 +44,5 @@ Bundle discounts: 3% off 2 items, 8% off 3 items, 15% off 4+ items.
 - [FAQ & policies](https://cadesliquidation.com/faq/)
 - [Contact us](https://cadesliquidation.com/contact/)
 - [Facebook group](https://www.facebook.com/share/g/1EEq2pc5tg/) ("Cade's Home and Furniture", being rebranded to Cade's Liquidation)
+
+Full content (all buying guides + current inventory): [llms-full.txt](https://cadesliquidation.com/llms-full.txt)
