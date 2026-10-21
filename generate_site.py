@@ -298,6 +298,7 @@ def header(active, prefix=""):
       <a href="{prefix}" class="{'active' if active == 'catalog' else ''}">Catalog</a>
       <a href="{prefix}bundle/" class="{'active' if active == 'bundles' else ''}">Bundles</a>
       <a href="{prefix}more/" class="{'active' if active == 'more' else ''}">More Deals</a>
+      <a href="{prefix}landlords/" class="{'active' if active == 'landlords' else ''}">Landlords</a>
       <a href="{prefix}about/" class="{'active' if active == 'about' else ''}">About</a>
       <a href="{prefix}faq/" class="{'active' if active == 'faq' else ''}">FAQ</a>
       <a href="{prefix}contact/" class="{'active' if active == 'contact' else ''}">Contact</a>
@@ -650,6 +651,15 @@ def build_index(items, photo_of, sold):
       <p class="delivery-fine">Outside the area or need installation? Text for a quote &mdash; installation services available for an additional charge. <a href="guides/delivery/" class="delivery-link">Delivery details &rarr;</a></p>
     </div>
     <a class="btn btn-call" href="{delivery_href}">Text Cade for a quote</a>
+  </div>
+</section>
+<section class="wrap">
+  <div class="bundle-promo">
+    <div>
+      <strong>Landlords &amp; property managers</strong>
+      <p>Liquidation prices, bundle discounts, and delivery + installation &mdash; fill a vacancy without paying retail.</p>
+    </div>
+    <a class="btn btn-call btn-lg" href="landlords/">Get a landlord quote</a>
   </div>
 </section>
 {reviews_modal(load_reviews())}"""
@@ -1193,6 +1203,93 @@ def build_contact():
         og_image="og-share.png", page_url="contact/", prefix="../")
 
 
+def build_landlords():
+    cfg = json.load(open(os.path.join(HERE, "config.json")))
+    email = cfg.get("email", "contact@cadesliquidation.com")
+    body = f"""<div class="wrap prose">
+  <h1>Appliances for landlords &amp; property managers</h1>
+  <p>An empty unit is losing rent every day it sits without a working fridge,
+  range, or washer. Retail stores charge retail prices and make you arrange
+  your own delivery. We sell new and scratch-and-dent appliances at
+  liquidation prices &mdash; and we can deliver and install them, so one call
+  gets the unit rent-ready.</p>
+  <div class="steps">
+    <div class="step"><span class="step-n">1</span><div><strong>Liquidation prices</strong><p>Brand-new appliances with a ding or scratch, priced well under retail. Your tenant cares that it works &mdash; not about a dent on the side.</p></div></div>
+    <div class="step"><span class="step-n">2</span><div><strong>Delivery + installation</strong><p>Delivery is a flat $50 anywhere in Bloomington-Normal, and installation is available for an additional charge. One trip and the unit is ready to show.</p></div></div>
+    <div class="step"><span class="step-n">3</span><div><strong>Bundle &amp; save</strong><p>Outfitting more than one unit? Bundle discounts apply automatically: 3% off 2 items, 8% off 3, and 15% off 4 or more.</p></div></div>
+  </div>
+  <h2>Who this is for</h2>
+  <p>Single-unit landlords, multi-family owners, student-rental managers
+  turning units over between semesters, house flippers, and Airbnb hosts
+  &mdash; anyone who buys appliances more than once and would rather not pay
+  retail every time. Every unit is inspected and backed by our 14-day
+  money-back guarantee.</p>
+  <h2>Get a quote</h2>
+  <p>Tell us what you need and we&rsquo;ll quote from current stock &mdash;
+  usually the same day. Prefer to talk? Call or text
+  <a data-config-href="phoneHref" hidden><span data-config="phone"></span></a>.</p>
+  <form class="contact-form" action="https://formsubmit.co/{esc(email)}" method="POST">
+    <input type="hidden" name="_subject" value="Landlord quote request &mdash; Cade&apos;s Liquidation">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="{SITE_URL}/thankyou/">
+    <input type="hidden" name="_autoresponse" value="Thanks for reaching out to Cade&apos;s Liquidation! We got your quote request and will get back to you shortly with pricing from current stock.">
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="form-row">
+      <div class="form-field">
+        <label for="lf-name">Name</label>
+        <input id="lf-name" type="text" name="name" required autocomplete="name">
+      </div>
+      <div class="form-field">
+        <label for="lf-phone">Phone</label>
+        <input id="lf-phone" type="tel" name="phone" required autocomplete="tel">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="lf-email">Email</label>
+        <input id="lf-email" type="email" name="email" required autocomplete="email">
+      </div>
+      <div class="form-field">
+        <label for="lf-company">Company <span class="opt">(optional)</span></label>
+        <input id="lf-company" type="text" name="company" autocomplete="organization">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="lf-units">How many units do you manage?</label>
+        <select id="lf-units" name="units">
+          <option>1 property</option>
+          <option>2&ndash;5 units</option>
+          <option>6&ndash;20 units</option>
+          <option>20+ units</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="lf-services">What do you need from us?</label>
+        <select id="lf-services" name="services">
+          <option>Delivery + installation</option>
+          <option>Delivery only</option>
+          <option>Appliances only &mdash; I&rsquo;ll pick up</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="lf-msg">What appliances do you need?</label>
+      <textarea id="lf-msg" name="message" rows="4" required placeholder="e.g. 2 refrigerators, 1 range, 3 washer/dryer sets &mdash; needed by Nov 1"></textarea>
+    </div>
+    <button class="btn btn-call btn-lg" type="submit">Request a quote</button>
+  </form>
+</div>"""
+    return page_shell(
+        f"Appliances for Landlords & Property Managers | {PLACEHOLDER_NAME}",
+        f"Liquidation-price appliances for landlords and property managers "
+        f"in {PLACEHOLDER_AREA}: bundle discounts, flat-rate delivery, and "
+        f"installation available. Get a same-day quote.",
+        body, "landlords",
+        og_image="og-share.png", page_url="landlords/", prefix="../")
+
+
 def build_thankyou():
     body = """<div class="wrap prose">
   <h1>Message sent</h1>
@@ -1347,11 +1444,13 @@ def main():
               build_more_detail(it, descriptions, photo_of[it["listing_id"]],
                                 more_items, photo_of))
         redirect_stubs[f"listings/{it['listing_id']}.html"] = new_url
-    for name in ["about", "faq", "contact", "thankyou", "more", "bundle"]:
+    for name in ["about", "faq", "contact", "thankyou", "more", "bundle",
+                 "landlords"]:
         redirect_stubs[f"{name}.html"] = f"{name}/"
     write(os.path.join(OUT_DIR, "about", "index.html"), build_about())
     write(os.path.join(OUT_DIR, "faq", "index.html"), build_faq())
     write(os.path.join(OUT_DIR, "contact", "index.html"), build_contact())
+    write(os.path.join(OUT_DIR, "landlords", "index.html"), build_landlords())
     write(os.path.join(OUT_DIR, "thankyou", "index.html"), build_thankyou())
     write(os.path.join(OUT_DIR, "more", "index.html"),
           build_more(more_items, photo_of, descriptions))
@@ -1379,7 +1478,8 @@ def main():
 """)
 
     # sitemap.xml (active listings only) + robots.txt
-    urls = (["", "about/", "faq/", "contact/", "bundle/", "more/"]
+    urls = (["", "about/", "faq/", "contact/", "bundle/", "more/",
+             "landlords/"]
             + [f"guides/{g['slug']}/" for g in GUIDES]
             + [f"listings/{it['listing_id']}/" for it in appliances]
             + [f"listings/{it['listing_id']}/" for it in more_items])
