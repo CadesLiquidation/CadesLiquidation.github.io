@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "47"
+ASSET_VER = "48"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -442,6 +442,95 @@ def more_card_html(item, photo_file, description, prefix=""):
 </article>"""
 
 
+DIBS_CATEGORIES = [
+    "Refrigerator", "Washer", "Dryer", "Washer & dryer set",
+    "Range / stove", "Dishwasher", "Freezer", "Oven", "Something else",
+]
+DIBS_CATEGORY_MAP = {
+    "Refrigerators": "Refrigerator",
+    "Washers": "Washer",
+    "Dryers": "Dryer",
+    "Washers & Dryers": "Washer & dryer set",
+    "Ranges": "Range / stove",
+    "Dishwashers": "Dishwasher",
+    "Freezers": "Freezer",
+    "Ovens": "Oven",
+}
+
+
+def first_dibs_section(source, item=None):
+    """First-dibs signup: name + cell + what they're hunting, emailed via
+    FormSubmit (same inbox as the contact form). On sold pages the item's
+    category is preselected and the missed item rides along as a field."""
+    cfg = json.load(open(os.path.join(HERE, "config.json")))
+    email = cfg.get("email", "contact@cadesliquidation.com")
+    preselect = DIBS_CATEGORY_MAP.get(item["category"]) if item else None
+    options = "\n        ".join(
+        '<option{}>{}</option>'.format(
+            " selected" if c == preselect else "", c)
+        for c in DIBS_CATEGORIES)
+    missed = ""
+    if item:
+        missed = (f'\n    <input type="hidden" name="missed_item" '
+                  f'value="{esc(item["title"])} \u2014 {esc(item["price"])}">')
+        heading = "Missed this one? Get first dibs on the next."
+        copy = ("This one&rsquo;s gone &mdash; but more come in every week. "
+                "Join the first dibs list and we&rsquo;ll text you when the "
+                f"next {esc((preselect or 'one').lower())} lands, "
+                "before it&rsquo;s posted.")
+    else:
+        heading = "Get first dibs on new arrivals"
+        copy = ("The best pieces go fast &mdash; sometimes the same day "
+                "they&rsquo;re posted. Tell us what you&rsquo;re hunting "
+                "and we&rsquo;ll text you before the next one hits "
+                "the catalog.")
+    return f"""<section class="wrap" id="first-dibs">
+  <div class="dibs-box">
+    <div class="dibs-copy">
+      <h2>{heading}</h2>
+      <p>{copy}</p>
+      <p class="dibs-fine">We only text when something matches what you&rsquo;re hunting. No spam, ever.</p>
+    </div>
+    <div class="dibs-card">
+      <form class="contact-form dibs-form" action="https://formsubmit.co/{esc(email)}" method="POST">
+    <input type="hidden" name="_subject" value="First dibs signup &mdash; Cade&apos;s Liquidation">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="{SITE_URL}/thankyou/">
+    <input type="hidden" name="_autoresponse" value="You&apos;re on the first dibs list at Cade&apos;s Liquidation! We&apos;ll text you when something you&apos;re hunting comes in.">
+    <input type="hidden" name="source" value="{esc(source)}">{missed}
+    <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="form-row">
+      <div class="form-field">
+        <label for="fd-name">Name</label>
+        <input id="fd-name" type="text" name="name" required autocomplete="name">
+      </div>
+      <div class="form-field">
+        <label for="fd-phone">Cell phone</label>
+        <input id="fd-phone" type="tel" name="phone" required autocomplete="tel">
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="fd-email">Email <span class="opt">(optional)</span></label>
+      <input id="fd-email" type="email" name="email" autocomplete="email">
+    </div>
+    <div class="form-field">
+      <label for="fd-hunting">What are you hunting?</label>
+      <select id="fd-hunting" name="hunting">
+        {options}
+      </select>
+    </div>
+    <div class="form-field">
+      <label for="fd-notes">Anything specific? <span class="opt">(optional)</span></label>
+      <input id="fd-notes" type="text" name="notes" placeholder="Size, color, budget&hellip;">
+    </div>
+    <button class="btn btn-call btn-lg" type="submit">Join the first dibs list</button>
+      </form>
+    </div>
+  </div>
+</section>"""
+
+
 def build_index(items, photo_of, sold):
     filters = "\n".join(
         f'<button class="filter-btn{" active" if f == "All" else ""}" data-filter="{f.lower()}">{f}</button>'
@@ -537,6 +626,7 @@ def build_index(items, photo_of, sold):
   <p class="grid-empty" id="grid-empty" hidden>No items match right now.</p>
 </section>
 {sold_section}
+{first_dibs_section("Homepage")}
 <section class="visit-band">
   <div class="wrap visit-inner">
     <img src="images/warehouse-2.jpg?v={ASSET_VER}" alt="Our warehouse stocked with appliances" loading="lazy">
@@ -723,7 +813,8 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     <a class="btn btn-bundle btn-lg" href="../../bundle/">Build a bundle</a>
   </div>
 </section>""")
-    body = body + promo_html + related_html
+    dibs_html = (first_dibs_section("Sold page", item) if sold else "")
+    body = body + dibs_html + promo_html + related_html
     product_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Product",

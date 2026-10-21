@@ -553,6 +553,16 @@ body {
 .delivery-band .btn { flex-shrink: 0; }
 @media (max-width: 640px) { .delivery-band { flex-direction: column; align-items: flex-start; } }
 
+/* ===== First dibs ===== */
+.dibs-box { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: center; background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%); color: #fff; border-radius: 14px; padding: 28px; margin: 8px 0 28px; }
+.dibs-copy h2 { margin: 0 0 10px; font-size: 1.6rem; }
+.dibs-copy p { margin: 0 0 10px; color: rgba(255, 255, 255, 0.88); }
+.dibs-copy .dibs-fine { font-size: 0.88rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0; }
+.dibs-card { background: #fff; border-radius: 12px; padding: 22px 24px; color: var(--ink); }
+.dibs-form { margin-top: 0; max-width: none; }
+.dibs-form .btn { width: 100%; }
+@media (max-width: 760px) { .dibs-box { grid-template-columns: 1fr; padding: 22px; } }
+
 /* ===== Bundle listing details modal ===== */
 .bcard-details { display: block; text-align: center; color: var(--brand); font-size: 0.85rem; font-weight: 600; padding: 6px 4px 2px; cursor: pointer; }
 .bcard-details:hover { text-decoration: underline; }
