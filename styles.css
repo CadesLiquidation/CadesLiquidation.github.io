@@ -553,6 +553,8 @@ body {
 .delivery-band .btn { flex-shrink: 0; }
 @media (max-width: 640px) { .delivery-band { flex-direction: column; align-items: flex-start; } }
 
+.fine-print { font-size: 0.82rem; color: var(--muted); margin-top: 10px; }
+
 /* ===== First dibs ===== */
 .dibs-box { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: center; background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%); color: #fff; border-radius: 14px; padding: 28px; margin: 8px 0 28px; }
 .dibs-copy h2 { margin: 0 0 10px; font-size: 1.6rem; }

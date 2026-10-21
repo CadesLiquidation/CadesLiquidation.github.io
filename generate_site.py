@@ -44,7 +44,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "48"
+ASSET_VER = "49"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -1215,9 +1215,10 @@ def build_landlords():
   gets the unit rent-ready.</p>
   <div class="steps">
     <div class="step"><span class="step-n">1</span><div><strong>Liquidation prices</strong><p>Brand-new appliances with a ding or scratch, priced well under retail. Your tenant cares that it works &mdash; not about a dent on the side.</p></div></div>
-    <div class="step"><span class="step-n">2</span><div><strong>Delivery + installation</strong><p>Delivery is a flat $50 anywhere in Bloomington-Normal, and installation is available for an additional charge. One trip and the unit is ready to show.</p></div></div>
+    <div class="step"><span class="step-n">2</span><div><strong>Delivery + installation</strong><p>Delivery is a flat $50 anywhere in Bloomington-Normal, and installation is available for an additional charge. One trip and the unit is ready to show. In an emergency &mdash; a tenant&rsquo;s fridge quits mid-lease &mdash; same-day delivery and installation is often available.*</p></div></div>
     <div class="step"><span class="step-n">3</span><div><strong>Bundle &amp; save</strong><p>Outfitting more than one unit? Bundle discounts apply automatically: 3% off 2 items, 8% off 3, and 15% off 4 or more.</p></div></div>
   </div>
+  <p class="fine-print">*Same-day service depends on current stock and the day&rsquo;s schedule. An urgent fee may apply &mdash; we&rsquo;ll quote it up front before you commit.</p>
   <h2>Who this is for</h2>
   <p>Single-unit landlords, multi-family owners, student-rental managers
   turning units over between semesters, house flippers, and Airbnb hosts
