@@ -329,7 +329,7 @@ def footer(prefix="", fine_print=None):
       {guide_links}
     </nav>
   </div>
-  <div class="wrap footer-small">{small} &middot; {esc(ADDRESS_SHORT)}</div>
+  <div class="wrap footer-small">{small} &middot; {esc(ADDRESS_SHORT)} &middot; <a href="{prefix}family/">Our Family Businesses</a></div>
 </footer>
 <script src="{prefix}site.js?v={ASSET_VER}"></script>"""
 
@@ -982,6 +982,11 @@ def build_about(prefix="../"):
   Every sale includes our 14-day money-back guarantee. Delivery is available for a charge, and sales tax
   applies. Serving <span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> and
   surrounding areas.</p>
+  <h2>Part of a family of businesses</h2>
+  <p>Cade&rsquo;s Liquidation is one of three family-run businesses in central
+  Illinois &mdash; his mom runs a western boutique on Route 66 in McLean, and
+  his dad sells cars in Springfield.
+  <a href="{prefix}family/">Meet the family businesses &rarr;</a></p>
   <div class="hero-cta">
     <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
     <a class="btn btn-fb btn-lg" data-config-href="facebookGroupUrl" hidden>Facebook group: <span data-config="facebookGroupName"></span></a>
@@ -1291,6 +1296,60 @@ def build_landlords():
         og_image="og-share.png", page_url="landlords/", prefix="../")
 
 
+def build_family():
+    body = f"""<div class="wrap prose">
+  <h1>Our family businesses</h1>
+  <p>Running a small business runs in the family. Between the three of us, we
+  cover a lot of the big moments in setting up a home &mdash; the car in the
+  driveway, the appliances in the kitchen and laundry room, and the touches
+  that make the place feel like yours. If you&rsquo;re a customer of one of
+  us, we&rsquo;d love for you to meet the rest of the family.</p>
+  <h2>Cade&rsquo;s Liquidation &mdash; appliances (that&rsquo;s us)</h2>
+  <p>New and scratch-and-dent appliances at liquidation prices in
+  Bloomington-Normal, IL. Every unit is inspected and backed by our 14-day
+  money-back guarantee, and delivery is available for a charge. You&rsquo;ll
+  also find Cade selling on Facebook Marketplace as &ldquo;Cade
+  McClellan&rdquo; &mdash; rated 4.9 stars from 273+ ratings.</p>
+  <div class="hero-cta">
+    <a class="btn btn-call btn-lg" href="../">Browse the catalog</a>
+    <a class="btn btn-lg" href="../contact/">Contact us</a>
+  </div>
+  <h2>Lace &amp; Hide Mercantile &mdash; Mom&rsquo;s boutique in McLean</h2>
+  <p>Cade&rsquo;s mom, Jana, runs Lace &amp; Hide Mercantile, a rustic and
+  western boutique on historic Route 66 in McLean, IL &mdash; right across
+  from the Dixie Travel Plaza. She stocks western apparel, hats, jewelry,
+  gifts, home decor, and local goods, and she hosts events in town. Worth the
+  short drive from Bloomington-Normal, especially if you&rsquo;re furnishing
+  a place with some character.</p>
+  <div class="hero-cta">
+    <a class="btn btn-call btn-lg" href="https://lacehidemercantile.com" target="_blank" rel="noopener">Visit lacehidemercantile.com</a>
+  </div>
+  <p class="fine-print">Find her at 417 S Clinton St, McLean, IL 61754.</p>
+  <h2>Car sales &mdash; Dad at Green Hyundai of Springfield</h2>
+  <p>Cade&rsquo;s dad has been selling cars at Green Hyundai of Springfield
+  for about 10 years, and most of his business comes from repeat customers
+  and referrals &mdash; he takes care of people, and they send their friends
+  and family his way. He even pays a cash bonus for referrals. If
+  you&rsquo;re car shopping around Springfield, he&rsquo;ll treat you right.</p>
+  <div class="hero-cta">
+    <a class="btn btn-call btn-lg" href="https://www.greenhyundai.com/" target="_blank" rel="noopener">Green Hyundai&rsquo;s website</a>
+  </div>
+  <p class="fine-print">That button goes to the dealership&rsquo;s own site &mdash; browse the inventory there, and if you stop in, tell them Cade sent you.</p>
+  <h2>One family, three front doors</h2>
+  <p>New car, new home, new fridge &mdash; life tends to bring those all at
+  once. However you found us, thanks for keeping it local and keeping it in
+  the family.</p>
+</div>"""
+    return page_shell(
+        f"Our Family Businesses | {PLACEHOLDER_NAME}",
+        f"Three family-run businesses in central Illinois: {PLACEHOLDER_NAME} "
+        f"(scratch-and-dent appliances, Bloomington-Normal), Lace & Hide "
+        f"Mercantile (Route 66 boutique, McLean), and car sales at Green "
+        f"Hyundai of Springfield.",
+        body, "family",
+        og_image="og-share.png", page_url="family/", prefix="../")
+
+
 def build_thankyou():
     body = """<div class="wrap prose">
   <h1>Message sent</h1>
@@ -1446,12 +1505,13 @@ def main():
                                 more_items, photo_of))
         redirect_stubs[f"listings/{it['listing_id']}.html"] = new_url
     for name in ["about", "faq", "contact", "thankyou", "more", "bundle",
-                 "landlords"]:
+                 "landlords", "family"]:
         redirect_stubs[f"{name}.html"] = f"{name}/"
     write(os.path.join(OUT_DIR, "about", "index.html"), build_about())
     write(os.path.join(OUT_DIR, "faq", "index.html"), build_faq())
     write(os.path.join(OUT_DIR, "contact", "index.html"), build_contact())
     write(os.path.join(OUT_DIR, "landlords", "index.html"), build_landlords())
+    write(os.path.join(OUT_DIR, "family", "index.html"), build_family())
     write(os.path.join(OUT_DIR, "thankyou", "index.html"), build_thankyou())
     write(os.path.join(OUT_DIR, "more", "index.html"),
           build_more(more_items, photo_of, descriptions))
@@ -1480,7 +1540,7 @@ def main():
 
     # sitemap.xml (active listings only) + robots.txt
     urls = (["", "about/", "faq/", "contact/", "bundle/", "more/",
-             "landlords/"]
+             "landlords/", "family/"]
             + [f"guides/{g['slug']}/" for g in GUIDES]
             + [f"listings/{it['listing_id']}/" for it in appliances]
             + [f"listings/{it['listing_id']}/" for it in more_items])
