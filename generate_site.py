@@ -233,6 +233,7 @@ EXTRA_IMAGES = [
     "stock/overstock.jpg",
     "photos/warehouse-1.jpg",
     "photos/warehouse-2.jpg",
+    "photos/family-lace-hide-logo.png",
     "photos/photo-31-ge-frenchdoor-hero.jpg",
     "photos/cade.jpg",
     "logo/logo-header.png",
@@ -1315,6 +1316,7 @@ def build_family():
     <a class="btn btn-lg" href="../contact/">Contact us</a>
   </div>
   <h2>Lace &amp; Hide Mercantile &mdash; Mom&rsquo;s boutique in McLean</h2>
+  <img src="../images/family-lace-hide-logo.png?v={ASSET_VER}" alt="Lace &amp; Hide Mercantile logo" loading="lazy">
   <p>Cade&rsquo;s mom, Jana McClellan, runs Lace &amp; Hide Mercantile, a
   rustic and western boutique on historic Route 66 in McLean, IL &mdash;
   right across from the Dixie Travel Plaza. Her main thing is
