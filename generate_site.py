@@ -1326,6 +1326,8 @@ def build_family():
   decor, and she hosts events in town. Worth the short drive from
   Bloomington-Normal, especially if your closet could use a little more
   western.</p>
+  <p><strong>Family deal:</strong> bring your Cade&rsquo;s Liquidation receipt
+  to Lace &amp; Hide Mercantile and get <strong>15% off</strong>.</p>
   <div class="hero-cta">
     <a class="btn btn-call btn-lg" href="https://lacehidemercantile.com" target="_blank" rel="noopener">Visit lacehidemercantile.com</a>
     <a class="btn btn-fb btn-lg" href="https://www.facebook.com/share/g/1GCpD7m4h7/?mibextid=wwXIfr" target="_blank" rel="noopener">Her Facebook group</a>
