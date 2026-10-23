@@ -461,10 +461,11 @@ DIBS_CATEGORY_MAP = {
 }
 
 
-def first_dibs_section(source, item=None):
+def first_dibs_section(source, item=None, variant=None):
     """First-dibs signup: name + cell + what they're hunting, emailed via
-    FormSubmit (same inbox as the contact form). On sold pages the item's
-    category is preselected and the missed item rides along as a field."""
+    FormSubmit (same inbox as the contact form). On listing pages the item's
+    category is preselected; sold pages carry the missed item as a field,
+    active pages carry the viewed item."""
     cfg = json.load(open(os.path.join(HERE, "config.json")))
     email = cfg.get("email", "contact@cadesliquidation.com")
     preselect = DIBS_CATEGORY_MAP.get(item["category"]) if item else None
@@ -473,7 +474,15 @@ def first_dibs_section(source, item=None):
             " selected" if c == preselect else "", c)
         for c in DIBS_CATEGORIES)
     missed = ""
-    if item:
+    if item and variant == "active":
+        missed = (f'\n    <input type="hidden" name="viewed_item" '
+                  f'value="{esc(item["title"])} \u2014 {esc(item["price"])}">')
+        heading = "Get first dibs on the next one"
+        copy = ("Pieces like this move fast. Join the first dibs list "
+                "and we&rsquo;ll text you when the next "
+                f"{esc((preselect or 'one').lower())} comes in &mdash; "
+                "before it&rsquo;s posted for everyone else.")
+    elif item:
         missed = (f'\n    <input type="hidden" name="missed_item" '
                   f'value="{esc(item["title"])} \u2014 {esc(item["price"])}">')
         heading = "Missed this one? Get first dibs on the next."
@@ -629,7 +638,15 @@ def build_index(items, photo_of, sold):
   <p class="grid-empty" id="grid-empty" hidden>No items match right now.</p>
 </section>
 {sold_section}
-{first_dibs_section("Homepage")}
+<section class="wrap">
+  <div class="bundle-promo">
+    <div>
+      <strong>One family, three local businesses</strong>
+      <p>My mom runs Lace &amp; Hide Mercantile in McLean and my dad Gus sells cars at Green Hyundai in Springfield. Shop with one of us, get 15% off with the others.</p>
+    </div>
+    <a class="btn btn-call btn-lg" href="family/">Meet the family</a>
+  </div>
+</section>
 <section class="visit-band">
   <div class="wrap visit-inner">
     <img src="images/warehouse-2.jpg?v={ASSET_VER}" alt="Our warehouse stocked with appliances" loading="lazy">
@@ -825,7 +842,9 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     <a class="btn btn-bundle btn-lg" href="../../bundle/">Build a bundle</a>
   </div>
 </section>""")
-    dibs_html = (first_dibs_section("Sold page", item) if sold else "")
+    dibs_html = (first_dibs_section("Sold page", item) if sold
+                 else first_dibs_section("Listing page", item,
+                                         variant="active"))
     body = body + dibs_html + promo_html + related_html
     product_ld = json.dumps({
         "@context": "https://schema.org",
@@ -916,7 +935,10 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
 {cards}
   </div>
 </section>"""
-    body = body + related_html
+    dibs_html = (first_dibs_section("Sold page", item) if sold
+                 else first_dibs_section("Listing page", item,
+                                         variant="active"))
+    body = body + dibs_html + related_html
     product_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Product",
