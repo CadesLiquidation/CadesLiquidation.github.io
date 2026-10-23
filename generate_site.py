@@ -1326,8 +1326,6 @@ def build_family():
   decor, and she hosts events in town. Worth the short drive from
   Bloomington-Normal, especially if your closet could use a little more
   western.</p>
-  <p><strong>Family deal:</strong> bring your Cade&rsquo;s Liquidation receipt
-  to Lace &amp; Hide Mercantile and get <strong>15% off</strong>.</p>
   <div class="hero-cta">
     <a class="btn btn-call btn-lg" href="https://lacehidemercantile.com" target="_blank" rel="noopener">Visit lacehidemercantile.com</a>
     <a class="btn btn-fb btn-lg" href="https://www.facebook.com/share/g/1GCpD7m4h7/?mibextid=wwXIfr" target="_blank" rel="noopener">Her Facebook group</a>
@@ -1346,6 +1344,14 @@ def build_family():
     <a class="btn btn-fb btn-lg" href="https://www.facebook.com/share/1K6tKdTTzo/?mibextid=wwXIfr" target="_blank" rel="noopener">Gus on Facebook</a>
   </div>
   <p class="fine-print">Find him at Green Hyundai, 601 W Stanford Ave, Springfield, IL. Want to browse inventory first? See <a href="https://www.greenhyundai.com/" target="_blank" rel="noopener">Green Hyundai&rsquo;s own website</a> &mdash; and if you stop in, ask for Gus.</p>
+  <h2>Family deals</h2>
+  <p>Shop with one of us, save with the others:</p>
+  <ul>
+    <li>Bring your Cade&rsquo;s Liquidation receipt to Lace &amp; Hide Mercantile &mdash; <strong>15% off</strong>.</li>
+    <li>Buy something at Lace &amp; Hide Mercantile &mdash; <strong>15% off</strong> at Cade&rsquo;s Liquidation.</li>
+    <li>Buy a car from Gus at Green Hyundai &mdash; <strong>15% off</strong> at both Cade&rsquo;s Liquidation and Lace &amp; Hide Mercantile.</li>
+  </ul>
+  <p class="fine-print">Family deals can&rsquo;t be combined with other sales, discounts, or promotions.</p>
   <h2>One family, three front doors</h2>
   <p>New car, new home, new fridge &mdash; life tends to bring those all at
   once. However you found us, thanks for keeping it local and keeping it in
