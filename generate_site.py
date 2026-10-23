@@ -845,7 +845,10 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     dibs_html = (first_dibs_section("Sold page", item) if sold
                  else first_dibs_section("Listing page", item,
                                          variant="active"))
-    body = body + dibs_html + promo_html + related_html
+    if sold:
+        body = body + dibs_html + promo_html + related_html
+    else:
+        body = body + promo_html + related_html + dibs_html
     product_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Product",
@@ -938,7 +941,8 @@ def build_more_detail(item, descriptions, photo_files, more_items, photo_of):
     dibs_html = (first_dibs_section("Sold page", item) if sold
                  else first_dibs_section("Listing page", item,
                                          variant="active"))
-    body = body + dibs_html + related_html
+    body = body + (dibs_html + related_html if sold
+                  else related_html + dibs_html)
     product_ld = json.dumps({
         "@context": "https://schema.org",
         "@type": "Product",
