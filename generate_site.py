@@ -234,6 +234,7 @@ EXTRA_IMAGES = [
     "photos/warehouse-1.jpg",
     "photos/warehouse-2.jpg",
     "photos/family-lace-hide-logo.png",
+    "photos/family-green-hyundai.jpg",
     "photos/photo-31-ge-frenchdoor-hero.jpg",
     "photos/cade.jpg",
     "logo/logo-header.png",
@@ -1331,6 +1332,7 @@ def build_family():
   </div>
   <p class="fine-print">Find her at 417 S Clinton St, McLean, IL 61754.</p>
   <h2>Car sales &mdash; Gus McClellan at Green Hyundai of Springfield</h2>
+  <img src="../images/family-green-hyundai.jpg?v={ASSET_VER}" alt="Green Hyundai of Springfield dealership" loading="lazy">
   <p>Cade&rsquo;s dad, Gus McClellan, has been selling cars at Green Hyundai
   of Springfield for about 10 years, and most of his business comes from
   repeat customers and referrals &mdash; he takes care of people, and they
