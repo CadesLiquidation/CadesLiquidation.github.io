@@ -1343,7 +1343,7 @@ def build_family():
     <a class="btn btn-call btn-lg" href="tel:+12176712520">Call or text Gus: (217) 671-2520</a>
     <a class="btn btn-fb btn-lg" href="https://www.facebook.com/share/1K6tKdTTzo/?mibextid=wwXIfr" target="_blank" rel="noopener">Gus on Facebook</a>
   </div>
-  <p class="fine-print">Want to browse inventory first? See <a href="https://www.greenhyundai.com/" target="_blank" rel="noopener">Green Hyundai&rsquo;s own website</a> &mdash; and if you stop in, ask for Gus.</p>
+  <p class="fine-print">Find him at Green Hyundai, 601 W Stanford Ave, Springfield, IL. Want to browse inventory first? See <a href="https://www.greenhyundai.com/" target="_blank" rel="noopener">Green Hyundai&rsquo;s own website</a> &mdash; and if you stop in, ask for Gus.</p>
   <h2>One family, three front doors</h2>
   <p>New car, new home, new fridge &mdash; life tends to bring those all at
   once. However you found us, thanks for keeping it local and keeping it in
