@@ -862,6 +862,15 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
             "availability": ("https://schema.org/OutOfStock" if sold
                              else "https://schema.org/InStock"),
             "url": f"{SITE_URL}/listings/{item['listing_id']}/",
+            # 14-day money-back guarantee — shown verbatim on every appliance
+            # detail page, so it belongs in structured data too.
+            "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "US",
+                "returnPolicyCategory":
+                    "https://schema.org/MerchantReturnFiniteReturnWindow",
+                "merchantReturnDays": 14,
+            },
         },
     }, indent=2)
     return page_shell(
