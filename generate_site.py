@@ -4,12 +4,17 @@
 Reads ../cades-liquidation/inventory.json (+ listings_raw.json for descriptions)
 and writes all HTML pages + copies the photos actually used into images/.
 
+Also writes products.csv — an OpenAI discovery feed (ChatGPT business
+profile, connected via "Use a hosted URL") so ChatGPT can see the active
+inventory. Regenerated on every build; see build_product_feed().
+
 Re-runnable and idempotent. It NEVER touches config.json (that file belongs to
 the site owner).
 
 Usage:  python3 generate_site.py
 Run from this directory.
 """
+import csv
 import html
 import json
 import os
@@ -17,6 +22,7 @@ import re
 import shutil
 import sys
 import urllib.parse
+from datetime import date
 from guides import GUIDES
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -1516,6 +1522,166 @@ def write(path, content):
         f.write(content)
 
 
+# --- OpenAI / ChatGPT product feed (products.csv) ---
+# Hosted at https://cadesliquidation.com/products.csv and connected to the
+# ChatGPT business profile via "Use a hosted URL", so ChatGPT re-reads the
+# active inventory on its own cadence. Regenerated on every site build, so
+# the weekly sync and manual syncs keep it current without extra steps.
+#
+# Spec: OpenAI "Products" file-upload spec
+# (developers.openai.com/commerce/specs/file-upload/products).
+# Nine fields are required on every row: item_id, title, description, url,
+# brand, seller_name, image_url, availability, price.
+#
+# Accuracy rules (owner's "if you're ever unsure just don't put it"):
+# - brand comes ONLY from a brand name stated in the listing title. Rows
+#   with no brand in the title are OMITTED, never faked — OpenAI requires
+#   brand, and the unbranded furniture/decor/overstock pieces can't
+#   honestly carry one.
+# - Sold listings stay in the feed for 30 days as out_of_stock with
+#   is_eligible_search=false, so ChatGPT drops them on its next processing
+#   cycle instead of retaining the last record for up to 14 days (per
+#   OpenAI's file-upload guidance). Older sold listings are omitted.
+# - The 14-day guarantee / returns fields apply to appliances only; More
+#   Deals rows omit them (different fine print on the site).
+
+FEED_BRANDS = [
+    "Fisher & Paykel", "Speed Queen", "Sub-Zero", "KitchenAid",
+    "Frigidaire", "Electrolux", "Whirlpool", "Thermador", "Samsung",
+    "Kenmore", "JennAir", "Hotpoint", "Crosley", "Maytag", "Bosch",
+    "Amana", "Ashley", "Viking", "Haier", "Midea", "Danby", "Roper",
+    "Estate", "Dacor", "Insignia", "LG", "GE",
+]
+
+FEED_CATEGORIES = {
+    "Washers": "Appliances > Washers",
+    "Dryers": "Appliances > Dryers",
+    "Refrigerators": "Appliances > Refrigerators",
+    "Ranges": "Appliances > Ranges",
+    "Freezers": "Appliances > Freezers",
+    "Dishwashers": "Appliances > Dishwashers",
+    "Ovens": "Appliances > Wall Ovens",
+    "Furniture": "Furniture",
+    "Home Decor": "Home Decor",
+}
+
+FEED_COLUMNS = ["item_id", "title", "description", "url", "brand",
+                "seller_name", "seller_url", "image_url",
+                "additional_image_urls", "availability", "price",
+                "condition", "product_category", "color",
+                "is_eligible_search", "accepts_returns",
+                "return_deadline_in_days", "return_policy"]
+
+FEED_SELLER = "Cade's Liquidation"
+FEED_SOLD_WINDOW_DAYS = 30
+
+
+def feed_brand(title):
+    """Brand named in the listing title, or None. Whole-word match only,
+    earliest brand in title order wins. Never guessed."""
+    best, best_pos = None, None
+    for name in FEED_BRANDS:
+        m = re.search(r"(?<![A-Za-z])" + re.escape(name) + r"(?![A-Za-z])",
+                      title or "", re.IGNORECASE)
+        if m and (best_pos is None or m.start() < best_pos):
+            best, best_pos = name, m.start()
+    return best
+
+
+def feed_condition(item):
+    cond = (item.get("condition") or "").lower()
+    if cond.startswith("new"):
+        return "new"
+    if "used" in cond:
+        return "used"
+    return ""
+
+
+def feed_description(item, descriptions):
+    """Real listing description (flattened), plus the grounded policy
+    lines the listing page itself shows. Never invents damage claims."""
+    text = re.sub(r"\s+", " ",
+                  descriptions.get(item["listing_id"], "") or "").strip()
+    if not text:
+        text = item["title"]
+    low = text.lower()
+    if item.get("category") not in NON_APPLIANCE_CATS:
+        if "14-day" not in low and "14 day" not in low:
+            text += " 14-day money-back guarantee."
+        if "delivery" not in low:
+            text += " Delivery available for a charge in Bloomington-Normal, IL."
+    else:
+        if "delivery" not in low:
+            text += " Delivery available for a charge in Bloomington-Normal, IL."
+    return text[:5000]
+
+
+def build_product_feed(items, descriptions, photo_of):
+    """Write products.csv (OpenAI discovery feed) to OUT_DIR.
+
+    Returns (n_rows, omitted) where omitted is a list of
+    (listing_id, title, reason)."""
+    today = date.today()
+    rows, omitted = [], []
+    for it in items:
+        brand = feed_brand(it.get("title", ""))
+        if not brand:
+            omitted.append((it["listing_id"], it["title"],
+                            "no brand named in title"))
+            continue
+        try:
+            price_num = float(it["price_num"])
+        except (KeyError, TypeError, ValueError):
+            omitted.append((it["listing_id"], it["title"], "no price"))
+            continue
+        photos = photo_of.get(it["listing_id"]) or []
+        if not photos:
+            omitted.append((it["listing_id"], it["title"], "no photo"))
+            continue
+        if it.get("status") == "sold":
+            try:
+                sold_d = date.fromisoformat(it.get("sold_date") or "")
+            except ValueError:
+                sold_d = None
+            if not sold_d or (today - sold_d).days > FEED_SOLD_WINDOW_DAYS:
+                omitted.append((it["listing_id"], it["title"],
+                                "sold over 30 days ago / no sold date"))
+                continue
+            availability, eligible = "out_of_stock", "false"
+        else:
+            availability, eligible = "in_stock", ""
+        is_appliance = it.get("category") not in NON_APPLIANCE_CATS
+        color = it.get("color") or ""
+        rows.append({
+            "item_id": it["listing_id"],
+            "title": it["title"][:150],
+            "description": feed_description(it, descriptions),
+            "url": f"{SITE_URL}/listings/{it['listing_id']}/",
+            "brand": brand,
+            "seller_name": FEED_SELLER,
+            "seller_url": SITE_URL,
+            "image_url": f"{SITE_URL}/images/{photos[0]}",
+            "additional_image_urls": ",".join(
+                f"{SITE_URL}/images/{p}" for p in photos[1:]),
+            "availability": availability,
+            "price": f"{price_num:.2f} USD",
+            "condition": feed_condition(it),
+            "product_category": FEED_CATEGORIES.get(it.get("category"), ""),
+            "color": color[:1].upper() + color[1:] if color else "",
+            "is_eligible_search": eligible,
+            "accepts_returns": "true" if is_appliance else "",
+            "return_deadline_in_days": "14" if is_appliance else "",
+            "return_policy": f"{SITE_URL}/faq/" if is_appliance else "",
+        })
+    path = os.path.join(OUT_DIR, "products.csv")
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=FEED_COLUMNS,
+                           lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    return len(rows), omitted
+
+
 def main():
     items, descriptions = load_data()
     active = [it for it in items if it.get("status") != "sold"]
@@ -1605,6 +1771,9 @@ def main():
           f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
     write(os.path.join(OUT_DIR, "llms-full.txt"),
           build_llms_full(appliances, more_items))
+    n_feed, feed_omitted = build_product_feed(items, descriptions, photo_of)
+    print(f"Wrote products.csv ({n_feed} rows; omitted {len(feed_omitted)}: "
+          + "; ".join(f"{t} [{r}]" for _, t, r in feed_omitted) + ").")
     print(f"Wrote index.html, more.html, about.html, faq.html, sitemap.xml, "
           f"robots.txt, {len(appliances) + len(sold_appliances)} listing pages "
           f"({len(sold_appliances)} sold).")
