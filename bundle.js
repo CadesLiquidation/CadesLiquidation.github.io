@@ -6,8 +6,8 @@
 
   var DEFAULT_TIERS = [
     { minItems: 2, discountPct: 3 },
-    { minItems: 3, discountPct: 5 },
-    { minItems: 4, discountPct: 7 }
+    { minItems: 3, discountPct: 8 },
+    { minItems: 4, discountPct: 10 }
   ];
   var PHONE = "+13094344800";
   var SITE = "cadesliquidation.com";
@@ -305,7 +305,7 @@
       renderSummary();
     });
 
-    fetch("config.json").then(function (r) { return r.json(); }).then(function (cfg) {
+    fetch("/config.json").then(function (r) { return r.json(); }).then(function (cfg) {
       if (cfg && Array.isArray(cfg.bundleTiers) && cfg.bundleTiers.length) {
         tiers = cfg.bundleTiers;
         renderTiers();

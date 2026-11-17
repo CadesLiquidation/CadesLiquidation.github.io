@@ -105,7 +105,7 @@ GUIDES = [
              "forget. For top-loaders, check there's clearance above to open the lid; "
              "for front-loaders, make sure the door can swing open fully.</p>"),
                         ("Spend a little more, get a lot more",
-             "<p>If a front-loader is only slightly more than the top-load you're eyeing, take the front-loader — gentler on clothes, bigger loads, lower water bills, and you'll use it for the next decade. And if you're buying a dryer too, grab them as a pair: bundling knocks up to 15% off, which usually covers the step up to the nicer model by itself.</p>"),
+             "<p>If a front-loader is only slightly more than the top-load you're eyeing, take the front-loader — gentler on clothes, bigger loads, lower water bills, and you'll use it for the next decade. And if you're buying a dryer too, grab them as a pair: bundling knocks up to 10% off, which usually covers the step up to the nicer model by itself.</p>"),
 ("Capacity",
              "<p>Measured in cubic feet. Around <strong>4.5 cu. ft. and up</strong> "
              "handles a family comfortably, including bulky items like comforters. "
@@ -149,7 +149,7 @@ GUIDES = [
              "and check the door swing. If you're buying a washer and dryer together, "
              "matching widths look right and fit the space evenly.</p>"),
                         ("Buy the pair, save on both",
-             "<p>Here's the thing about dryers: the smartest money isn't in the dryer, it's in the <em>pair</em>. A matching washer and dryer bought together with the bundle discount (up to 15% off) often costs less than buying them one at a time — which means the nicer dryer you were debating basically pays for itself. Match your washer's width, pick your fuel type, and bundle them.</p>"),
+             "<p>Here's the thing about dryers: the smartest money isn't in the dryer, it's in the <em>pair</em>. A matching washer and dryer bought together with the bundle discount (up to 10% off) often costs less than buying them one at a time — which means the nicer dryer you were debating basically pays for itself. Match your washer's width, pick your fuel type, and bundle them.</p>"),
 ("Venting",
              "<p>Almost every home dryer in the US is <strong>vented</strong> \u2014 it "
              "needs a duct to the outside. Keep that duct short and clean; a clogged "
