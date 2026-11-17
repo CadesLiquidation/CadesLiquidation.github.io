@@ -40,7 +40,7 @@ PLACEHOLDER_ABOUT = (
     "inspected and priced to move."
 )
 PLACEHOLDER_AREA = "Bloomington-Normal, IL"
-PLACEHOLDER_RATING = "4.9 \u00b7 273+ Facebook Marketplace ratings"
+PLACEHOLDER_RATING = "4.9 \u00b7 278+ Facebook Marketplace ratings"
 
 FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
            "Freezers", "Dishwashers", "Ovens"]
@@ -115,7 +115,7 @@ def reviews_modal(reviews):
       <div>
         <p class="modal-kicker">Customer reviews</p>
         <p class="modal-rating"><span class="stars">\u2605\u2605\u2605\u2605\u2605</span>
-        <strong>4.9</strong> &middot; 273 Marketplace ratings</p>
+        <strong>4.9</strong> &middot; 278 Marketplace ratings</p>
       </div>
       <button class="modal-close" data-close-modal aria-label="Close reviews">&times;</button>
     </div>
@@ -610,7 +610,7 @@ def build_index(items, photo_of, sold):
 </section>
 <section class="trustbar">
   <div class="wrap trustbar-inner">
-    <div class="trust"><strong>4.9\u2605</strong><span>273+ Marketplace ratings</span></div>
+    <div class="trust"><strong>4.9\u2605</strong><span>278+ Marketplace ratings</span></div>
     <div class="trust"><strong>14-day</strong><span>money-back guarantee</span></div>
     <div class="trust"><strong>Delivery</strong><span>available for a charge</span></div>
     <div class="trust"><strong>Inspected</strong><span>every item checked</span></div>
@@ -707,7 +707,7 @@ def build_index(items, photo_of, sold):
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.9",
-            "reviewCount": "273",
+            "reviewCount": "278",
         },
         "priceRange": "$",
     }, indent=2)
@@ -1352,7 +1352,7 @@ def build_family():
   Bloomington-Normal, IL. Every unit is inspected and backed by our 14-day
   money-back guarantee, and delivery is available for a charge. You&rsquo;ll
   also find Cade selling on Facebook Marketplace as &ldquo;Cade
-  McClellan&rdquo; &mdash; rated 4.9 stars from 273+ ratings.</p>
+  McClellan&rdquo; &mdash; rated 4.9 stars from 278+ ratings.</p>
   <div class="hero-cta">
     <a class="btn btn-call btn-lg" href="../">Browse the catalog</a>
     <a class="btn btn-lg" href="../contact/">Contact us</a>

@@ -39,7 +39,7 @@ def spaced(cx, y, text, fnt, fill, spacing):
 
 centered(W / 2, 372, "CADE'S LIQUIDATION", font("LiberationSans-Bold.ttf", 96), WHITE)
 spaced(W / 2, 492, "AMAZING PRODUCTS  \u00b7  AMAZING PRICES", font("LiberationSans-Bold.ttf", 34), ORANGE, 6)
-centered(W / 2, 552, "4.9/5 273+ Marketplace ratings  \u00b7  14-day money-back  \u00b7  Bloomington-Normal, IL",
+centered(W / 2, 552, "4.9/5 278+ Marketplace ratings  \u00b7  14-day money-back  \u00b7  Bloomington-Normal, IL",
          font("LiberationSans-Regular.ttf", 28), MUTED)
 
 img.save(OUT)
