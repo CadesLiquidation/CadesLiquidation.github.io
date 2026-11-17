@@ -7,7 +7,7 @@
   var DEFAULT_TIERS = [
     { minItems: 2, discountPct: 3 },
     { minItems: 3, discountPct: 8 },
-    { minItems: 4, discountPct: 10 }
+    { minItems: 4, discountPct: 15 }
   ];
   var PHONE = "+13094344800";
   var SITE = "cadesliquidation.com";

@@ -50,7 +50,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "50"
+ASSET_VER = "51"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -842,7 +842,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     promo_html = ("" if sold else """<section class="wrap">
   <div class="bundle-promo">
     <div>
-      <strong>Save up to 10% by bundling</strong>
+      <strong>Save up to 15% by bundling</strong>
       <p>Combine this with other appliances and unlock bundle discounts automatically.</p>
     </div>
     <a class="btn btn-bundle btn-lg" href="../../bundle/">Build a bundle</a>
@@ -1264,7 +1264,7 @@ def build_landlords():
   <div class="steps">
     <div class="step"><span class="step-n">1</span><div><strong>Liquidation prices</strong><p>Brand-new appliances with a ding or scratch, priced well under retail. Your tenant cares that it works &mdash; not about a dent on the side.</p></div></div>
     <div class="step"><span class="step-n">2</span><div><strong>Delivery + installation</strong><p>Delivery is a flat $50 anywhere in Bloomington-Normal, and installation is available for an additional charge. One trip and the unit is ready to show. In an emergency &mdash; a tenant&rsquo;s fridge quits mid-lease &mdash; same-day delivery and installation is often available.*</p></div></div>
-    <div class="step"><span class="step-n">3</span><div><strong>Bundle &amp; save</strong><p>Outfitting more than one unit? Bundle discounts apply automatically: 3% off 2 items, 8% off 3, and 10% off 4 or more.</p></div></div>
+    <div class="step"><span class="step-n">3</span><div><strong>Bundle &amp; save</strong><p>Outfitting more than one unit? Bundle discounts apply automatically: 3% off 2 items, 8% off 3, and 15% off 4 or more.</p></div></div>
   </div>
   <p class="fine-print">*Same-day service depends on current stock and the day&rsquo;s schedule. An urgent fee may apply &mdash; we&rsquo;ll quote it up front before you commit.</p>
   <h2>Who this is for</h2>
