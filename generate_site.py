@@ -1550,7 +1550,7 @@ FEED_BRANDS = [
     "Frigidaire", "Electrolux", "Whirlpool", "Thermador", "Samsung",
     "Kenmore", "JennAir", "Hotpoint", "Crosley", "Maytag", "Bosch",
     "Amana", "Ashley", "Viking", "Haier", "Midea", "Danby", "Roper",
-    "Estate", "Dacor", "Insignia", "LG", "GE",
+    "Estate", "Dacor", "Insignia", "Vissani", "LG", "GE",
 ]
 
 FEED_CATEGORIES = {
