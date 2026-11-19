@@ -719,4 +719,4 @@ a.contact-card:hover { border-color: var(--brand); }
    hat has room above the badge without poking out of the sticky header. */
 .brand { position: relative; }
 .header-inner { padding-top: 24px; }
-.logo-hat { position: absolute; left: 5%; top: -40%; width: 20%; height: auto; z-index: 3; pointer-events: none; transform: rotate(-10deg); }
+.logo-hat { position: absolute; left: 5%; top: -40%; width: 20%; height: auto; z-index: 3; pointer-events: none; transform: rotate(-10deg); filter: drop-shadow(0 0 4px rgba(0,0,0,0.35)) drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
