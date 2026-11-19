@@ -50,7 +50,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "51"
+ASSET_VER = "52"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -606,6 +606,15 @@ def build_index(items, photo_of, sold):
       <img class="collage-a" src="images/photo-12-lg-set-black.jpg?v={ASSET_VER}" alt="Washer and dryer set">
       <img class="collage-b" src="images/photo-18-frigidaire-gallery.jpg?v={ASSET_VER}" alt="Refrigerator">
     </div>
+  </div>
+</section>
+<section class="wrap">
+  <div class="xmas-band">
+    <div>
+      <strong><span class="xmas-star">&#10022;</span> Happy Holidays <span class="xmas-star">&#10022;</span></strong>
+      <p>New appliances in stock now &mdash; every piece is one of a kind. Text Cade to claim yours before it&rsquo;s gone.</p>
+    </div>
+    <a class="btn btn-call btn-lg" href="#catalog">Shop the catalog</a>
   </div>
 </section>
 <section class="trustbar">
