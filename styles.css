@@ -655,7 +655,7 @@ a.contact-card:hover { border-color: var(--brand); }
 .xmas-band {
   display: flex; align-items: center; justify-content: space-between; gap: 18px;
   background: linear-gradient(135deg, #8e2f32 0%, #6e2326 100%);
-  color: #efecec; border-radius: 14px; padding: 22px 26px; margin: 28px 0 10px;
+  color: #efecec; border-radius: 14px; padding: 22px 26px; margin: 28px 0;
   position: relative; overflow: hidden;
 }
 .xmas-band strong { font-size: 1.25rem; color: #fff; }
