@@ -655,15 +655,43 @@ a.contact-card:hover { border-color: var(--brand); }
 .xmas-band {
   display: flex; align-items: center; justify-content: space-between; gap: 18px;
   background: linear-gradient(135deg, #8e2f32 0%, #6e2326 100%);
-  color: #efecec; border-radius: 14px; padding: 22px 26px; margin: 0 0 28px;
+  color: #efecec; border-radius: 14px; padding: 22px 26px; margin: 28px 0 10px;
+  position: relative; overflow: hidden;
 }
 .xmas-band strong { font-size: 1.25rem; color: #fff; }
 .xmas-band strong .xmas-star { color: #c9a227; }
 .xmas-band p { margin: 6px 0 0; color: rgba(239, 236, 236, 0.85); }
 .xmas-band .btn { flex-shrink: 0; }
+
+.xmas-band::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  border-radius: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22130%22%20height%3D%22130%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2224%22%20r%3D%221.1%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2210%22%20r%3D%221.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%2258%22%20r%3D%221.2%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2288%22%20r%3D%221.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2296%22%20cy%3D%22112%22%20r%3D%221.1%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%228%22%20cy%3D%2264%22%20r%3D%220.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%22122%22%20cy%3D%2295%22%20r%3D%221.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3Ccircle%20cx%3D%2255%22%20cy%3D%2245%22%20r%3D%220.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.4%22%2F%3E%3C%2Fsvg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22190%22%20height%3D%22190%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2240%22%20r%3D%221.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%22120%22%20cy%3D%2220%22%20r%3D%221.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%22165%22%20cy%3D%2290%22%20r%3D%222.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%22130%22%20r%3D%221.7%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22160%22%20r%3D%221.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%22175%22%20r%3D%221.5%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%2295%22%20cy%3D%2275%22%20r%3D%221.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22140%22%20r%3D%221.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.55%22%2F%3E%3C%2Fsvg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22270%22%20height%3D%22270%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2260%22%20r%3D%222.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22190%22%20cy%3D%2240%22%20r%3D%222.4%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22230%22%20cy%3D%22180%22%20r%3D%222.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%2290%22%20cy%3D%22220%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%22150%22%20r%3D%222.3%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22110%22%20r%3D%222.7%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%22250%22%20r%3D%222.4%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.7%22%2F%3E%3C%2Fsvg%3E");
+  background-size: 130px 130px, 190px 190px, 270px 270px;
+  background-position: 0 0, 0 0, 0 0;
+  animation: xmas-snow-fall 40s linear infinite;
+}
+.xmas-band > * { position: relative; z-index: 1; }
+.xmas-band strong, .xmas-band p {
+  text-shadow: 0 1px 8px rgba(60, 10, 12, 0.55);
+}
 @media (max-width: 640px) {
   .xmas-band { flex-direction: column; align-items: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero::before { animation: none; }
+  .hero::before, .xmas-band::before, .xmas-band .btn { animation: none; }
 }
+
+@keyframes xmas-snow-fall-sm {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to { background-position: 65px 65px, 95px 95px, 135px 135px; }
+}
+.xmas-band .btn {
+  background-color: #2e7d32;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22130%22%20height%3D%22130%22%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%2224%22%20r%3D%221.1%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2272%22%20cy%3D%2210%22%20r%3D%221.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%2258%22%20r%3D%221.2%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2288%22%20r%3D%221.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2296%22%20cy%3D%22112%22%20r%3D%221.1%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%228%22%20cy%3D%2264%22%20r%3D%220.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%22122%22%20cy%3D%2295%22%20r%3D%221.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3Ccircle%20cx%3D%2255%22%20cy%3D%2245%22%20r%3D%220.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22190%22%20height%3D%22190%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2240%22%20r%3D%221.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22120%22%20cy%3D%2220%22%20r%3D%221.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22165%22%20cy%3D%2290%22%20r%3D%222.0%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%22130%22%20r%3D%221.7%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22160%22%20r%3D%221.9%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%22175%22%20r%3D%221.5%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%2295%22%20cy%3D%2275%22%20r%3D%221.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22140%22%20r%3D%221.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.65%22%2F%3E%3C%2Fsvg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22270%22%20height%3D%22270%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2260%22%20r%3D%222.6%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%22190%22%20cy%3D%2240%22%20r%3D%222.4%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%22230%22%20cy%3D%22180%22%20r%3D%222.8%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%2290%22%20cy%3D%22220%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%22150%22%20r%3D%222.3%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22110%22%20r%3D%222.7%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%22250%22%20cy%3D%22250%22%20r%3D%222.4%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.8%22%2F%3E%3C%2Fsvg%3E");
+  background-size: 65px 65px, 95px 95px, 135px 135px;
+  background-position: 0 0, 0 0, 0 0;
+  animation: xmas-snow-fall-sm 40s linear infinite;
+}
+.xmas-band .btn:hover { background-color: #256b2a; }
