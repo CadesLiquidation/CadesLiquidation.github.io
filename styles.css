@@ -712,3 +712,7 @@ a.contact-card:hover { border-color: var(--brand); }
 .xmas-lights .b-green { background: radial-gradient(circle at 35% 35%, #fff, #4ade80 60%); box-shadow: 0 0 12px 3px rgba(74,222,128,.8); }
 .xmas-lights .b-blue { background: radial-gradient(circle at 35% 35%, #fff, #6aa9ff 60%); box-shadow: 0 0 12px 3px rgba(106,169,255,.8); }
 @keyframes xmas-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+/* Christmas hat on the header logo — remove in January */
+.brand { position: relative; }
+.logo-hat { position: absolute; left: -3%; top: -20%; width: 24%; height: auto; z-index: 3; pointer-events: none; transform: rotate(-10deg); }

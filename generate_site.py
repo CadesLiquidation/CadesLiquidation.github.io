@@ -50,7 +50,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "55"
+ASSET_VER = "56"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -301,7 +301,7 @@ def copy_photos(items):
 def header(active, prefix=""):
     return f"""<header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{prefix}"><img src="{prefix}images/logo-header-lockup.png?v={ASSET_VER}" alt="Cade's Liquidation"></a>
+    <a class="brand" href="{prefix}"><img src="{prefix}images/logo-header-lockup.png?v={ASSET_VER}" alt="Cade's Liquidation"><svg class="logo-hat" viewBox="0 0 120 100" aria-hidden="true"><path d="M12,80 C12,42 36,14 62,12 C88,14 104,42 104,80 Z" fill="#d32f2f"/><ellipse cx="88" cy="30" rx="18" ry="12" fill="#d32f2f" transform="rotate(-15 88 30)"/><circle cx="104" cy="36" r="9" fill="#fff"/><rect x="6" y="72" width="104" height="18" rx="9" fill="#fff"/></svg></a>
     <nav class="main-nav">
       <a href="{prefix}" class="{'active' if active == 'catalog' else ''}">Catalog</a>
       <a href="{prefix}bundle/" class="{'active' if active == 'bundles' else ''}">Bundles</a>
