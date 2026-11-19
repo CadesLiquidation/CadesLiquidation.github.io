@@ -50,7 +50,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "54"
+ASSET_VER = "55"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -588,7 +588,26 @@ def build_index(items, photo_of, sold):
   </div>
 </section>""" if sold_sorted else ""
 
+
+    # Christmas lights strung across the top of the hero (remove in January).
+    # Wire sags in 4 swags; bulb tops follow the wire (quarter points 21px,
+    # midpoints 25px) so each bulb hangs from the wire by its stem.
+    _light_colors = ["b-red", "b-gold", "b-green", "b-blue"]
+    _light_pos = [(6.25, 21), (12.5, 25), (18.75, 21), (31.25, 21), (37.5, 25),
+                  (43.75, 21), (56.25, 21), (62.5, 25), (68.75, 21), (81.25, 21),
+                  (87.5, 25), (93.75, 21)]
+    _bulbs = "\n".join(
+        f'<span class="bulb {_light_colors[i % 4]}" '
+        f'style="left:{x}%;top:{y}px;animation-delay:{(i * 0.2):.1f}s"></span>'
+        for i, (x, y) in enumerate(_light_pos))
+    _lights = ('<div class="xmas-lights" aria-hidden="true">\n'
+        '<svg class="wire" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden="true">'
+        '<path d="M0,4 Q150,34 300,4 Q450,34 600,4 Q750,34 900,4 Q1050,34 1200,4" '
+        'fill="none" stroke="rgba(0,0,0,0.55)" stroke-width="2"/></svg>\n'
+        f'{_bulbs}\n</div>')
+
     body = f"""<section class="hero">
+{_lights}
   <div class="wrap hero-inner">
     <div class="hero-copy">
       <p class="eyebrow"><span data-config="serviceArea">{esc(PLACEHOLDER_AREA)}</span> &middot; Scratch-and-dent deals</p>

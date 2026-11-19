@@ -680,7 +680,7 @@ a.contact-card:hover { border-color: var(--brand); }
   .xmas-band { flex-direction: column; align-items: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero::before, .xmas-band::before, .xmas-band .btn { animation: none; }
+  .hero::before, .xmas-band::before, .xmas-band .btn, .xmas-lights .bulb { animation: none; }
 }
 
 @keyframes xmas-snow-fall-sm {
@@ -695,3 +695,20 @@ a.contact-card:hover { border-color: var(--brand); }
   animation: xmas-snow-fall-sm 40s linear infinite;
 }
 .xmas-band .btn:hover { background-color: #256b2a; }
+
+/* Christmas lights across the top of the hero — remove in January */
+.xmas-lights { position: absolute; top: 0; left: 0; right: 0; height: 40px; z-index: 2; pointer-events: none; }
+.xmas-lights .wire { position: absolute; top: 0; left: 0; width: 100%; height: 30px; }
+.xmas-lights .bulb {
+  position: absolute; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%;
+  animation: xmas-twinkle 2.4s ease-in-out infinite;
+}
+.xmas-lights .bulb::before {
+  content: ""; position: absolute; left: 5px; top: -6px; width: 2px; height: 6px;
+  background: rgba(0,0,0,0.5);
+}
+.xmas-lights .b-red { background: radial-gradient(circle at 35% 35%, #fff, #ff5a5a 60%); box-shadow: 0 0 12px 3px rgba(255,90,90,.8); }
+.xmas-lights .b-gold { background: radial-gradient(circle at 35% 35%, #fff, #ffc531 60%); box-shadow: 0 0 12px 3px rgba(255,197,49,.8); }
+.xmas-lights .b-green { background: radial-gradient(circle at 35% 35%, #fff, #4ade80 60%); box-shadow: 0 0 12px 3px rgba(74,222,128,.8); }
+.xmas-lights .b-blue { background: radial-gradient(circle at 35% 35%, #fff, #6aa9ff 60%); box-shadow: 0 0 12px 3px rgba(106,169,255,.8); }
+@keyframes xmas-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
