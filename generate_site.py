@@ -321,7 +321,8 @@ def footer(prefix="", fine_print=None):
         f'<a href="{prefix}guides/{g["slug"]}/">{esc(g["h1"])}</a>'
         for g in GUIDES)
     small = (fine_print if fine_print is not None
-             else "14-day money-back guarantee &middot; Delivery available for a charge &middot; Sales tax applies")
+             else f'<a href="{prefix}returns/">14-day money-back guarantee</a> '
+                  "&middot; Delivery available for a charge &middot; Sales tax applies")
     return f"""<footer class="site-footer">
   <div class="wrap footer-inner">
     <div>
@@ -1168,7 +1169,8 @@ def build_faq():
     faqs = [
         ("What is your return policy?",
          "Every appliance comes with a 14-day money-back guarantee. If something "
-         "isn't right, let us know within 14 days and we'll make it right."),
+         "isn't right, let us know within 14 days and we'll make it right. "
+         '<a href="../returns/">Read the full return policy &rarr;</a>'),
         ("Do you deliver?",
          "Yes — $50 flat delivery to your door anywhere in Bloomington-Normal, IL. "
          "Outside the area, contact us for a quote. Installation services are also "
@@ -1209,6 +1211,42 @@ def build_faq():
         "sales tax applies. Answers about scratch-and-dent appliances.",
         body, "faq",
         og_image="og-share.png", page_url="faq/", prefix="../")
+
+
+def build_returns():
+    body = """<div class="wrap prose">
+  <h1>Return policy</h1>
+  <p>Every appliance we sell comes with a <strong>14-day money-back guarantee</strong>.
+  If something isn't right, let us know within 14 days of your purchase and we'll
+  make it right.</p>
+  <h2>How it works</h2>
+  <ul>
+    <li>The guarantee covers <strong>appliances</strong> &mdash; washers, dryers,
+    refrigerators, ranges, freezers, dishwashers, and wall ovens.</li>
+    <li>You have <strong>14 days</strong> from the day you buy it to let us know
+    something isn't right.</li>
+    <li>Call or text us and we'll make it right &mdash; including a refund if
+    that's what it takes.</li>
+  </ul>
+  <h2>What isn't covered</h2>
+  <p>New and scratch-and-dent appliances may come with a 1-year manufacturer
+  warranty, but a warranty is not guaranteed. Some listings include a manufacturer
+  warranty &mdash; check the item description for details.</p>
+  <p>Furniture, decor, and overstock finds (our More Deals items) are not covered
+  by the 14-day guarantee &mdash; if you have a question about an item, ask us
+  before you buy and we'll tell you straight.</p>
+  <div class="hero-cta">
+    <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text: <span data-config="phone"></span></a>
+    <a class="btn btn-bundle btn-lg" href="../">Browse the catalog</a>
+  </div>
+</div>"""
+    return page_shell(
+        f"Return policy | {PLACEHOLDER_NAME}",
+        "Our return policy: every appliance comes with a 14-day money-back "
+        "guarantee. If something isn't right, let us know within 14 days and "
+        "we'll make it right.",
+        body, "",
+        og_image="og-share.png", page_url="returns/", prefix="../")
 
 
 def build_contact():
@@ -1751,10 +1789,11 @@ def main():
                                 more_items, photo_of))
         redirect_stubs[f"listings/{it['listing_id']}.html"] = new_url
     for name in ["about", "faq", "contact", "thankyou", "more", "bundle",
-                 "landlords", "family"]:
+                 "landlords", "family", "returns"]:
         redirect_stubs[f"{name}.html"] = f"{name}/"
     write(os.path.join(OUT_DIR, "about", "index.html"), build_about())
     write(os.path.join(OUT_DIR, "faq", "index.html"), build_faq())
+    write(os.path.join(OUT_DIR, "returns", "index.html"), build_returns())
     write(os.path.join(OUT_DIR, "contact", "index.html"), build_contact())
     write(os.path.join(OUT_DIR, "landlords", "index.html"), build_landlords())
     write(os.path.join(OUT_DIR, "family", "index.html"), build_family())
@@ -1786,7 +1825,7 @@ def main():
 
     # sitemap.xml (active listings only) + robots.txt
     urls = (["", "about/", "faq/", "contact/", "bundle/", "more/",
-             "landlords/", "family/"]
+             "landlords/", "family/", "returns/"]
             + [f"guides/{g['slug']}/" for g in GUIDES]
             + [f"listings/{it['listing_id']}/" for it in appliances]
             + [f"listings/{it['listing_id']}/" for it in more_items])
