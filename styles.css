@@ -715,6 +715,9 @@ a.contact-card:hover { border-color: var(--brand); }
 .bf-deal-price s { display: block; font-weight: 400; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
 .bf-foot { text-align: center; margin: 16px 0 0; color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; }
 .bf-foot a { color: #fff; font-weight: 700; }
+.sale-tag { display: inline-block; background: #d32f2f; color: #fff; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; margin-left: 10px; vertical-align: middle; }
+.bf-perk { text-align: center; margin: 14px 0 0; color: #f2c230; font-weight: 700; font-size: 1.05rem; }
+.sale-perk { background: #fff7e0; border: 1px solid #f2c230; border-radius: 8px; padding: 10px 14px; font-weight: 700; color: #1d2430; margin: 12px 0 0; }
 @media (max-width: 640px) {
   .bf-title { font-size: 1.7rem; }
   .bf-deals { flex-direction: column; }

@@ -50,7 +50,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "60"
+ASSET_VER = "62"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -640,17 +640,18 @@ def build_index(items, photo_of, sold):
         <img src="images/photo-312-lg-french-door-bf.jpg?v={ASSET_VER}" alt="LG French Door Refrigerator">
         <span>
           <span class="bf-deal-name">LG French Door Refrigerator</span>
-          <span class="bf-deal-price">$950 <s>Reg. $3,000</s></span>
+          <span class="bf-deal-price">$950 <span class="sale-tag">Sale ends Nov 28</span> <s>Reg. $3,000</s></span>
         </span>
       </a>
       <a class="bf-deal" href="listings/2361489474609411/">
         <img src="images/photo-313-whirlpool-side-by-side-bf.jpg?v={ASSET_VER}" alt="Whirlpool Side-by-Side Refrigerator">
         <span>
           <span class="bf-deal-name">Whirlpool Side-by-Side Refrigerator</span>
-          <span class="bf-deal-price">$750 <s>Reg. $1,800</s></span>
+          <span class="bf-deal-price">$750 <span class="sale-tag">Sale ends Nov 28</span> <s>Reg. $1,800</s></span>
         </span>
       </a>
     </div>
+    <p class="bf-perk">Free delivery with installation &mdash; sale week only</p>
     <p class="bf-foot">While they last &mdash; <a href="sms:{SMS_PHONE}?&body={urllib.parse.quote('Hi Cade, is the Black Friday fridge sale still on?')}">text Cade</a> to claim yours before they&rsquo;re gone.</p>
   </div>
 </section>
@@ -851,6 +852,10 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     dropped = (item.get("prev_price_num") or 0) > (item.get("price_num") or 0)
     drop_line = (f'<p class="price-drop">Price dropped from {esc(item["prev_price"])}</p>'
                  if dropped and not sold else "")
+    sale_tag = ('<span class="sale-tag">Sale ends Nov 28</span>'
+                if item.get("sale_price") and not sold else "")
+    sale_perk = ('<p class="sale-perk">Black Friday: free delivery with installation &mdash; ends Nov 28.</p>'
+                 if item.get("sale_price") and not sold else "")
     cta = ("" if sold else f"""<div class="detail-cta">
       <div class="detail-cta-main">
         <a class="btn btn-call btn-lg" data-config-href="phoneHref" hidden>Call or text about this item: <span data-config="phone"></span></a>
@@ -869,10 +874,11 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     <span class="badge">{esc(item['category'])}</span>
     <h1>{esc(item['title'])}</h1>
     {retail_html(item['listing_id'], item.get('price_num', 0), size="lg")}
-    <p class="price price-lg">{esc(item['price'])}</p>
+    <p class="price price-lg">{esc(item['price'])}{sale_tag}</p>
     {drop_line}
     {savings_html(item['listing_id'], item.get('price_num', 0))}
     {one_only}
+    {sale_perk}
     <div class="description" id="listing-desc">{desc_html}</div>
     <button type="button" class="desc-toggle" id="desc-toggle" hidden>View more</button>
     <dl class="facts">
