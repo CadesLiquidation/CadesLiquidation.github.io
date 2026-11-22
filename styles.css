@@ -695,21 +695,28 @@ a.contact-card:hover { border-color: var(--brand); }
   animation: xmas-snow-fall-sm 40s linear infinite;
 }
 
-/* Black Friday sale band (temporary — remove after the sale week). */
+/* Black Friday sale banner (temporary — remove after Nov 28). */
 .bf-band {
-  background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%);
-  color: #fff; border-radius: 14px; padding: 22px 26px; margin: 28px 0;
+  background: linear-gradient(135deg, #0d0d10 0%, #131c2e 60%, #0f5cab 130%);
+  color: #fff; border-radius: 14px; padding: 26px 26px 22px; margin: 28px 0;
+  border: 1px solid rgba(242, 194, 48, 0.35);
 }
-.bf-band .bf-eyebrow { display: block; color: #f2c230; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.85rem; }
-.bf-band strong { display: block; font-size: 1.25rem; color: #fff; margin-top: 4px; }
-.bf-band p { margin: 6px 0 0; color: rgba(255, 255, 255, 0.85); }
-.bf-deals { display: flex; gap: 14px; margin-top: 16px; }
-.bf-deal { flex: 1; display: block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 10px; padding: 14px 16px; color: #fff; text-decoration: none; }
-.bf-deal:hover { background: rgba(255, 255, 255, 0.18); }
-.bf-deal-name { display: block; font-weight: 700; }
-.bf-deal-price { display: block; margin-top: 4px; font-weight: 800; font-size: 1.35rem; color: #f2c230; }
-.bf-deal-price s { font-weight: 400; font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); margin-left: 8px; }
+.bf-head { text-align: center; }
+.bf-band .bf-eyebrow { display: block; color: #f2c230; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; font-size: 0.85rem; }
+.bf-title { display: block; font-size: 2.1rem; line-height: 1.05; font-weight: 800; color: #fff; margin-top: 6px; letter-spacing: 0.02em; }
+.bf-title .bf-gold { color: #f2c230; }
+.bf-dates { display: inline-block; margin-top: 12px; background: #f2c230; color: #111; font-weight: 800; border-radius: 999px; padding: 4px 14px; font-size: 0.95rem; }
+.bf-deals { display: flex; gap: 14px; margin-top: 20px; }
+.bf-deal { flex: 1; display: flex; gap: 14px; align-items: center; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 12px; color: #fff; text-decoration: none; }
+.bf-deal:hover { background: rgba(255, 255, 255, 0.15); }
+.bf-deal img { width: 104px; height: 140px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.bf-deal-name { display: block; font-weight: 700; font-size: 1.05rem; }
+.bf-deal-price { display: block; margin-top: 4px; font-weight: 800; font-size: 1.5rem; color: #f2c230; }
+.bf-deal-price s { display: block; font-weight: 400; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); margin-top: 2px; }
+.bf-foot { text-align: center; margin: 16px 0 0; color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; }
+.bf-foot a { color: #fff; font-weight: 700; }
 @media (max-width: 640px) {
+  .bf-title { font-size: 1.7rem; }
   .bf-deals { flex-direction: column; }
 }
 .xmas-band .btn:hover { background-color: #256b2a; }
