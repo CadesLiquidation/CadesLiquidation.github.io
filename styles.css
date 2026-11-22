@@ -694,6 +694,24 @@ a.contact-card:hover { border-color: var(--brand); }
   background-position: 0 0, 0 0, 0 0;
   animation: xmas-snow-fall-sm 40s linear infinite;
 }
+
+/* Black Friday sale band (temporary — remove after the sale week). */
+.bf-band {
+  background: linear-gradient(135deg, #0f5cab 0%, #0a3f78 100%);
+  color: #fff; border-radius: 14px; padding: 22px 26px; margin: 28px 0;
+}
+.bf-band .bf-eyebrow { display: block; color: #f2c230; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.85rem; }
+.bf-band strong { display: block; font-size: 1.25rem; color: #fff; margin-top: 4px; }
+.bf-band p { margin: 6px 0 0; color: rgba(255, 255, 255, 0.85); }
+.bf-deals { display: flex; gap: 14px; margin-top: 16px; }
+.bf-deal { flex: 1; display: block; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 10px; padding: 14px 16px; color: #fff; text-decoration: none; }
+.bf-deal:hover { background: rgba(255, 255, 255, 0.18); }
+.bf-deal-name { display: block; font-weight: 700; }
+.bf-deal-price { display: block; margin-top: 4px; font-weight: 800; font-size: 1.35rem; color: #f2c230; }
+.bf-deal-price s { font-weight: 400; font-size: 0.95rem; color: rgba(255, 255, 255, 0.7); margin-left: 8px; }
+@media (max-width: 640px) {
+  .bf-deals { flex-direction: column; }
+}
 .xmas-band .btn:hover { background-color: #256b2a; }
 
 /* Christmas lights across the top of the hero — remove in January */

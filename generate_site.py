@@ -50,7 +50,7 @@ FILTERS = ["All", "Washers", "Dryers", "Refrigerators", "Ranges",
 NON_APPLIANCE_CATS = {"Furniture", "Home Decor", "Overstock"}
 
 # Bump when styles.css / site.js change so browsers fetch the fresh files
-ASSET_VER = "58"
+ASSET_VER = "59"
 
 # Canonical public URL of the site (used for share tags, sitemap, schema)
 SITE_URL = "https://cadesliquidation.com"
@@ -629,6 +629,23 @@ def build_index(items, photo_of, sold):
   </div>
 </section>
 <section class="wrap">
+  <div class="bf-band">
+    <span class="bf-eyebrow">Black Friday Sale &mdash; this week only</span>
+    <strong>Scratch &amp; Dent Refrigerators</strong>
+    <p>Same model, dents in different spots. 4 LG French Doors and 5 Whirlpool side-by-sides in stock &mdash; text Cade to claim yours before they&rsquo;re gone.</p>
+    <div class="bf-deals">
+      <a class="bf-deal" href="listings/1655838649379382/">
+        <span class="bf-deal-name">LG French Door Refrigerator</span>
+        <span class="bf-deal-price">$950 <s>$1,700 at big box stores</s></span>
+      </a>
+      <a class="bf-deal" href="listings/2361489474609411/">
+        <span class="bf-deal-name">Whirlpool Side-by-Side Refrigerator</span>
+        <span class="bf-deal-price">$750 <s>$1,500 at big box stores</s></span>
+      </a>
+    </div>
+  </div>
+</section>
+<section class="wrap">
   <div class="xmas-band">
     <div>
       <strong><span class="xmas-star">&#10022;</span> Happy Holidays <span class="xmas-star">&#10022;</span></strong>
@@ -816,6 +833,8 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
                    '<a href="../../">browse the current catalog</a></div>'
                    if sold else "")
     one_only = ("" if sold else
+                '<p class="one-only">Multiple available &mdash; same model, dents in different spots.</p>'
+                if item.get("multi") else
                 '<p class="one-only">One only &mdash; when it&rsquo;s gone, it&rsquo;s gone.</p>')
     ask_body = urllib.parse.quote(
         f"Hi Cade, is this still available? {item['title']} ({item['price']})")
