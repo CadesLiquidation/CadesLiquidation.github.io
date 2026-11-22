@@ -651,7 +651,7 @@ def build_index(items, photo_of, sold):
         </span>
       </a>
     </div>
-    <p class="bf-perk">Free delivery with installation &mdash; sale week only</p>
+    <p class="bf-perk">Free delivery with installation</p>
     <p class="bf-foot">While they last &mdash; <a href="sms:{SMS_PHONE}?&body={urllib.parse.quote('Hi Cade, is the Black Friday fridge sale still on?')}">text Cade</a> to claim yours before they&rsquo;re gone.</p>
   </div>
 </section>
@@ -851,7 +851,10 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
     ask_href = f"sms:{SMS_PHONE}?&body={ask_body}"
     dropped = (item.get("prev_price_num") or 0) > (item.get("price_num") or 0)
     drop_line = (f'<p class="price-drop">Price dropped from {esc(item["prev_price"])}</p>'
-                 if dropped and not sold else "")
+                 if dropped and not sold and not item.get("orig_price_num") else "")
+    orig_num = item.get("orig_price_num") or 0
+    orig_html = (f'<p class="retail-lg">Retail <s>${orig_num:,.0f}</s></p>'
+                 if orig_num and orig_num > (item.get("price_num") or 0) else "")
     sale_tag = ('<span class="sale-tag">Sale ends Nov 28</span>'
                 if item.get("sale_price") and not sold else "")
     sale_perk = ('<p class="sale-perk">Black Friday: free delivery with installation &mdash; ends Nov 28.</p>'
@@ -873,7 +876,7 @@ def build_detail(item, descriptions, photo_files, items, photo_of):
   <div class="detail-info">
     <span class="badge">{esc(item['category'])}</span>
     <h1>{esc(item['title'])}</h1>
-    {retail_html(item['listing_id'], item.get('price_num', 0), size="lg")}
+    {orig_html or retail_html(item['listing_id'], item.get('price_num', 0), size="lg")}
     <p class="price price-lg">{esc(item['price'])}{sale_tag}</p>
     {drop_line}
     {savings_html(item['listing_id'], item.get('price_num', 0))}
