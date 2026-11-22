@@ -640,14 +640,14 @@ def build_index(items, photo_of, sold):
         <img src="images/photo-312-lg-french-door-bf.jpg?v={ASSET_VER}" alt="LG French Door Refrigerator">
         <span>
           <span class="bf-deal-name">LG French Door Refrigerator</span>
-          <span class="bf-deal-price">$950 <span class="sale-tag">Sale ends Nov 28</span> <s>Reg. $3,000</s></span>
+          <span class="bf-deal-price">$950 <s>Reg. $3,000</s></span>
         </span>
       </a>
       <a class="bf-deal" href="listings/2361489474609411/">
         <img src="images/photo-313-whirlpool-side-by-side-bf.jpg?v={ASSET_VER}" alt="Whirlpool Side-by-Side Refrigerator">
         <span>
           <span class="bf-deal-name">Whirlpool Side-by-Side Refrigerator</span>
-          <span class="bf-deal-price">$750 <span class="sale-tag">Sale ends Nov 28</span> <s>Reg. $1,800</s></span>
+          <span class="bf-deal-price">$750 <s>Reg. $1,800</s></span>
         </span>
       </a>
     </div>
