@@ -183,6 +183,9 @@ details p { margin: 10px 0 4px; color: var(--muted); }
 .hero .tagline { font-size: 1.25rem; }
 .rating .stars { color: #ffc531; letter-spacing: 0.12em; }
 .hero-collage { position: relative; height: 380px; }
+/* Trial (2026-11-22): hero collage hidden so Cade can see the hero without photos — delete these two rules to restore */
+.hero-collage { display: none; }
+.hero-inner { grid-template-columns: 1fr; }
 .hero-collage img { position: absolute; object-fit: cover; }
 .collage-main {
   right: 0; top: 0; width: 72%; height: 100%;
