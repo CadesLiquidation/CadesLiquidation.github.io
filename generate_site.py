@@ -1485,6 +1485,7 @@ def build_family():
   call &mdash; he&rsquo;ll treat you right.</p>
   <div class="hero-cta">
     <a class="btn btn-call btn-lg" href="tel:+12176712520">Call or text Gus: (217) 671-2520</a>
+    <a class="btn btn-lg" href="https://gusatgreen.com" target="_blank" rel="noopener">Visit gusatgreen.com</a>
     <a class="btn btn-fb btn-lg" href="https://www.facebook.com/share/1K6tKdTTzo/?mibextid=wwXIfr" target="_blank" rel="noopener">Gus on Facebook</a>
   </div>
   <p class="fine-print">Find him at Green Hyundai, 601 W Stanford Ave, Springfield, IL. Want to browse inventory first? See <a href="https://www.greenhyundai.com/" target="_blank" rel="noopener">Green Hyundai&rsquo;s own website</a> &mdash; and if you stop in, ask for Gus.</p>
