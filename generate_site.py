@@ -1786,6 +1786,104 @@ def build_product_feed(items, descriptions, photo_of):
     return len(rows), omitted
 
 
+# --- Google Merchant Center feed (google-feed.csv) ---
+# Hosted at https://cadesliquidation.com/google-feed.csv. Cade connects it
+# in Merchant Center (account 5911032608, goldbuyamz@gmail.com) as a
+# scheduled fetch from that URL, so Google re-reads the active inventory
+# on its own cadence. Regenerated on every site build, same row rules as
+# products.csv.
+#
+# Spec: Google Merchant Center product data specification. Required on
+# every row: id, title, description, link, image_link, price,
+# availability, condition, brand, identifier_exists. google_product_category
+# follows Google's product taxonomy where the category maps cleanly;
+# unmapped rows leave it blank and Merchant Center auto-classifies.
+# identifier_exists is "no" on every row: no GTIN/MPN is known for any
+# listing, and identifiers are never faked (owner's accuracy rule).
+# Shipping is NOT in the feed — it is set once in Merchant Center account
+# settings (delivery available for a charge, Bloomington-Normal, IL).
+
+GOOGLE_FEED_COLUMNS = ["id", "title", "description", "link", "image_link",
+                       "additional_image_link", "price", "availability",
+                       "condition", "brand", "google_product_category",
+                       "identifier_exists", "color"]
+
+GOOGLE_CATEGORIES = {
+    "Washers": "Appliances > Washers & Dryers > Washers",
+    "Dryers": "Appliances > Washers & Dryers > Dryers",
+    "Washers & Dryers": "Appliances > Washers & Dryers",
+    "Refrigerators": "Appliances > Refrigerators",
+    "Ranges": "Appliances > Ranges & Ovens > Ranges",
+    "Freezers": "Appliances > Freezers",
+    "Dishwashers": "Appliances > Dishwashers",
+    "Ovens": "Appliances > Ranges & Ovens > Wall Ovens",
+    "Furniture": "Furniture",
+    "Home Decor": "Home & Garden > Decor",
+}
+
+
+def build_google_feed(items, descriptions, photo_of):
+    """Write google-feed.csv (Google Merchant Center feed) to OUT_DIR.
+
+    Same row rules as build_product_feed: brand only from the title,
+    price + photo required, sold listings stay 30 days as out_of_stock.
+    Returns (n_rows, omitted)."""
+    today = date.today()
+    rows, omitted = [], []
+    for it in items:
+        brand = feed_brand(it.get("title", ""))
+        if not brand:
+            omitted.append((it["listing_id"], it["title"],
+                            "no brand named in title"))
+            continue
+        try:
+            price_num = float(it["price_num"])
+        except (KeyError, TypeError, ValueError):
+            omitted.append((it["listing_id"], it["title"], "no price"))
+            continue
+        photos = photo_of.get(it["listing_id"]) or []
+        if not photos:
+            omitted.append((it["listing_id"], it["title"], "no photo"))
+            continue
+        if it.get("status") == "sold":
+            try:
+                sold_d = date.fromisoformat(it.get("sold_date") or "")
+            except ValueError:
+                sold_d = None
+            if not sold_d or (today - sold_d).days > FEED_SOLD_WINDOW_DAYS:
+                omitted.append((it["listing_id"], it["title"],
+                                "sold over 30 days ago / no sold date"))
+                continue
+            availability = "out_of_stock"
+        else:
+            availability = "in_stock"
+        color = it.get("color") or ""
+        rows.append({
+            "id": it["listing_id"],
+            "title": it["title"][:150],
+            "description": feed_description(it, descriptions),
+            "link": f"{SITE_URL}/listings/{it['listing_id']}/",
+            "image_link": f"{SITE_URL}/images/{photos[0]}",
+            "additional_image_link": ",".join(
+                f"{SITE_URL}/images/{p}" for p in photos[1:]),
+            "price": f"{price_num:.2f} USD",
+            "availability": availability,
+            "condition": feed_condition(it),
+            "brand": brand,
+            "google_product_category": GOOGLE_CATEGORIES.get(
+                it.get("category"), ""),
+            "identifier_exists": "no",
+            "color": color[:1].upper() + color[1:] if color else "",
+        })
+    path = os.path.join(OUT_DIR, "google-feed.csv")
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=GOOGLE_FEED_COLUMNS,
+                           lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+    return len(rows), omitted
+
+
 def main():
     items, descriptions = load_data()
     active = [it for it in items if it.get("status") != "sold"]
@@ -1879,6 +1977,11 @@ def main():
     n_feed, feed_omitted = build_product_feed(items, descriptions, photo_of)
     print(f"Wrote products.csv ({n_feed} rows; omitted {len(feed_omitted)}: "
           + "; ".join(f"{t} [{r}]" for _, t, r in feed_omitted) + ").")
+    n_google, google_omitted = build_google_feed(items, descriptions,
+                                                 photo_of)
+    print(f"Wrote google-feed.csv ({n_google} rows; omitted "
+          f"{len(google_omitted)}: "
+          + "; ".join(f"{t} [{r}]" for _, t, r in google_omitted) + ").")
     print(f"Wrote index.html, more.html, about.html, faq.html, sitemap.xml, "
           f"robots.txt, {len(appliances) + len(sold_appliances)} listing pages "
           f"({len(sold_appliances)} sold).")
